@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+}
+window.onload = t;
+</script>
+
+<title>Sparql</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href=""><em>&lambda;ouna</em> SPARQL</a></span>
+  </li>
+    <li class="tree__item">
+    <span><a href="./louna-sparql-syntax.html"><em>&lambda;ouna</em> SPARQL Guide</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span ><div  class="icon"></div><a href="./sparql-gen.html">SPARQL Generation</a></span>
+    <ul>
+      <li>
+        <span><a href="./sparql-gen.html#rationale">Rationale</a></span>
+      </li>
+      <li>
+        <span><a href="./sparql-gen.html#examples">Examples</a></span>
+      </li>
+      <li>
+        <span><a href="./sparql-gen.html#reference">Reference</a></span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+
+
+<div class="main">
+<table style="width: 70%"  border="1">
+ <thead>
+    <tr>
+      <th class="sparql">SPARQL</th>
+      <th class="louna"><em>&lambda;ouna</em></th>
+    </tr>
+  </thead>
+    <tbody>
+
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Triple join select all</span>
+
+<div class="codeside">
+SELECT *
+WHERE    
+{
+  ?person  person:city          ?city .
+  ?city    city:country         ?country .  
+  ?country country:continent    ?continent .  
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+
+<div class="codeside">
+(q (:person.city         ?person    ?city)  
+   (:city.country        ?city      ?country)  
+   (:country.continent   ?country   ?continent))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Triple join project</span>
+<div class="codeside">
+SELECT ?craigEmail ?homeTel
+WHERE
+{
+  ?person ab:firstName "Craig" ;
+          ab:lastName  "Ellis" ; 
+          ab:email     ?craigEmail ; 
+          ab:homeTel   ?homeTel .
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q [?craigEmail ?homeTel]
+   (:ab.firstName  ?person "Craig")
+   (:ab.lastName           "Ellis")
+   (:ab.email              ?craigEmail)
+   (:ab.homeTel            ?homeTel))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Triple join binds and filters</span>
+<div class="codeside">
+SELECT ?description ?amount ?tip ?total
+WHERE
+{
+  ?meal e:description      ?description ;
+        e:amount           ?amount .
+  BIND((?amount * .2) AS   ?tip) 
+  BIND((?amount + ?tip) AS ?total) 
+  FILTER(?total<=25)
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q [?description ?amount ?tip ?total]
+   (:e.description  ?meal  ?description)
+   (:e.amount              ?amount)
+   ((* ?amount 0.2)        ?tip)
+   ((+ ?amount ?tip)       ?total))
+   (<= ?total 25)
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Nested groups(UNION,JOIN)</span>
+<div class="codeside">
+SELECT ?first ?last ?instrument 
+WHERE
+{
+    ?person ab:firstName    ?first ;
+            ab:lastName     ?last ;
+            ab:instrument   ?instrument . 
+    { ?person ab:instrument "sax" . }
+    UNION
+    { ?person ab:instrument "trumpet" . }
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q [?first ?last ?instrument]
+   (:ab.firstName   ?person  ?first)
+   (:ab.lastName             ?last)
+   (:ab.instrument           ?instrument)
+   ((:ab.instrument ?person  "sax")
+    (:add (:ab.instrument ?person "trumpet"))))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Nested groups(OPTIONAL)</span>
+<div class="codeside">
+SELECT ?first ?last ?workTel ?nick
+WHERE
+{
+  ?person ab:firstName ?first ;
+          ab:lastName  ?last .
+  OPTIONAL { ?s ab:workTel ?workTel . }
+  OPTIONAL { ?s ab:nick ?nick .  }
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q [?first ?last ?workTel ?nick]
+   (:ab.firstName ?person ?first)
+   (:ab.lastName          ?last)
+   (:if (:ab.workTel ?person ?workTel))
+   (:if (:ab.nick    ?person ?nick)))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Group by with filters and aggregate binds</span>
+<div class="codeside">
+SELECT ?description (SUM(?amount) AS ?mealTotal)
+WHERE
+{
+  ?meal e:description ?description ;
+        e:amount ?amount . 
+}
+GROUP BY ?description
+HAVING (SUM(?amount) > 20)
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q [?description ?mealTotal]
+   (:e.description ?meal ?description)
+   (:e.amount            ?amount)
+   (:group-by ?description
+              ((apply + ?amount) ?mealTotal)
+              (> ?mealTotal 20)))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">VALUES</span>
+<div class="codeside">
+SELECT ?description ?date ?amount
+WHERE
+{
+  ?meal e:description ?description ;
+        e:date ?date ;
+        e:amount ?amount . 
+  VALUES (?date ?description) 
+  {
+         (UNDEF "lunch") 
+         ("2011-10-16" UNDEF) 
+  }
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q [?description ?date ?amount]
+   (:e.description ?meal ?description)
+   (:e.date              ?date)
+   (:e.amount            ?amount)
+   (match [?date ?description]
+          [_ "lunch"] true
+          ["2011-10-16" _] true
+          :else false))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">Simple construct</span>
+<div class="codeside">
+CONSTRUCT
+{ ?p ab:hasGrandfather ?g . }
+WHERE
+{
+  ?p ab:hasParent ?parent .
+  ?parent ab:hasParent ?g .
+  ?g ab:gender d:male .
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(c (:ab.hasGrandfather ?child   ?gparent)
+   (q (:ab.hasParent   ?child   ?parent)
+      (:ab.hasParent   ?parent  ?gparent)
+      (:ab.gender      ?gparent :d.male)))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="sparqltd">
+      <pre>
+<span style="font-weight :bold; font-size : 45; color : #0099cc;">More nested groups with filters/binds</span>
+<div class="codeside">
+SELECT *
+WHERE
+{
+  {
+    ?prob32item dm:amount ?amount .
+    FILTER ((datatype(?amount)) != xsd:integer) 
+  }  
+  UNION
+  {
+    ?prob29item dm:location ?city .
+    FILTER (!(isURI(?city)))
+  }
+  UNION 
+  {
+    ?prob44item dm:cost ?cost ;
+                dm:amount ?amount .
+    OPTIONAL 
+    {
+      ?item dm:approval ?approvingEmployee . 
+      ?approvingEmployee dm:jobGrade ?grade . 
+    }
+    BIND (?cost * ?amount AS ?totalCost) .
+    FILTER ((?totalCost > 100) &&
+            ( (!(bound(?grade)) || (?grade < 5 ) )))   
+  }
+}
+
+</div>
+      </pre>
+    </td>
+    <td style= "vertical-align:top">
+      <pre>
+
+<div class="codeside">
+(q (:dm.amount ?prob32item ?amount)
+   (not (integer? ?amount))
+   (:add (:dm.location ?prob29item ?city)
+         (not (prefixed? ?city)))
+   (:add (:dm.cost ?prob44item ?cost)
+         (:dm.amount ?prob44item ?amount)
+         (:if (:dm.approval ?item ?approvingEmployee)
+              (:dm.jobGrade ?approvingEmployee ?grade))
+              ((* ?cost ?amount) ?totalCost)
+              (and (> ?totalCost 100)
+                   (or (= nil ?grade) (< ?grade 5)))))
+
+</div>
+      </pre>
+    </td>
+  </tr>
+    </tbody>
+
+</table>
+</div>
+     
+</body>
+</html> 

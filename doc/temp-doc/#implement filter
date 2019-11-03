@@ -1,0 +1,72 @@
+1)filter function = opiadipote sinartisi exi orismata vars kai epistrefi true/false
+  thelo oi times ton vars na tis tiroun
+
+  kathe var mpori na exi poles teties sinartisis
+
+  px ?i     (> ?i 20) (< ?i 40)
+     ?i,?j  (= (+ ?i ?j) 10)
+
+
+2)Pote tis efarmozo
+
+  1 argument otan diabazo mia sxesi
+  2 arguments ean anikoun stin idia sxesi otan diabazo tin sxesi
+
+  >= 2 arguments sto idio tree otan kano ta join
+   *kathe function exi os key tin teleutea var pou xriazome gia na tin efarmososo (simfona me to sorted vars)
+
+  >=2 arguments se xexoristo tree/single
+   *kathe function exi os key to index tou teleuteou dentrou/single pou xriazete kai tin teleutea metabliti
+    pou xriazete apo auto,otan tin diabazo tin efarmozo
+
+    Bazo se mia seira ta singles kai dentra
+    px index 8 ean exo 3 singles simeni 5o dentro
+
+  Kathos bazo times ean blepo oti den tirite i sinthiki petao oli tin grami
+
+
+
+3)Pos tis efarmozo
+
+  px
+  (= (+ ?i (- ?j 2) 10))
+
+  Mporo na to do san string pou
+   stis thesis 4 eos 7 einai i ?i
+   stin thesis 10 eos 15 eiani i ?j
+
+  Kano antikatastasi metabliti me tin timi,kai eval
+
+  (eval (read-string "(+ 2 (- 1 2) 10)"))
+
+4)problima
+  ean oi metablites anikoun se diaforetika dentra,i se single
+
+  thelo na xero se pia dentra anikoun
+  mporoun na ektimithoun otan oti xriazonte apo kathe dentro exi ektimithi
+  etsi prepei na to kano,gia na petao oti einai na petaxo prin to paraxo
+
+  1)xorizo tis functions se autes pou anikoun se 1 dentro i single
+
+  2)autes pou anikoun se ena tis efarmozo kanonika sto dentro/single
+
+  3)meta brisko pia dentra xriazonte autes pou menoun kai tis efarmozo se auta
+    aferontas grames apo auta
+    *i to kano auto otan bazo to teleuteo dentro,stin teleutea metabliti pou xriazete
+
+
+  Eidi filter functions
+
+  1)1 var (single i se tree)
+  2)2 vars same relation
+  3)n>=2 vars same tree
+  4)n>=2 vars diferrent trees
+
+  Arika tha kano ta filter gia ta 1),2),3)
+
+  1)1 var ginonte panta kata tin anagnosi tis sxesis (done)
+  2)2 vars same relation panta kata tin anagnosi tis sxesis (done)
+  3)n>=2 vars same tree,otan kano ta joins
+    tin stigmi pou tha balo tin teleutea var pou xriazome sto tree
+
+4)filter emine to na efarmoso filter sto cartesian product

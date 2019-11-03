@@ -1,0 +1,7 @@
+<http://learningsparql.com/ns/data#jane> <http://learningsparql.com/ns/addressbook#hasParent> <http://learningsparql.com/ns/data#gene> .
+<http://learningsparql.com/ns/data#gene> <http://learningsparql.com/ns/addressbook#hasParent> <http://learningsparql.com/ns/data#pat> .
+<http://learningsparql.com/ns/data#gene> <http://learningsparql.com/ns/addressbook#gender> <http://learningsparql.com/ns/data#female> .
+<http://learningsparql.com/ns/data#joan> <http://learningsparql.com/ns/addressbook#hasParent> <http://learningsparql.com/ns/data#pat> .
+<http://learningsparql.com/ns/data#joan> <http://learningsparql.com/ns/addressbook#gender> <http://learningsparql.com/ns/data#female> .
+<http://learningsparql.com/ns/data#pat> <http://learningsparql.com/ns/addressbook#gender> <http://learningsparql.com/ns/data#male> .
+<http://learningsparql.com/ns/data#mike> <http://learningsparql.com/ns/addressbook#hasParent> <http://learningsparql.com/ns/data#joan> .

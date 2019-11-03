@@ -1,0 +1,6 @@
+_:node1corb9notx1 <http://purl.org/dc/elements/1.0/title> "SPARQL Query Language Tutorial" .
+_:node1corb9notx1 <http://purl.org/dc/elements/1.0/creator> "Alice" .
+_:node1corb9notx2 <http://purl.org/dc/elements/1.1/title> "SPARQL Protocol Tutorial" .
+_:node1corb9notx2 <http://purl.org/dc/elements/1.1/creator> "Bob" .
+_:node1corb9notx3 <http://purl.org/dc/elements/1.0/title> "SPARQL" .
+_:node1corb9notx3 <http://purl.org/dc/elements/1.1/title> "SPARQL (updated)" .

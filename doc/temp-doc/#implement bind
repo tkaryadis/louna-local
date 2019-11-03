@@ -1,0 +1,70 @@
+1)bind => nea metabliti (pseuto nea,giati tin timi tous tin parago apo kapia idi iparxon me clojure kodika)
+
+  Ta bind mpenoun ston pinaka mono ean(alios antikatastasi os pros tis metablites ton trees)
+  1)xrisimopoiounte se pola simia H poli argi function
+    *mpori o xristis na lei :save  (?var (argi_function ....) :save)
+     se auti tin periptosi den thelo na ta ipologizo se pola simia xana kai xana
+  2)iparxoun sto project
+    (automata to :save to bazi to programa oxi o xristis)
+
+2)2 periptosis
+
+  1)bind iparxi sto project
+    thelo tin timi tou
+
+
+  2)bind den iparxi sto project
+    tha mporousa na ta exafaniso ,alla thelo na mioso tous ipologismous
+    ara kai pali ta kratao
+
+  Pote efarmozo to bind?
+  oso pio noris exo tis metablites pou xriazome
+
+3)ta bind ta kratao se xexoristo pinaka alla me to idio line-id
+  i sto idio?
+
+4)otan xekinao prepei na bro mia seira exartisis ton binds
+
+  proto = exartate mono apo relation metablites
+  deutero = exartate max apo to proto
+  trito = exartate apo to deuteo/proto
+  ktl
+
+2)opos kai sta filtra mpori na einai
+
+  single bind
+  tree bind
+  trees bind
+  singles+trees bind
+
+3)Pote to efarmozo
+  tautoxrona me tin teleutea metabliti pou xriazonte
+  kai tautoxrona i pio meta filtra pou xrisimopioun tin bind metabliti
+
+3)mporo na bro pies einai oi bind metablites giati den simetexoun stis relation queries
+
+4)Mpori na exo pola binds,osa den zitounte sto project,feugoun kai ginete antikatastasi
+  me aplo clojure kodika
+
+  ston pinaka kata tin diarkeia kataskeueis tou bazo mono osa bind simetexoun amesa i emesa
+  se kapio filtro,alios ta bazo sto telos
+
+5)tin sinartisi bind mporo na tin do san mia relation pou otan exo oles tis metablites tis
+  bazo to neo node
+
+  gia na ipologiso thelo na exo oles tis metablites apo tis relation queries
+  kai meta efarmozo me tin sira tis opies bind metablites exo
+
+  se 1 tree ta binds mpenoun me tin seira
+  san pipeline
+  px arxiki variable initialialPrice,travelCost
+
+  (:= ?taxesPrice (* ?initialPrice (taxes ?zipcode)) )
+  (:= ?shippingPrice (+ ?taxesPrice (shippingCost ?zipcode)))
+  (:= ?finalPrice (+ ?shippingPrice ?paymentType))
+
+  Ean sto project thelo mono to ?finalPrice tote to pano ginete
+
+  (?finalPrice (+ (+ (* ?initialPrice (taxes ?zipcode)) (shippingCost ?zipcode)) ?paymentType))
+
+

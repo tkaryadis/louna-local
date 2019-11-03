@@ -1,0 +1,34 @@
+1)format=nt
+
+px
+
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#firstName> "Richard" .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#lastName> "Mutt" .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#homeTel> "(229) 276-5135" .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#email> "richard49@hotmail.com" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#firstName> "Cindy" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#lastName> "Marshall" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#homeTel> "(245) 646-5488" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#email> "cindym@gmail.com" .
+
+
+2)gia kathe dataset tha ftiaxo ena arxio pou tha exi ola ta namespaces se hash-map
+  tha to exo kai apo tin anapodi(val->keys gia otan query)
+
+  oste to pano na gini
+
+  n1:i0432 n2:firstname Richard
+  ...
+
+3)Ftiaxno 1 file ana relation
+  edo
+
+  n2:firstname
+
+4)Mesa stin kathe sxesi bazo
+
+  n2:firstname
+
+  n1:i0432 Richard
+
+  ....

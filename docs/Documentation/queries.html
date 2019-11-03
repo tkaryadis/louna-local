@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./guide.html">Site reading guide</a></span>
+  </li>
+    <li class="tree__item">
+    <span><a href="../documentation.html">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./overview.html">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span id="sel" ><div  class="icon"></div><a href="">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./constructs.html#constructs">Constructs</a></span>
+    <ul>
+       <li>
+        <span><a href="./constructs.html">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./constructs.html#constructs-queries">Constructs-queries</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+   <li class="tree__item">
+    <span><a href="./reference.html">Syntax reference</a></span>
+  </li>
+
+</ul>
+</div>
+
+<span id="relation"></span>
+<div id="main">
+<h5 class = "main-title">Queries</h5>
+<pre >
+Louna query relations and tables
+
+<b>Relation</b>
+   Relation is named collumn of [id,value] pairs
+  
+<div class="code">
+  :meal.name
+  [[1 "eggs with potatoes"]
+   [2 "fried rice with eggs"]
+   [3 "chicken soup"]
+   [4 "shrimp soup"]
+   [5 "pasta bolonese"]
+   [6 "pizza"]]
+
+</div>
+<span id="database"></span>
+
+
+<b>Database</b>
+
+    One or many relations form a database
+  
+    The database can be in memory or a directory containing the relations in text files.
+    1 file per relation
+  
+    In-memory database is hash-map of relations.
+<div class="code">
+  (def menuDB {:meal.name
+                [[1 "eggs with potatoes"]
+                 [2 "fried rice with eggs"]
+                 [3 "chicken soup"]
+                 [4 "shrimp soup"]
+                 [5 "pasta bolonese"]
+                 [6 "pizza"]]
+
+                :meal.type
+                [[1 "breakfast"]
+                 [2 "lunch"]
+                 [3 "lunch"]
+                 [4 "dinner"]
+                 [5 "dinner"]
+                 [6 "dinner"]]
+
+                :meal.cost
+                [[1 6.5]
+                 [2 11]
+                 [3 20]
+                 [4 28]
+                 [5 19.5]
+                 [6 12]]
+                })
+
+</div>
+    File database
+        Its exactly the same,just the filename is the name of the relation filename= :meal.name
+        and the contents are just the pairs(without the external vector that contains the pairs)
+        *more about how you create a file database later mostly on Input and Output on Docs.
+
+    Relations names must be keywords :object.attribute
+    Also the query-vars  ?x ,must have alphanumeric names like  ?x1 ?fileSize.
+    (Don't use names like ?file-size,i need to change regular expressions, i tried it
+     but caused bugs and i removed it for now)
+
+<span id="BGP-Query"></span>
+
+
+<b>BGP</b>
+(basic graph pattern(terminology used in sparql))
+
+    BGP is a set of triples with optional filters and binds
+    In 1 BGP the triple must be connected somehow,so there is
+    and ordering that can join them without the use of cartesian
+    product.
+ 
+    For example this is not a BGP
+<div class="code">
+    (:meal.type ?meal "dinner")
+    (:meal.name ?meal ?name)
+
+    (:meal.type ?meal1 "dinner")
+    (:meal.name ?meal1 ?name1)
+
+</div> 
+    
+    Because you dont have a common variable,so cartesian is needed,even if you change the order.
+    The user doesn't have to worry about this,louna does autogrouping,so the above would be splitted
+    automatically to 2 BGP's.
+
+    Inside a BGP there is no order,order is used to make the query more readable,but all possible
+    orders make the same table.
+
+
+    Inside the same BGP you can ommit the subject
+<div class="code">
+    (:meal.type ?meal "dinner")
+    (:meal.name ?meal ?name)
+    =
+    (:meal.type ?meal "dinner")
+    (:meal.name       ?name)
+
+</div>
+
+    Examples
+
+    Join triples
+
+<div class="code">
+    (q {:q-in [menuDB] :q-out ["print"]}
+       [?name ?cost]
+       (:meal.type ?meal "dinner")
+       (:meal.name ?meal ?name)
+       (:meal.cost ?meal ?cost))
+
+</div>
+
+        Explaining the query parts
+
+        :q-in [menuDB] = query the menuDB using its var name
+        :q-out ["print"] = print the results(its possible to also save them to file)
+
+        [?name ?cost] we say from all the qvars(?meal,?name,?cost) return only those 2 in that order
+        (its optional,if missing => return them all)
+
+        3 triples,joined on the common var ?meal which is the subject here
+        (:meal.type ?meal "dinner")
+        (:meal.name ?meal ?name)
+        (:meal.cost ?meal ?cost)
+
+        =>
+       [name cost]
+       "shrimp soup" 28
+       "pasta bolonese" 19.5
+       "pizza" 12
+
+    Join and filter
+
+<div class="code">
+    (q {:q-in [menuDB] :q-out ["print"]}
+       (:meal.type ?meal "dinner")
+       (:meal.name ?meal ?name)
+       (:meal.cost ?meal ?cost)
+       (<= ?cost 20))  
+</div>
+        Here select is missing,so we select all of the qvars in random order
+   
+        Filter
+        (<= ?cost 20)
+        Filter syntax =  clojure_code  = (....)   
+        (not literal,if you want literal use it like this (identity literal))
+
+        =>
+        [meal cost name]
+        5 19.5 "pasta bolonese"
+        6 12 "pizza"
+   
+    Join+filter+bind
+   <div class="code">
+        (q {:q-in [menuDB] :q-out ["print"]}
+           [?name ?totalcost]
+           (:meal.type ?meal "dinner")
+           (:meal.name ?meal ?name)
+           (:meal.cost ?meal ?cost)
+           ((* ?cost 0.1)    ?tip)
+           ((+ ?cost ?tip)   ?totalcost)
+           (<= ?totalcost 20))
+</div>
+   
+    Bind
+
+        ((* ?cost 0.1)    ?tip)
+        We remember that we have to leave a tip 10% of the cost,so we bind it to a new variable
+   
+       *binds in louna have the form  ((..code..) ?x1 ?x2....)
+        if you have multiple bind variables,the code must return a vector [x1_value x2_value ...]
+        if you have 1 bind value no need for vector you just return 1 value
+
+        ((+ ?cost ?tip)   ?totalcost)
+        We add them to get the total cost to ensure that its below 20
+
+        =>
+       [name totalcost]
+       "pizza" 13.2
+
+<span id="tables"></span>
+
+
+<b>Quering-tables</b>
+
+    Querying table is done as a unary operator :table
+
+    Louna was made to query triples,but sometimes you need to load previous query results(tables)
+    and continue your calculations.
+
+    Syntax (the first argument must be a table,the order in binds/filters doesn't matter)
+        1)Read file table
+<div class="code">
+            (:table (:name ?attr1 ?attr2 ?attr3 ...)
+                    binds
+                    filters)
+</div>
+
+            *name must be a text file in db/tables directory with that name for example 
+            :person => person file in tables directory
+
+            For example
+<div class="code">
+            (q {:q-out ["print"]}
+                ....
+               (:table (:person ?pid ?firstname ?lastname ?city ?country ?continent)
+                       (= ?pid 1005)
+                       ..filters...
+                       ((+ ?pid 2) ?pid2)
+                       ..binds...)
+               (:sort-by ?pid)
+               ......)
+</div>
+ 
+        2)Use memory table (again first argument must be the table_var bind/filter order does'nt matter)
+<div class="code">
+            (:table table_var
+                    binds
+                    filters)
+</div>
+            *table_var can be any table in memory for example (def atable (q ....))
+
+        Inside the code in test/Documentation/table.clj there are examples
+
+<span id="groups"></span>
+
+
+<b>Groups and operators</b>
+  
+    Groups is sparql terminology,like BGP operated on triples,group operators operates on tables.
+
+    For example with a BGP we can create a table.
+
+    After we make a table we can do to it
+        1)Unary operations
+          table -op->table
+        2)Binary operations   
+          table1
+                 -op->table <span id="groups-unary"></span>
+          table2
+  
+    Unary operations
+        :table (discussed above)
+        :sort-by
+        :group-by
+        :project
+        :limit
+        :do/:do-each  (will be discussed later)
+
+        :sort-by
+<div class="code">
+     (q {:q-in [menuDB] :q-out ["print"]}
+        (:meal.type ?meal "dinner")
+        (:meal.name ?meal ?name)
+        (:meal.cost ?meal ?cost)
+        (:sort-by ?cost))
+
+     =>
+     [meal cost type name]
+     1 6.5 "breakfast" "eggs with potatoes"
+     2 11 "lunch" "fried rice with eggs"
+     6 12 "dinner" "pizza"
+     5 19.5 "dinner" "pasta bolonese"
+     3 20 "lunch" "chicken soup"
+     4 28 "dinner" "shrimp soup"
+
+</div>
+
+            You can add functions or desc ,asc etc like
+            (:sort-by ?x1 ?x2)
+            (:sort-by (desc (f ?x1)))
+            But here there is a basic demostrantion of all operators.
+            For all availiable options see the Reference            
+    
+        :group-by
+<div class="code">
+      (q {:q-in [menuDB] :q-out ["print"]}
+        (:meal.type ?meal ?type)
+        (:meal.name ?meal ?name)
+        (:meal.cost ?meal ?cost)
+        (:group-by ?type))
+
+      =>
+      [type]
+      "breakfast"
+      "lunch"
+      "dinner"
+       
+      With aggregate bindings
+  
+      (q {:q-in [menuDB] :q-out ["print"]}
+         (:meal.type ?meal ?type)
+         (:meal.name ?meal ?name)
+         (:meal.cost ?meal ?cost)
+         (:group-by ?type
+           ((apply + ?cost) ?groupCost)))
+
+
+      =>
+      [type groupCost]
+      "breakfast" 6.5
+      "lunch" 31
+      "dinner" 59.5
+
+      With aggregate bindings and filters
+  
+      (q {:q-in [menuDB] :q-out ["print"]}
+         (:meal.type ?meal ?type)
+         (:meal.name ?meal ?name)
+         (:meal.cost ?meal ?cost)
+         (:group-by ?type
+           ((apply + ?cost) ?groupCost)
+           (< ?groupCost 40)))
+
+     =>
+     [type groupCost]
+     "breakfast" 6.5
+     "lunch" 31
+
+</div>
+  
+        Group by can be used only for aggregate binds if you use it like this
+        you just omit the group-by variables
+
+        (in previous editions i had one more keyword, :aggr-bind but i removed it
+         i don't think its better to add one new operator just for that)
+
+<div class="code">
+     (q {:q-in [menuDB] :q-out ["print"]}
+         (:meal.type ?meal ?type)
+         (:meal.name ?meal ?name)
+         (:meal.cost ?meal ?cost)
+         (:group-by ((count ?meal) ?numberOfMeals)))
+
+     =>
+     [numberOfMeals]
+     6
+
+</div>
+ 
+    :project
+    
+        In louna you can do project whenever you like
+        (project/select used here with the same meaning)
+
+<div class="code">
+    (q {:q-in [menuDB] :q-out ["print"]}
+       (:meal.type ?meal ?type)
+       (:project distinct ?type))
+
+    =
+    
+    (q {:q-in [menuDB] :q-out ["print"]}
+       [distinct ?type]
+       (:meal.type ?meal ?type))
+
+    =>(no duplicates)
+    [type]
+    "breakfast"
+    "lunch"
+    "dinner"    
+
+</div>  
+   
+    :limit
+<div class="code">
+     (q {:q-in [menuDB] :q-out ["print"]}
+        [distinct ?type]
+        (:meal.type ?meal ?type)
+        (:limit 1))
+     
+     =>
+     [type]
+     "breakfast" <span id="groups-binary"></span>
+
+</div>
+  
+    Binary operators
+    :and (joined,implied not needed)
+    :if  (sparql OPTIONAL)
+    :add (sparql UNION)
+    :not (sparql MINUS)
+
+<div class="code">
+   (def personDB {
+                :person.firstName
+                [[1 "Richard"]
+                 [2"Cindy"]
+                 [3 "Craig"]]
+
+                :person.lastName
+                [[1 "Mutt"]
+                 [2 "Marshall"]
+                 [3 "Ellis"]]
+
+                :person.country
+                [[1 "GREECE"]
+                 [2 "USA"]
+                 [3 "SAUDI-ARABIA"]]
+
+                :person.workTel
+                [[3 "(245) 315-5486"]]
+
+                :person.nickName
+                [[1 "Dick"]]
+
+                })
+
+</div>
+
+  :and
+      Its the join operation,but join between groups(tables)
+      (not triples like in the BGP)
+      It can be ommited,because join is the default operator.
+
+      For example
+<div class="code">
+     
+     (q {:q-in [personDB] :q-out ["print"]}
+        ((:person.firstName ?person ?first)   ;;BGP1
+         (:person.lastName          ?last))
+        ((:person.country ?person ?country))  ;;BGP2
+
+     result = [BGP1 :and BGP2] (:and is a group operator=table operator)
+
+     <b>Same as</b>
+
+     (q {:q-in [personDB] :q-out ["print"]}
+        ((:person.firstName ?person ?first)   ;;BGP1
+         (:person.lastName          ?last))
+        (:and  (:person.country ?person ?country))  ;;BGP2
+
+     <b>Same as</b>
+
+     (q {:q-in [personDB] :q-out ["print"]}
+        (:person.firstName ?person ?first)
+        (:person.lastName          ?last)
+        (:person.country           ?country))
+
+
+     <b>Same results but the last one works in different way</b>
+     =>
+     [person country first last]
+      1 "GREECE" "Richard" "Mutt"
+      2 "USA" "Cindy" "Marshall"
+      3 "SAUDI-ARABIA" "Craig" "Ellis"
+
+</div>    
+
+    :if
+    (OPTIONAL in SPARQL)
+<div class="code">
+(q {:q-in [personDB] :q-out ["print"]}
+       (:person.firstName    ?person   ?first)      ;; BGP1
+       (:person.lastName               ?last)
+       (:if (:person.workTel ?person   ?workTel)))  ;; optional BGP2
+
+    =>
+    [person first last workTel]
+    3 "Craig" "Ellis" "(245) 315-5486"
+    1 "Richard" "Mutt" nil
+    2 "Cindy" "Marshall" nil
+
+</div>
+       Here the join query-var between BGP1 BGP2 is ?person.
+       And the add-var is ?workTel.
+       The difference is that if a person don't have a ?workTel he is not
+       removed from the results,but in the results he just have nil as ?workTel value.
+
+       For example the same query with join
+<div class="code">
+    (q {:q-in [personDB] :q-out ["print"]}
+       (:person.firstName   ?person   ?first)
+       (:person.lastName              ?last)
+       (:and (:person.workTel ?person ?workTel)))
+
+    =>
+    [person workTel first last]
+    3 "(245) 315-5486" "Craig" "Ellis"
+</div>
+      
+        Here we saw how to add optional attributes to BGP1
+        But if dont do only that.
+        :if can fill nil fields in BGP1 with values from BGP2
+
+        For example,here we see that some fields of the result
+        have nil values.
+<div class="code">
+    (q {:q-in [personDB] :q-out ["print"]}
+
+       [?first ?last]
+       (:person.lastName       ?person ?last)
+       (:if (:person.nickName  ?person ?first)))
+
+    =>(only one has nickName)
+    [first last]
+    "Dick" "Mutt"
+     nil "Marshall"
+     nil "Ellis"
+
+</div>
+
+        With this query we can fill the nil values.
+        The query says add to them then nicknames if the have,and to those that havent
+        add their firstname instead(if they have firstname)
+<div class="code">
+   (q {:q-in [personDB] :q-out ["print"]}
+
+      [?first ?last]
+      (:person.lastName       ?person ?last)
+      (:if (:person.nickName  ?person ?first))
+      (:if (:person.firstName ?person ?first)))
+ 
+    =>
+    [first last]
+    "Cindy" "Marshall"
+    "Craig" "Ellis"
+    "Dick" "Mutt"   ;;Mutt kept his nickName because it wasn't nil
+</div>
+        
+    :not
+     (MINUS in SPARQL,its like set difference )
+
+        Give me the persons,that dont have a ?workNum
+<div class="code">
+   (q {:q-in [personDB] :q-out ["print"]}
+      (:person.firstName   ?person ?first)
+      (:person.lastName            ?last)
+      (:not (ab:workTel    ?person ?workNum))
+
+   =>
+   [person first last]
+   1 "Richard" "Mutt"
+   2 "Cindy" "Marshall"
+   
+   Group0 = [group1 MINUS(:not) group2]     ;;group operation
+   Group1=[(ab:firstName   ?person ?first)
+           (ab:lastName            ?last)]  ;;BGP1
+   Group2=[:not (ab:workTel ?person ?workNum)] ;; BGP2
+  
+</div>
+
+    :add
+    (UNION in sparql)
+
+        I named add because with UNION tou think something like join when common variables,
+        and its not a join.
+        Add simply adds the results of the BGPs .Like make 1 header with all the attributes 
+        and added rows.
+        A table1 row will have nill in the collumns that only table2 has,and the opposite.
+
+<div class="code">
+   (def booksDB {
+              :y2000.title
+              [[2 "SPARQL Protocol Tutorial"]
+               [3 "SPARQL (updated)"]]
+
+              :y2010.title
+              [[1 "SPARQL Query Language Tutorial"]
+               [3 "SPARQL"]]
+              })
+
+   (q {:q-in [booksDB] :q-out ["print"]}
+      (:y2000.title       ?book ?title00)
+      (:add (:y2010.title ?book ?title10)))
+
+  =>
+  [book title10 title00]
+   2    nil     "SPARQL Protocol Tutorial"
+   3    nil     "SPARQL (updated)"
+   3   "SPARQL"  nil
+   1   "SPARQL Query Language Tutorial" nil
+</div>
+
+        values in title00 will only have those from relation    (:y2000.title ?book ?title00)
+        and values in title10 will only have those from relation (:y2010.title ?book ?title10)
+
+<span id="groups-autogrouping"></span>
+
+
+<b>Groups and auto-grouping</b>
+ 
+    This section is not so important to user that writes queries,in the internals documentation
+    more is been explained about it.
+  
+    The user only need to knows that he is free to use triples and filter binds operators etc,
+    and louna will automatically make the groups.
+
+<div class="code">
+    (:meal.type ?meal "dinner")
+    (:meal.name ?meal ?name)
+    (:meal.type ?meal1 "dinner")
+    (:meal.name ?meal1 ?name1)
+    (not (= ?meal ?meal1))
+</div>
+    This is not 1 BGP(no common var) actually its 2 BGPs
+    also the filter is not a BGP filter,its a table filter.
+
+    Inside after auto groupping it will become
+ <div class="code">
+    ((:meal.type ?meal "dinner")   ;;BGP1
+     (:meal.name ?meal ?name))
+    ((:meal.type ?meal1 "dinner")  ;;BGP2
+     (:meal.name ?meal1 ?name1))
+    (:filter (not (= ?meal ?meal1)))  ;;table filter(not BGP filter)
+  </div>
+    Here the last filter is a unary operator,its not presented because the user will never
+    use it when he writtes queries.
+
+    The groups are auto-formed.
+    BGP1 cartesian with BGP2
+    and then the filter will be applied on the result.
+
+    Another example
+<div class="code">
+    (:meal.type ?meal "dinner")
+    (:meal.cost ?meal ?cost)
+    (:sort-by ?cost)
+    (:meal.name ?meal ?name)
+  </div>
+    After auto-grouping will become,the reason is the table operators,unary or binary
+    break the BGP.
+<div class="code">
+    ((:meal.type ?meal "dinner")
+     (:meal.cost ?meal ?cost))  ;;BGP1
+    (:sort-by ?cost)
+    ((:meal.name ?meal ?name))  ;;BGP2
+  </div>
+    
+    When you use a table operation like :sort-by
+    you use it on the above group(above table)
+    not in the above triple
+<div class="code">
+    (:meal.cost ?meal ?cost)
+    (:sort-by ?cost)
+</div>
+    It works as expected to work,but there is a difference inside.
+
+<span id="groups-nested"></span>
+
+
+<b>Sequence of operations in a query</b>
+
+    Louna queries are organized in groups,every group has an operator.
+    Operators(unary or binary) break the BGP's.
+
+    In louna you can nest groups freely.
+    
+    To understand how louna runs groups you have to think of a table
+    that goes down and while it goes down operations are applied to it
+    until it reaches the bottom and gets printed. 
+
+    All the unary and binary operators are applied to tables.
+    One BGP produces 1 table.
+
+    If the operant is :and you can admit it if you want,like in the example below.
+
+    The query
+    test/documentation.internals.clj:80
+
+<div class="code">
+  (q {:q-in ["ex100"] :q-out ["print"]}
+
+     [?first ?last ?instrument]
+
+     (:ab.firstName ?person ?first)
+     (:ab.lastName          ?last)
+     (:ab.instrument        ?instrument)
+     ((:ab.instrument ?person "sax")
+      (:add (:ab.instrument ?person "trumpet")))
+     (:sort-by (desc ?first)))
+
+</div>
+    Meaning of the query
+    ?person that play any instrument,that its "sax" or "trumpet"
+    sort-by desc name
+
+    Results:
+    [first last instrument]
+    Richard Mutt sax
+    Richard Mutt clarinet  ;;its valid because he plays also a instrument that its "sax" or "trumpet"
+    Craig Ellis trumpet
+
+    In internals Documentation more is explained but here we only say what the user that writes queries
+    should know.
+    Operators BREAK the BGP.
+    We add 1 operator that was implied.
+
+<div class="code">
+  (:ab.firstName ?person ?first)
+  (:ab.lastName          ?last)
+  (:ab.instrument        ?instrument)
+  (:and (:ab.instrument ?person "sax")
+        (:add (:ab.instrument ?person "trumpet")))
+  (:sort-by (desc ?first)))
+  
+</div>
+  The table goes down,and binary and unary operations are applied until it reaches the bottom.
+    
+  The first 3 is a BGP(:and operator break the BGP) => table1
+  (:ab.instrument ?person "sax") BGP(:add breaks)   => table2
+  (:ab.instrument ?person "trumpet") BGP            => table3
+  table4 =(:add table2 table3)
+  table5 =(:and table1 table4)
+  table6 =(:sort-by table5)
+  table7 =(:project table6)  
+
+<span id="triples"></span>
+
+
+<b>Quering relations</b>
+
+   (?r  s o)
+   (?r ?s o)
+   (?r  s ?o)
+   (?r ?s ?o)
+
+<div class="codelong">
+    (def personDB {
+               :person.firstName
+               [[:person.i0432 "Richard"]
+                [:person.i9771 "Cindy"]
+                [:person.i8301 "Craig"]]
+
+               :person.lastName
+               [[:person.i0432 "Mutt"]
+                [:person.i9771 "Marshall"]
+                [:person.i8301 "Ellis"]]
+
+               :person.email
+               [[:person.i0432 "richard49@hotmail.com"]
+                [:person.i9771 "cindym@gmail.com"]
+                [:person.i8301 "c.ellis@usairwaysgroup.com"]]
+               })
+
+   (q {:q-in [personDB] :q-out ["print"]}
+      (?r ?s ?o))
+
+   =>(?r = (:person.firstName or :person.lastName or :person.email) = all the db)
+   [r s o]
+   :person.firstName :person.i0432 "Richard"
+   :person.firstName :person.i9771 "Cindy"
+   :person.firstName :person.i8301 "Craig"
+   :person.lastName :person.i0432 "Mutt"
+   :person.lastName :person.i9771 "Marshall"  
+   :person.lastName :person.i8301 "Ellis"
+   :person.email :person.i0432 "richard49@hotmail.com"
+   :person.email :person.i9771 "cindym@gmail.com"
+   :person.email :person.i8301 "c.ellis@usairwaysgroup.com"
+
+  
+   (q {:q-in [personDB] :q-out ["print"]}
+      (?r ?s ?o)
+      (or (= ?r :person.lastName) (= ?r :person.firstName)))
+
+  =>
+  [r s o]
+  :person.firstName :person.i0432 "Richard"
+  :person.firstName :person.i9771 "Cindy"
+  :person.firstName :person.i8301 "Craig"
+  :person.lastName :person.i0432 "Mutt"
+  :person.lastName :person.i9771 "Marshall"
+  :person.lastName :person.i8301 "Ellis"
+   
+</div>
+
+<b>Property paths</b>
+   
+    Property paths are relations,that means a "path" of relations
+
+    I will not give a db example,the db example is in the code,
+    i will just explain the meaning of them,and how you write them
+    in louna.
+
+    Property paths are implemented in 2/3 of the sparql specification.
+    Also some of them are not optimized.
+    Everything that is here works.In the code there are many in the examples
+    to run.
+    
+    Reverse path
+<div class="code">
+        (%:c.cites :a.paperA ?s)  = (:c.cites ?s :a.paperA )
+
+</div>
+    Alternative path
+<div class="code">
+        (:dc11.title|:rdfs.label ?s ?title)
+
+</div>
+        Like ?r means or to all the relations in the database,here you mean
+        or in some of them(|=or)
+
+    Sequence path
+<div class="code">
+        (:c.cites-:c.cites-:c.cites ?s :a.paperA)
+
+</div>
+        Chain path,here ?s much be conected to :a.paperA,throw a chain of
+        3(all 3).
+ 
+        Here its the same relation but its not necessary its equivilant with
+     <div class="code"> 
+        (:c.cites ?s  ?v1) 
+        (:c.cites ?v1 ?v2)
+        (:c.cites ?v2 :a.paperA)
+
+        *you can also use % in the chain
+        (:c.cites-%:c.cites ?s :a.paperF)
+
+</div>
+    Seq+
+<div class="code">
+        (:person.knows+ ?person "takis")
+
+</div>
+        This is recursive relation,sequence wanted exactly the number of relations.
+        A sequence of 3 means 3 relation chained.
+
+        Here this means 1 relation chain is ok,2 relation chain is ok,.......
+        The recursion stop when there is noone more to add.
+
+      
+   Seq*
+       is the same,but a ?person is accepted even if he dont know that village person
+       as long as someone becomes subject,it belongs to the result,even if it doesnt satisfy the relation
+
+       *again you can do things like
+<div class="code">
+       (:c.cites*-:dc11.title ?s "Paper A")
+
+</div>
+
+   *not all property paths are implemented from the SPARQL documentation
+  </pre>
+
+</div>
+		
+
+
+</div>
+     
+</body>
+</html> 

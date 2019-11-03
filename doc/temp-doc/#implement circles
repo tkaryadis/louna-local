@@ -1,0 +1,21 @@
+1)kikli mpori na iparxoun 2 eidon
+  1)amesi (node sxesi me ton eauto tou)
+  2)emesi (node1 -node2 --node3-node1)
+
+2)emesi
+  epidi orizo seira pou bazo tis vars sto table
+  kano switch tis sxesis pou
+  [v1 v2] me v2<v1
+  tis switch tis diabazo kai anapoda
+
+3)amesi (meni na to prostheso,den allazi tipota idietero,tha einai san 1-var-function)
+  einai stin katigoria ton 1-var-functions
+  alla einai diaforetiko to pos tin diabazo
+  giati efarmozo tautoxrona kai ton periorismo sto
+  var-domain otan tin diabazo
+
+  ?person knows ?person
+
+  allazo var-domain tou ?person mono,kai kratao mono otan
+  idio s o
+  px  takis knows takis

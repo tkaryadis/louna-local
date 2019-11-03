@@ -1,0 +1,82 @@
+1)Louna db = relations
+
+2)Relation names
+
+  :prefix.attribute
+
+3)Oi collumns den theoro oti anikoun kapou,px se kapio pinaka
+4)Otan apothikeuo table-data tote epilego to prefix na exi to onoma tou pinaka
+
+
+5)Prefix einai to monadiko onoma stin database
+  URI tou prefix einai to monadiko onoma ston KOSMO
+
+6)Ta URI einai proeretika oso douleuo esoterika stin 1 database.
+
+7)Otan perno omos published data,auta erxontei me URI namespaces
+  kathe database exi ena mapping,oste ta URI auta na ginonte prefixes
+
+  Gia osa URI den bro mapping,tote mpeni ena auto-generated prefix
+
+8)Ara URI me niazoun mono otan perno data i otan stelno data.
+
+9)Ti exi telika mia database
+
+  1)relations oses exi
+  2).stats
+  Proeretika
+  .dns(xrisimopoiounte otan perno URI data)
+  .ns (xrisimopoiounte otan parago URI data)
+
+10)Domi
+
+dbs
+  db
+    relation1
+    relation2
+    ...
+    .stats
+    namespaces.dns (isos keno map)
+    db.ns (isos keno map)
+
+
+11)Pos ftiaxno database
+
+  Database =
+   relations
+   .stats
+   namespaces.dns (isos keno map)
+   db.ns (isos keno map)
+
+  1)Apo relations stin mnimi
+
+    1)Ean i database iparxi to exo idi
+
+    2)Ean i database den iparxi tote
+      ftiaxno ena fakelo me to onoma tis
+      .stats {}
+      .dns   {}
+      db.ns  {}
+
+      Kai meta trexo auto pou exo idi
+
+  2)Apo .nt file/files
+
+    1)Ean i database den iparxi to exo idi
+      o xristis bazi
+      .nt files se directory
+      namespaces.dns
+
+      kai ginete
+
+
+    2)Ean iparxi idi
+
+      Den xanapsaxno gia nea .nt kratao ta palia
+
+
+12)Database remake
+
+   Bazo ola ta data se ena .nt file
+   URI auta pou exo,kai ean den exo bazo ena px https://louna
+   ean thelo neo .nt tote prepei database remake

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+   <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li>  
+   <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+  <pre>
+<h5 class = "main-title">Joins in Louna</h5>
+<b>Join methods</b>
+
+    All Louna joins are hash-joins.
+    Louna has 2 methods for joining.
+        table on memory on hash-table
+        relation on memory on hash-table
+
+    *relation we mean named pairs,    :name.attribute [[id,value] ....]   
+
+<b>Example that will be used</b>
+   Its the query plan from Internals/query plan without the filters.
+
+<div class="codelong">
+relation: (:ab.city ?address ?city) join-vars: [] add-vars: [city address]
+relation: (:ab.streetAddress ?address ?streetAddress) join-vars: [address] add-vars: [streetAddress]
+relation: (:ab.region ?address ?region) join-vars: [address] add-vars: [region]
+relation: (:ab.address ?person ?address) join-vars: [address] add-vars: [person]
+relation: (:ab.firstName ?person ?firstName) join-vars: [person] add-vars: [firstName]
+relation: (:ab.lastName ?person ?lastName) join-vars: [person] add-vars: [lastName]
+relation: (:ab.postalCode ?address ?postalCode) join-vars: [address] add-vars: [postalCode]
+relation(filter): (:ab.postalCode ?address ?postalCode) filter-vars [postalCode address]
+
+</div>
+
+<b>Join method 1</b>
+   package joins
+
+   Intermediate results(table) on memory in hash-table,with keys the next join vars.
+   Relation read line by line.
+
+   Louna uses the query plan to make the joins,so in every join we make we know what the next join will be.
+
+   1)Relation 1 (inits the table)
+     read the relation (:ab.city ?address ?city) 
+     see the next join-vars [address]
+
+     read a line,apply filters/binds on line(here we dont have),and store the line in hash-table with 
+     key = address
+
+     Do that for each line,in the end we will have a hash-table in memory {[?address] [?city ?address]}
+
+   2)Relation 2
+   
+     current-join-vars  [address]
+     next-join-vars     [address]
+ 
+     Read 1 line of (:ab.streetAddress ?address ?streetAddress),make the join if join succeded and all 
+     filter/binds etc succeded,the line will be stored in the new hash-table {[?address] [?city ?address ?streetAddress]}
+
+     We do that for each line and in the end we have {[?address] [?city ?address ?streetAddress]} in memory
+
+     .....
+     .....
+   
+   7)Relation 7
+     (:ab.postalCode ?address ?postalCode) join-vars: [address] add-vars: [postalCode]
+  
+     Hash-table on memory:
+     We have in memory the table ([?address] [?city ?address ?streetAddress ?region ?person ?firstName ?lastName])
+
+     Next join-vars(here filter-vars): [postalCode address]
+     
+     We will make the join with (:ab.postalCode ?address ?postalCode) on ?address and the result will be saved
+     in a hash-table 
+     {[?postalCode ?address]  [?city ?address ?streetAddress ?region ?person ?firstName ?lastName ?postalCode]}  
+
+   8)Relation 8
+ 
+     Hash-table on memory:
+     {[?postalCode ?address]  [?city ?address ?streetAddress ?region ?person ?firstName ?lastName ?postalCode]}  
+
+     Next join vars we dont have its the last relation.
+
+     We read the filter relation (:ab.postalCode ?address ?postalCode) line by line,if a line join with the table
+     on [?postalCode ?address],that means that all the lines with the specific values pass the relation filter
+     so they can be saved in the result table
+
+     Here we dont have next-join vars so no need for a hash-table ,we just make the table
+     [?city ?address ?streetAddress ?region ?person ?firstName ?lastName ?postalCode]
+
+     We have the final table and joins are completed.
+
+     
+   Memory considerations 
+     At every join we have in memory
+     hash-table-join-vars(full) + 1 line of relation + hash-table-next-join-vars(under-construction)
+   
+     Clojure uses persistend data structures the lines of hash-table-next-join-vars is the lines
+     of hash-table-join-vars + 1 or 2 more values.So we only need memory for 1 table because 
+     persistend data structures share the common values.
+
+     At least if i have understand it right.So in memory its like having only 1 hash-table.
+   
+   This method is good if the table results fits in memory but the relations don't fit.
+   For example joining relations that few values are joined,or where many filters are applied,
+   and temporally results are small.
+
+   This way louna can query very big relations.   
+  
+<b>Join method 2</b>
+   package join-disk
+
+   Next relation in hash-table with keys the join attributes,table results read line by line
+   and make the joins.
+
+   This was the first method implemented.
+   The reason is that the first method works based on query plan,at first there was no query
+   plan,there was a defined sequence of joins but it was programmed in program logic,and it 
+   wasn't so easy to think of next-join-vars etc.
+
+   Also i knew from the start that i will need both(1 if relations are very big,and the second
+   if results are very big(for example big header))
+
+   We will use the same query plan but for method 2.
+
+   1)Relation 1
+     relation: (:ab.city ?address ?city) join-vars: [] add-vars: [city address]
+
+     Becomes a table  [?address ?city]
+
+   2)Relation 2
+
+     Table in memory: (not-hash-table)
+        [?address ?city]
+
+     Next relation
+        relation: (:ab.streetAddress ?address ?streetAddress) join-vars: [address] add-vars: [streetAddress]
+        Becomes a hash-table with key=address  {[?address] [?address ?streetAddress]}
+
+     We read the table in memory line by line and we make the join,the next table will be
+        [?address ?city ?streetAddress]
+
+   ....
+   ....
+
+   We do the same till the end the table(results) are read line by line and the relation is on hash-table.
+
+   Materialization
+
+     This method is usefull when table(intermediate results) are so big that can't be in memory,so materialization
+     must be added to make it usefull.(table be in disk)
+
+     I added materialization on constructs for example if they are getting big save in disk and continue.
+ 
+     But in tables its not easy to add,because i have to change other operators also like sort-by,group-by etc.
+     The method to make a join from disk is ready,but i dont have the other methods to do like a sort-by with
+     table on disk.
+   
+     For now method 2,is also in memory.
+
+   For some reason Method 2 is faster than Method 1,i expected Method 1 to be faster.The difference is like 20%.
+
+   Property paths works only with Method 2.
+   (set-join-method "disk")  = method 2
+   (set-join-method "mem")   = method 1
+
+<b>Temporary vars on Method join 1</b>
+
+    Louna can take variables in 3 positions => there are many different types of relations
+    rso,rs,ro,so,o,s
+
+    rso => variables in 3 positions.
+
+    At first i thought that i can make 
+
+    (:person.name ?id "takis")  
+    to 
+    (?tempr ?id ?tempname)
+    (= ?tempr :person.name)
+    (= ?tempname "takis")
+
+    Why i did't used that from the start
+        1)i didn't even have filters implemented
+        2)after i had filters but was very slow (see Functions on queries for the progress)
+        3)there would have been problems with the temp-vars,that they should be detected and 
+          removed and never enter the table results.
+          (it would make it slower,and more memory would be needed)
+
+    After join method 2 was completed , this introduced so much complexity and so much code needed.
+    I found way to make filters fast,so i re-visited that alternative and used temp-vars.
+
+    In join method 1,i use the second approach.With less code,and more simple implementation.
+    In join method 1 there is only 1 type of relation   rso.
+
+    (:person.name ?id "takis")  
+    to 
+    (?tempr ?id ?tempname)    ;;inside the code its  (?TTMP100 ?id ??TTMP101)
+    (= ?tempr :person.name)
+    (= ?tempname "takis")
+
+    Also the filters are not even used,because if i see a ?temp-var i know there is a filter  (= ?tempvar "value")
+    so i just take the "value" and while the relation is been read i say  (= ?tempvar "value").
+    (i dont use the filters as functions at all)
+
+<div class="codelong">
+(if (= s s-val)
+    (bgp.filters-run/run-vars-filters-vectors s-filters [s-var] [s]))
+</div>
+
+    If s-var was a temp-var i would have taken the s-value from the filter and i will not apply the filter,
+    only a signle = operator will be applied.
+
+    The filters are like normal functions in Louna now,but there was not even need to call that function.
+
+    Also the second problem was how to deal with temp-vars that i dont want to get in the table.
+    Temp vars are never join-vars,because they are not repeated in queries.Temp vars only have a filter.
+    So while joining,temp-vars are always in add-vars(see plan above).When we make the join and construct
+    the next hash-table,we dismiss the add-vars that are temp-vars.So temp-vars are only needed for the
+    filter and never enter the results.
+
+    Both problems solved.
+
+    In all docs/internal the code is from Join method 2 without temp-vars,because temp-vars would make
+    the explaining much more complicated,for no reason.
+ 
+   
+  </pre> 
+
+
+
+</div>
+     
+</body>
+</html> 

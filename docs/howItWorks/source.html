@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li>  
+   <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+<h5 class = "main-title">Source files</h5>
+  <pre>
+Brief usage of every .clj file,in every package
+
+*Better to read it again after you read query plan,bgp and groups in internals documentation
+ or read it while reading them
+
+<b>louna</b>
+    louna.louna.clj
+        Contains 2 basic macros q and c.Its the file that the user will import
+        to their project so he can query/produce constructs.
+        Also has 2 basic functions run-q and run-q,that take the results of
+        the corresponding macros and runs the query/construct
+    louna.louna_util.clj
+        The user also imports that file it has some useful functions that
+        he maybe need when using louna,like db-to-nt,that converts a louna
+        database to an .nt rdf file
+
+<b>macroq</b>
+    This package has all the functions that macroq is using to make the
+    query valid clojure code,and also make some transformations of the query.
+    macroq.q_process.clj
+        It has the basic recursive function add-str-group that parses the
+        query.Its main purpose is to produce valid clojure code.
+        Also it calls functions from the other files in the packages 
+        explaned below
+    macroq.q-process-triples.clj
+        It process triples for example the triples(not clojure code)
+        (:meal.cost ?meal ?cost)
+        ((+ ?cost  ?tip) ?totalcost)
+        (<= ?totalcost  20)
+        Will be converted to normal clojure code
+        [1 :meal.cost "?meal" "?cost"]
+        [2 "totalcost" "(+ \"?cost\"  \"?tip\" )"]
+        [3 "(<= \"?totalcost\"  20)"]
+        *1 triple,2 bind,3 filter
+    macroq.q_rewrite.clj
+        it changes the query for example it add missing operators that
+        are implied like :and(join operator)
+        also is used in property paths to rewrite the query
+    macroq.q_process_op_args.clj
+        the table operators,for example project/sort-by/group-by etc
+        have arguments,that are not valid clojure code also,some processing
+        is done to make them valid clojure code and some transformations also
+    macroq.q_autogroup.clj
+        the user when he writes the query he is not bothered to group things
+        together louna makes automatically the groups.More details for that
+        in the Autogrouping in internals documentation
+
+<b>groups</b>
+    Now we have the query ready to run for example this is a example output
+    of q macro its valid clojure code
+    [["__and__" [1 :meal.cost "?meal" "?cost"]
+                [1 :meal.type "?meal" "dinner"]
+                [1 :meal.name "?meal" "?name"]
+                [2 "tip" "(* \"?cost\"  0.1)"]
+                [2 "totalcost" "(+ \"?cost\"  \"?tip\" )"]
+                [3 "(<= \"?totalcost\"  20)"]]
+     ["__project__" ["name" "totalcost"] [] -1]]
+
+    groups.group_run.clj
+        this is the main file of the package that has the recursive 
+        function that runs the groups    
+        The table is calculated nested and top-to bottom(like sparql)
+        You think of a table goes down and operations are applied to it.
+        In the process many bgp might be run,and many table operators
+        (binary or unary may be applied)
+        In the above example there is a BGP group that after it calculated
+        the unary table operator project will be applied to it
+    groups.table_unary_op.clj
+        :table
+        :sort-by
+        :group-by
+        :project
+        :do
+        :do-each
+        Contains all the code to apply unary operation on tables,like
+        in our example the project
+    groups.table_binary_op.clj
+        :and (join ,implied)
+        :add (UNION)
+        :not (MINUS)
+        :if  (OPTIONAL)
+        Contains all the code to apply binary operation on tables,in our
+        example :and is used with first argument the empty table that
+        coming for "above" and th BGP that is produced,so the results its
+        just the BGP 
+    
+<b>bgp</b>
+    bgp=triples and optional binds filters,that will become 1 table
+    bgp contains the files responsible for a bgp like the above to become
+    a table.While groups.group_run runs,if it finds a BGP it calls the
+    bgp.run-bgp to run it (actually bgp_process and bgp_proces run bgp_run)
+
+    bgp.bgp_process
+       seperates the bgp to relational queries(triples) filters and binds
+       and uses bgp-run to run the bgp (uses the numbers 1,2,3 the the triple
+       have)
+
+    bgp.bgp-run
+       main file in the package,uses all the other files to make the
+       final table
+
+    bgp.filter-process
+       The filters of the BGP needs to be processed,the easiest way would be to just do the joins
+       and then apply the filter,but this could cause serious speed and memory problems
+       The filters must be applied the sooner as possible.
+       The filters are seperated in 2 categories 
+           relation filters
+               those are used when reading a relation
+               for example (name ?id ?lastname) (= ?lastname "kariadis")
+               you apply it when you read the relation(before the join)
+           join filters
+               those are used when joining relations,you cant  used them any sooner
+               (name ?id ?lastname) 
+               (name ?id ?country)
+               (and (= ?country "Greece") (= ?lastname "kariadis"))
+               when we have ?country and ?lastname in the table we are ready to apply it while 
+               joining the relations based on the query plan
+               this is done by having each filter a trigger var,for the above filter the trigger
+               var would be the one that added last on the table ?country or ?lastname    
+    
+    bgp.filter-run
+        functions to run the filters and deside if the line will
+        be added in the table or not
+        2 basic functions  
+            run-vars-filters-vectors(relation filters run) 
+            run-table-filter-vectors(join filters run)
+    
+    bgp.binds_process
+        takes the bind queries and process the binds,for example what variables
+        the bind needs to calculate the new value.
+        a bind can be added when we have in the table the variables that it
+        needs for example ((+ ?cost  ?tip) ?totalcost) can be added to the
+        table when we have ?cost and ?tip on the table.
+        if ?tip is the last variable(based on the table header that we will
+        produce),the the bind belongs to the relation that adds the ?tip 
+        variable in the table
+        binds belongs to the relationship that adds the last variable they need
+        based on the table header
+        also binds can have filters applied to them
+        relation
+           filters on relation
+           binds on relation
+              filters on binds
+        *see query plan for more about this
+
+    bgp.functions_process
+        this is very basic file because its used to convert the strings 
+        of clojure code in filters and in binds to clojure functions and  
+        run it,for example run code that is like that
+        "(<= \"?totalcost\" 20)"
+        the totalcost value comes from the table and the code is run
+        Details of how it does it on internals functions on queries
+              
+      
+    bgp.binds-run
+        run the code of the bind to calculate the new values for the new bind-var
+    
+    
+    bgp.relations_process
+        Relations are seperated based on their type(?r ?s ?o),every relation
+        takes inside the filters the binds that used in it.
+        Every triple becomes a map like this
+        relation          {"query" query
+                              "type" "s/o/so/rso/rs/ro/r"
+                              "relation" relation
+                              "s-var/o-var/pair/triple"
+                              "filters" {}
+                              "vars" #{}}
+        s  =>? on subject
+        so =>? on subject and object 
+        etc
+        its information about the relation that will be used to know which 
+        binds belongs to it etc
+
+    bgp.joins_process.clj
+        This is very basic file also,its used to make the query plan.
+        The query plan also defines the order of the vars in the header
+        of the table.
+        Based on the order of header the join filters and the binds are
+        applied.As said above when the last var the filter or bind need is
+        on the table the bind or the join filter can be applied
+
+        The query plan has a basic optimizer that selects the smallest
+        relations(based on line count) to joined first
+
+
+<b>bgp-joins</b>
+
+  Join method 1
+    
+  bgp-joins.joins_run
+    Reads the query plan and call functions to make the joins.
+
+  bgp-joins.relations_run
+    Makes the joins.Takes the hash-table,join,and produce the next hash-table
+    based on the next-join-vars.
+  
+  bgp-joins.relations_run_filter
+    Runs the relations that dont add any new variables,they are just
+    filter-relations.     
+
+<b>bgp-joins-disk</b>
+
+   Join method 2
+   bgp-joins-disk.joins_run
+        Processing is now over,we now the order of the vars in the table
+        the order of the joins,which filter would be applied when reading
+        relations,which will be applied when joining and when.
+        Also we know all the information when to run the binds.
+        Everything the query plan says to us.
+        Now its time to actually make the joins based on query plan
+        It contains 2 basic functions
+            bgp.joins-run/init-table
+            bgp.joins-run/make-joins
+        The one initialize the table(with the first relation)
+        And the other makes the joins
+        *More about this on the internals BGP
+
+   bgp-joins-disk.relations_run_shared
+        This contains functions shared by 
+        relations_run_init
+        relations_run_join
+        bgp.relations_run_filter
+        
+
+   bgp-joins-disk.relations_run_filter
+        Some triples don't add a new variable on the table they are just 
+        filters for example
+        (:employers.name  ?id ?name)
+        (:greeks.name     ?id ?name)
+        If we have a company with foreign and greek employers we could 
+        filter the non-greeks with this 2 triples.
+        The second triple doesn't add any variable on the table its only
+        a filter.And this file is used to run triples that are filters
+
+    bgp-joins-disk.relations_run_init
+        read the first relation that initialize the table apply filters
+        and binds also
+
+    bgp-joins-disk.relations_run_join
+        read the relation that will produce a join  
+  
+    bgp-joins-disk.path_run_seq_star_plus
+        This runs the property paths like  knows+ knows* 
+ 
+    For example if its join,the relation returns in a hash-map with the
+    join variable as key,if it is init table the relation return as
+    lines of the table,if it is run-filter the relation returns as 
+    hash-set 
+
+    So far the packages and files to run a query are explained.
+    The rest are untility files and files for contructs and to generate
+    sparql
+
+<b>macroc</b>
+    As we said louna contains the macro c,that uses functions from 
+    macroc.process to process the construct,and then the construct is
+    ready to run by run-c(inside the louna file)
+    run-c uses functions from macroc.c_run
+   
+    macroc.c_process (used by macro c to produce valid clojure code)
+    macroc.c_run     (used by run-c function to run the construct)
+    macroc.c_save    (saves constructs to disk)
+    macroc.c_rdf_in  (reads rdf files (:rdf "my_dir"))
+    macroc.rdf_out   (generates .nt file from a database,louna->rdf)
+    
+
+
+<b>macroql</b>
+    The package that generates SPARQL from louna query.
+    
+    macroql.to_sparql
+        transforms a louna qury to SPARQL query
+    macroql.sparql_f
+        contains all the macros that mimic clojure functions that produce
+        SPARQL functions
+        the macros can be nested or with variadic arguments
+
+<b>library</b>
+    library.until
+        small utility functions that used by many clojure files
+
+    library.print_data
+        functions to print data like tables,relations,query plan etc
+
+<b>state </b>
+    state.db_settings
+        holds information like for example where is the directory that
+        we read relations,also reads the file that tells where is this directory
+
+    state.state
+        louna is almost stateless,state complicates things,its only used
+        for counters to generate names,or counters for new table lines etc
+
+</pre> 
+
+
+</div>
+     
+</body>
+</html> 

@@ -1,0 +1,17 @@
+1)times gia ta alla orismata basismenes se aggregation functions
+
+  [group by ?x ?y ?z...       ;;vars
+            ((count ?z) ?k)   ;;agr-binds
+            ..
+            (filters)]        ;;filtra
+
+  H diafora edo einai oti to ?z tha einai oli i stili,oxi mia mia timi
+
+2)Tha ginonte 3 katigories
+
+  group-vars aggr-binds aggr-filters
+
+  px sto pano
+  ?x        ((f ?x) ?y)    ((count ?z) ?k) (filter1)...
+
+3)Arxika as kano mono 1 group-var xoris bind kai xoris filters

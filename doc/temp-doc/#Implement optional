@@ -1,0 +1,18 @@
+SELECT ?first ?last ?workTel
+WHERE
+{
+  ?person ab:firstName ?first ;
+          ab:lastName ?last .
+  OPTIONAL
+  { ?person ab:workTel ?workTel . }
+}
+
+1)to optional einai join,alla ean den exo timi to afino keno
+  (anti na petaxo tin grami)
+
+  px 2150 takis kariadis
+
+     mpori na bro to 2150 ston optional ara tha tou balo 1 nil
+
+2)episis to optional perni ta var-domains tou pano pinaka
+  san arxikes times ton dikon tis var-domains

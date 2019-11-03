@@ -1,0 +1,125 @@
+Basi = nested hashtable
+internal node = subjects
+fila = objects pou den einai pouthena alou subjects
+
+Thelo mia domi pou tha apothikeuei tis sindesis kai tha
+xero pio einai to subject kathe fora stin domi
+Se pinaka den fenete to subject
+
+Dentro,me nested hash tables
+
+(id.firstname id.lastname)
+id
+   firstname
+   city
+
+(city.population)
+id
+  firstname
+  city
+    population
+
+
+Afou ftiaxo to sxima meta apantao,xekinontas panta
+apo to root
+px
+
+   ?id ?population
+
+
+px
+
+   ?firstname
+
+Stoxos einai na ftiaxo konta dentra ara exoterika exo
+panta me pola pedia
+
+Gia kathe id,brisko tin city,kai meta population tis
+(edo 3 lookups)
+
+Otan o xristis px rotisi  ?id ?firstname ?population
+Brisko ?id sto tree
+
+
+
+
+x1
+  x2
+   x5
+   x6
+  x3
+   x7
+  x4
+
+{"x1"
+  {"x2"
+     {"x5" nil "x6" nil }
+   "x3"
+     {"x7" nil "x8" nil}
+   "x4" nil
+   }
+}
+
+To mono orisma pou thelo einai o arxikos map kai to trexon level
+
+[[x1]]
+(keys x1)=x2,x3,x4 =>   [x1 x2]   [x1 x3] [x1 x4]
+
+done=[[x1]] next_level= [x1 x2]   [x1 x3] [x1 x4]
+
+xana to idio gia to teleuteo member se ola ta meli pou exi value map
+(keys x2) => [x1 x2 x5] [x1 x2 x6]
+
+(keys x3) => [x1 x3 x7]
+
+done=[[x1] [x1 x2] [x1 x3] [x1 x4]] next-lever=[[x1 x2 x5] [x1 x2 x6] [x1 x3 x7]]
+
+Telika epistrefo
+[x1]
+[x1 x2]
+[x1 x3]
+[x1 x4]
+[x1 x2 x5]
+[x1 x2 x6]
+[x1 x3 x7]
+
+Kai meta to kano
+x1 [x1]
+x2 [x1 x2]
+x3 [x1 x3]
+x4 [x1 x4]
+x5 [x1 x2 x5]
+x5 [x1 x2 x6]
+x7 [x1 x3 x7]
+
+(comment
+  To mono orisma pou thelo einai o arxikos map kai to trexon level
+
+  cur-level = [[x1]]
+  (keys x1) =x2, x3, x4 => [x1 x2] [x1 x3] [x1 x4]
+
+  done= [[x1]] next_level= [[x1 x2] [x1 x3] [x1 x4]]
+
+  ----------------------------------------------------
+
+  cur-level = [[x1 x2] [x1 x3] [x1 x4]]
+  xana to idio gia to teleuteo member se ola ta meli pou exi value map
+  (keys x2) => [x1 x2 x5] [x1 x2 x6]
+
+  (keys x3) => [x1 x3 x7]
+
+  done= [[x1] [x1 x2] [x1 x3] [x1 x4]] next-level= [[x1 x2 x5] [x1 x2 x6] [x1 x3 x7]])
+
+Seira pou efarmozo periorismous
+1)kathe metabliti na einai nomimi
+2)kathe sxesi na einai nomimi (nomimes metablites+nomimi i sindesi)
+=> nomimi oli i alisida
+
+nomimo ?id => nomimo ?po => nomimo ?il ... => nomimo ?sf
+
+?id ?po
+?po ?il
+?il ?tr
+?tr ?sf
+
+iparxi periptosi nomimo id na min xrisimopoiite telika?

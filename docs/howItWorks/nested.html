@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li>  
+   <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+  <pre>
+<h5 class = "main-title">Groups</h5>
+So far we talked about BGP which produces a table.
+But we can also apply operations on tables,for example sort-by.
+
+To understand how louna runs groups you have to think of a table
+that goes down and while it goes down operations are applied to it
+until it reaches the bottom and gets printed. 
+
+All the unary and binary operators are applied to tables.
+One BGP produces 1 table.
+
+In this tutorial we talk about groups(tables),operations on groups and nested groups.
+Groups are freely nested and you can use either ( or [ both works.
+If the operant is :and you can admit it if you want,like in the example below.
+
+It will be shown with a nested query example.(3 nested levels)
+
+The query
+test/documentation.internals.clj:80
+
+<div class="code">
+  (q {:q-in ["ex100"] :q-out ["print"]}
+
+     [?first ?last ?instrument]
+
+     (:ab.firstName ?person ?first)
+     (:ab.lastName          ?last)
+     (:ab.instrument        ?instrument)
+     ((:ab.instrument ?person "sax")
+      (:add (:ab.instrument ?person "trumpet")))
+     (:sort-by (desc ?first)))
+
+</div>
+  Meaning of the query
+  ?person that play any instrument,that its "sax" or "trumpet"
+  sort-by desc name
+
+  Results:
+  [first last instrument]
+  Richard Mutt sax
+  Richard Mutt clarinet  ;;its valid because he plays also a instrument that its "sax" or "trumpet"
+  Craig Ellis trumpet
+
+  Before we see how louna does the grouping lets see how the programmer thinks when writing the query
+  Operators BREAK the BGP.
+  We add 1 operator that was implied.
+
+<div class="code">
+  (:ab.firstName ?person ?first)
+  (:ab.lastName          ?last)
+  (:ab.instrument        ?instrument)
+  (:and (:ab.instrument ?person "sax")
+        (:add (:ab.instrument ?person "trumpet")))
+  (:sort-by (desc ?first)))
+
+</div>
+  The first 3 is a BGP(:and operator break the BGP) => table1
+  (:ab.instrument ?person "sax") BGP(:add breaks)   => table2
+  (:ab.instrument ?person "trumpet") BGP            => table3
+  table4 =(:add table2 table3)
+  table5 =(:and table1 table4)
+  table6 =(:sort-by table5)
+  table7 =(:project table6)
+
+  You always think of the table coming from above and its on the same level.
+
+  Louna does the same but add all missing operators,even if a BGP has 1 triple
+  or even if from above nothing is coming,because maybe we had more triples
+  or maybe something was coming from above.
+  
+     
+<b>(defmacro q [& queries] ...)</b>    louna.louna.clj:84
+
+  What macro is doing is already explained in BGP.
+  (make symbols strings,auto-grouping,seperate queries in filters/relations/binds(1,2,3),add missing operators,
+   change names of the operators to internal names :and -> __and__,process property paths,process arguments of 
+   table operators)
+
+  Here the group that q macro produces on compile time.
+  I added empty tables to see the operant even if there is no other operant.
+
+<div class="codelong">
+  (run-q  [empty_table
+           ["__and__" [1 :ab.instrument "?person" "?instrument"]       ;;BGP1
+                      [1 :ab.firstName "?person" "?first"]
+                      [1 :ab.lastName "?person" "?last"]]
+           ["__and__" empty_table
+                      ["__and__" [1 :ab.instrument "?person" "sax"]]    ;;BPG2
+                      ["__add__" empty_table
+                                 ["__and__" [1 :ab.instrument "?person" "trumpet"]]] ;;BGP3
+           ["__sort-by__" ["(identity " "first" " )"] [:desc]]
+           ["__project__" ["first" "last" "instrument"] []]]]) 
+ 
+</div>
+  
+  run-q is called,it does what has been explained in BGP on internals documentation and calls 
+  group-run to calculate the final table.
+
+<b>(defn run-group [q-id group])  groups.group_run :23</b>
+
+  run-group is a recursive function
+  You always have the table coming from above,if the operator is unary you dont need recursion,but if the
+  operator is binary,you need to run run-group to calculate the table which is the second operant
+
+<div class="codelong">
+  empty_table
+  :and  BGP1
+  :and  empty_table 
+        :and BGP2
+        :add empty_table 
+             :and BGP3
+</div>
+
+  We go top to bottom
+
+<div class="codelong"> 
+  LEVEL 1
+  empty_table
+  :and  BGP1
+  :and  run-group [empty_table 
+                   :and BGP2
+                   :add empty_table 
+                        :and BGP3]
+ 
+      LEVEL2
+      empty_table 
+      :and BGP2
+      :add run-group [empty_table 
+                      :and BGP3]
+
+          Level3 
+          empty_table 
+          :and BGP3
+  
+   We return in the recursion and do the operations
+</div>
+ 
+ 
+<div class="codelong"> 
+  empty_table
+  :and  BGP1                    ;;1st
+  :and  empty_table             ;;5th
+        :and BGP2               ;;2nd
+        :add empty_table        ;;4th
+             :and BGP3          ;;3rd
+</div>
+  Program output,sequence of operations,and headers of the tables that are arguments
+  You can see it from the code also,here i printed the header of the tables
+  that comes as arguments,[] is empty header of empty table.
+
+<div class="codelong">
+  []
+  :and ["person" "first" "last" "instrument"]
+
+  []
+  :and ["person"]
+
+  []
+  :and ["person"]
+
+  ["person"]
+  :add ["person"]
+
+  ["person" "first" "last" "instrument"]
+  :and ["person"]
+
+</div>       
+
+  Some code samples
+
+<div class="codelong">
+
+  The run group function,start with the empty table,loop the groups,if the group is empty
+  means that we hit the bottom => no more operations => return the calculated table
+
+  (defn run-group [q-info group]
+    (loop [groups (split-group group)
+           table {"sorted-vars" []
+                  "table"       {}}]
+      (if (empty? groups)
+        table
+        ..find the operator and make the operation..
+  
+  If the operator is binary operator you need to recur to calculate the second operand
+
+  (let [new-group (first cur-group)
+        operator (str (first new-group))
+        new-group (into [] (rest new-group))]
+        (if (library.util/binary-op? operator)
+          (let [new-table (run-group q-info new-group)]
+            (cond
+              (= operator "__add__") 
+              (recur (rest groups) (groups.table-binary-op/union table new-table))
+              
+              (= operator "__if__")
+              (recur (rest groups) (groups.table-binary-op/optional table new-table))
+             
+              (= operator "__not__")
+              (recur (rest groups) (groups.table-binary-op/minus table new-table))
+             
+              (= operator "__and__")
+              (recur (rest groups) (groups.table-binary-op/join table new-table))
+              :else 
+              (do (println "unknown operator") (recur (rest groups) table))))
+   .....
+
+   If the operator is unary no recursion is needed you just continue the loop and apply the
+   unary operator,recur goes back to the loop,look function start
+   
+   ....
+   (= operator "__sort-by__")
+   (let [desc-vector (last new-group)
+         sort-functions (into [] (drop-last new-group))]
+     (recur (rest groups) 
+            (groups.table-unary-op/sort-table table sort-functions desc-vector)))
+
+   (= operator "__project__")
+     (let [project-vars (first new-group)
+           project-options (into #{} (second new-group))
+           limit (peek new-group)]
+       (recur (rest groups) 
+              (groups.table-unary-op/project-table table project-vars project-options limit)
+   ...
+
+</div>
+
+  Unary operators
+
+  In our example we only have 2,we calculated the table coming above of the project
+  so its now time to apply the unary operator sort by,and project to the result.
+  Again the first operant is the table coming from above.
+
+           [table_we_calculated
+            ["__sort-by__" ["(identity " "first" " )"] [:desc]]
+            ["__project__" ["first" "last" "instrument"] []]]]
+
+  The code for sort-by and project is shown above.
+
+  run-group hits the bottom,and the table is returned to run-q
+  and we print or save or do nothing with the result.
+    <pre> 
+
+</div>
+     
+</body>
+</html> 

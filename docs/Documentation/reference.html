@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+<li class="tree__item">
+    <span><a href="./guide.html">Site reading guide</a></span>
+  </li>
+    <li class="tree__item">
+    <span><a href="../documentation.html">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./overview.html">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span ><div  class="icon"></div><a href="./queries.html">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="./queries.html#relation">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./constructs.html#constructs">Constructs</a></span>
+    <ul>
+       <li>
+        <span><a href="./constructs.html">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./constructs.html#constructs-queries">Nesting q and c</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+<li class="tree__item">
+    <span><a href="./reference.html">Syntax reference</a></span>
+  </li>
+
+</ul>
+</div>
+
+
+<div id="main">
+<h5 class = "main-title">Syntax reference</h5>
+<pre >
+(its complete syntax reference)
+<b>BGP</b>
+
+<div class="codelong">
+
+  (q {:q-in [menuDB] :q-out ["print"]}  ;;query menuDB,output in stdout
+
+     [?name ?totalcost]                 ;;table result will have 2 vars in that order
+
+     (:meal.type ?meal "dinner")
+     (:meal.name ?meal ?name)
+     (:meal.cost ?meal ?cost)
+     ((* ?cost 0.1)    ?tip)           ;;bind on query var
+     ((+ ?cost ?tip)   ?totalcost)     ;;bind on bind
+     (<= ?totalcost 20))               ;;filter
+
+</div>
+    
+
+<b>project</b>
+
+<div class="code">
+    [*]
+    [distinct *] 
+    [?x1 ?x2 ..]
+    [distinct ?x1 ?x2...]
+  
+</div>
+  *its optional if missing it mean [*] = select all variables  
+    
+<b>Triple types</b>
+    
+    Variables can be in all three positions  (relation subject object)
+    (?r ?s ?o)
+
+    At least 1 position must be a variable.
+
+    Query vars names must be alphanumerics.For example not ?my-var1 but
+    ?myVar1
+
+<b>Property paths</b>
+   
+    Property paths are relations,that means a "path" of relations
+
+    Property paths are implemented in 2/3 of the sparql specification.
+    Also some of them are not optimized.
+    (property paths need re-building and complete support)
+    
+    Reverse path
+<div class="code">
+        (%:c.cites :a.paperA ?s)  = (:c.cites ?s :a.paperA )
+
+</div>
+    Alternative path
+<div class="code">
+        (:dc11.title|:rdfs.label ?s ?title)
+
+</div>
+        Like ?r means or to all the relations in the database,here its like ?r and filters:
+        (?r ?s ?title) 
+        (or (= ?r :dc11.title) (= ?r :rdfs.label))
+
+    Sequence path
+<div class="code">
+        (:c.cites-:c.cites-:c.cites ?s :a.paperA)
+
+</div>
+        Chain path,here ?s much be conected to :a.paperA,throw a chain of
+        3(all 3).
+ 
+        Here its the same relation but its not necessary its equivilant with
+     <div class="code"> 
+        (:c.cites ?s  ?v1) 
+        (:c.cites ?v1 ?v2)
+        (:c.cites ?v2 :a.paperA)
+
+        *you can also use % in the chain
+        (:c.cites-%:c.cites ?s :a.paperF)
+
+</div>
+    Seq+
+<div class="code">
+        (:person.knows+ ?person "takis")
+
+</div>
+   Seq*
+       is the same,but a ?person is accepted even if he dont know that village person
+       as long as someone becomes subject,it belongs to the result,even if it doesnt satisfy the relation
+
+       *again you can do things like
+<div class="code">
+       (:c.cites*-:dc11.title ?s "Paper A")
+
+</div>
+
+<b>Filter</b>
+   any_clojure_code
+   
+    Example
+    (< ?price 50)
+    (and (< ?price 50) (= ?color "white"))
+
+    *normally filter is evaluate to true/false,else we take the boolean
+     value of the expression
+     clojure_code can't be a literal
+
+<b>Bind</b>
+
+<div class="code">
+    ((..code..) ?x)
+    ((..code..) ?x1 ?x2....)   ;;multiple binds
+
+</div>
+  
+    Example
+<div class="code">
+    ((+ ?x 2) ?y)
+
+</div>
+    *if you have multiple bind variables,the code must return a vector [x1_value x2_value ...]
+     if you have 1 bind value no need for vector you just return 1 value
+
+    *clojure_code must be a function call
+     if you want a constant ((identity 5) ?x)  works
+     but (5 ?x) dont work for now
+
+    *binds sequnce is important if one bind uses another bind for example 
+     ((..) ?x1)
+     ((.. ?x1) ?x2)
+     First you write the bind of ?x1 and then use it to bind ?x2
+     but the order of filters dont change the result.
+
+<b>Group(table) operators</b>
+
+    General syntax
+    (:operator ...)
+    Operators break the BGP's
+
+    <b>Binary</b>
+    :and (join ,implied)
+    :add  (UNION)
+    :not (MINUS)
+    :if  (OPTIONAL)
+    (they are like SPARQL)
+
+        Binary works like the above example
+        table1
+        (:op table2)
+
+        table1=first operant
+        table2=second operant
+
+    <b>Unary</b>
+    :project
+    :sort-by
+    :group-by
+    :do
+    :do-each
+    :limit
+
+   *Groups can be [...] or (...) both works.
+   In the test queries i use the most external group with [] and all the others with (..).
+   If its highly nested [] and () can both used to make the query more readable.
+
+<b>:project</b>
+    Here as an operator,in louna you can project even in the middle of the query.
+<div class="code">
+     (:project distinct *)
+     (:project *)
+     (:project distinct ?x1 ?x2...)
+     (:project ?x1 ?x2 ..)
+
+     The project in the query is automatically converted to a project operation
+     but you can use project in any step,not only in the final result.
+
+</div>
+
+<b>:sort-by</b>
+
+     Single variable
+      :sort-by ?x
+
+     Many variables
+      :sort-by ?x ?y ...
+
+     For desc
+      :sort-by (desc ?x)
+
+     For asc(its default but this works also)
+      :sort-by (asc ?x)
+
+     With function/functions
+      :sort-by (f ?x)          ;;f can be any clojure function
+
+     You can also have
+       :sort-by  (desc (f ?x))
+       :sort-by  (asc (f ?y))
+
+    For example this is valid
+    (:sort-by ?x (desc ?y) (f ?z) (asc (f ?o)) (asc (f1 (f2 ?o))))
+
+    
+<b>:group-by</b>
+
+<div class="codelong">
+       (:group-by ?var1 ?var2 ...
+                  aggr-binds                                 ;;binds optional
+                  aggr-filters)                              ;;filters optional(having)
+
+</div>
+
+<div class="codelong">
+       Example
+       (:group-by ?description
+                  ((apply + ?amount) ?mealTotal)   ;;this is an aggregate bind,?amount is a collumn
+                  (> ?mealTotal 20))
+
+</div>
+       If you just want to apply aggregate binds or filters you run,that means no groups,1 group is the table
+
+<div class="codelong">
+       (:group-by aggr-binds                                 ;;binds optional
+                  aggr-filters)                              ;;filters optional(having)
+
+</div>    
+<b>:do :do-each </b>
+     
+    :do is done only 1 time and it works as aggregate function
+    :do-each is done 1 time per value of the collumn for example
+ 
+    We use the temporal results for programming reasons.
+    
+    Example(:do/:do-each)
+<div class="codelong">
+   (q (:ab.files ?file ?path)
+     (:do (println "Number of files :" (count ?file)))
+     (:do-each (println ?file))
+     (c ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files)))
+
+  "Number of files :" 103  ;; :do runs as aggregate function
+  namespaces.dns           ;; do-each  
+  ex203.rq                 ;; do-each
+  ex188.rq                 ;; >>
+  ex185.rq
+  ex086.rq
+  ex002.nt
+  ex138.nt
+  namespaces.dns
+  ...........
+</div>
+      
+<b>:limit</b>
+    
+    (:limit 1)
+    *only in the end of the query is used
+   
+<b>Constructs and types of constructs</b>
+
+    <b>Constant</b>
+        They add only 1 pair to the relation
+        For example (:ab.files "file1" "path1")
+    <b>Relation constructs</b>
+        They add a pair getting values from a table,the table can be given as a
+        nested q,or as argument in c-in.We makes relations with values from a table.
+<div class="codelong">
+    (c {:c-out ["print"]}
+       (:ab.hasAunt ?person ?aunt)
+       (q {:q-in [parentsDB]}
+          (:ab.hasParent  ?person ?parent)
+          (:ab.hasParent  ?parent ?gparent)
+          (:ab.hasParent  ?aunt   ?gparent)
+          (:ab.gender             :d.female)
+          (not= ?parent ?aunt)))
+</div>
+    
+    <b>Relation binds</b>
+        Use a function to generate a relation [[id1 value1][id2 value2]...] and 
+        assign it to a relation
+<div class="codelong">
+         (c {:c-out ["print"]}
+            ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files))
+
+         =>
+         :ab.files
+         ["ex122.nt" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122.nt"]
+         ["ex122-123.lnt" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122-123.lnt"]  
+         ...
+
+         The bind the relation :ab.files to the output of the function.
+
+</div>
+    <b>Rdf constructs</b>
+<div class="codelong">
+      ;;read rdf files inside the directory louna-data/rdf/my_rdf,convert them to louna relations
+      ;;and save them in "my_db"
+      (c {:c-out ["my_db"]}
+         (:rdf "my_rdf"))
+
+</div>
+
+<b>Input and Output</b>
+Louna can take input and produce output in different ways.
+
+The input and output options are given into a map {}
+<div class="code">
+If q 
+  {:q-in [..] :q-out [..]}
+If c
+  {:c-in [..] :c-out [..]}
+
+Its optional,you can ommit the whole map or any key like.
+If tou use the map,it must have at least 1 key,else not use the map at all.
+
+</div>
+
+For example
+
+<div class="code">
+  (c {:c-out ["print"]}
+     (:ab.hasAunt ?person ?aunt)
+     (q {:q-in [parentsDB]}
+        (:ab.hasParent  ?person ?parent)
+        (:ab.hasParent  ?parent ?gparent)
+        (:ab.hasParent  ?aunt   ?gparent)
+        (:ab.gender             :d.female)
+        (not= ?parent ?aunt)))
+
+  q
+    :q-in takes its data from a in-memory database,parentsDB
+  c
+    :c-in the nested q is default 
+    :c-out print to stdout
+
+</div>
+
+<b>:q-in</b>
+    
+    1 file database(folder of the database(not full path))
+    1 nested construct
+    1 or more memory databases
+
+    For example a full q would be like
+
+<div class="code">
+    (q {:q-in ["folderOfFileDB" memoryDB1 memoryDB2 ...]}
+        ...
+       (c ....))
+
+</div>
+    At least 1 source must be given
+
+<b>:q-out</b>
+
+    "print"   => table to stdout
+    "filename"  => table to file
+
+    For example a full q-out would be
+<div class="code">
+    (q {:q-out ["print" "mytable"]})  (my table must be in tables folder)    
+
+</div>
+<b>:c-in</b>
+
+    1 or more tables in memory
+    1 or more tables on disk
+    1 nested query
+
+    For example a full c-in would be
+<div class="code">
+    (c {:c-in [memTable1 memTable2 ... "/path/mytable1" "/path/mytable2" ...]} 
+       (q ...)
+
+</div>
+  
+<b>:c-out</b>
+    1)print
+    2)save to file db
+
+<b>More complete example</b>
+ 
+<div class="codelong">
+  (c {:c-out ["ex012" "print"]}
+     (:ab.areaCode ?person ?areaCode)
+     (q {:q-in ["ex012"] :q-out ["print"]}
+        (:ab.homeTel ?person ?phone)
+        ((subs ?phone 1 4) ?areaCode)))
+
+</div>
+
+  This means
+  :q-in from file database in folder "ex012"  (base_path/ex012)  
+  :q-out in stdout 
+  :c-in dont exists,but q nested is default c-in
+  :c-out save to file db "ex012" and also print in stdouts
+</pre>
+
+</div>
+		
+
+
+</div>
+     
+</body>
+</html> 

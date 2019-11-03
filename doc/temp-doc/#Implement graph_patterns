@@ -1,0 +1,94 @@
+1)Graph patterns
+  1)Basic graph patterns
+    group/triples enomena me and
+    Ta group
+    set of triples + optional filters
+    {
+      ?x foaf:name ?name .
+      ?x foaf:mbox ?mbox .
+    }
+
+    den iparxi seira mesa sto group,einai san na einai
+    enomena me AND
+
+    or/and/not/and-if
+
+
+
+  2)Group graph patterns
+     {
+       { ?x foaf:name ?name . }
+       { ?x foaf:mbox ?mbox . }
+     }
+
+     Einai idio me to pano basic,nomizo otan den exo praxi
+     metaxi tous einai san na itan 1 graph pattern
+
+  3)empty group pattern?
+    The group pattern:
+      { }
+    matches any graph (including the empty graph) with one
+    solution that does not bind any variables.
+
+    For example:
+
+    SELECT ?x
+    WHERE {}
+    matches with one solution in which variable x is not bound.
+
+  4)Os tora exo ftiaxi to pos lino 1 basic graph pattern mazi
+    me filtra kai binds
+
+
+
+2)Pos ta efarmozo
+  basic patterns = set of triples me filtra/bind  to exo idi
+  Gia groups kano join/optional/union/not/minus  pinakon
+  Kai meta efarmozo filtra/binds pou aforoun to mesa me to exo pattern
+
+  px
+  { ?x foaf:name  ?name .
+    OPTIONAL { ?x  foaf:mbox  ?mbox }
+    ?z .....
+  }
+
+  [(?x foaf:name  ?name)
+   (if (?x  foaf:mbox  ?mbox)
+       .......)
+   (or (...)
+       (...))
+   (?z ....)]
+
+  Ftiaxno ton pinaka gia oti einai pano apo to optional
+  me basi ta var-domains ftiaxno ton optional pinaka
+  Meta join pinakon(optional-join) kai perno var-domains(tou exoterikou scope)
+  (efarmozo filtra sindiasmou pinakon,binds sindiasmou pinakon)
+  Telika exo ena neo pinaka
+
+  Meta me basi ta vars-domains ftiaxno epomeno pinaka
+  joins pinakon(and i optional i union)
+  (filtra binds meta to join pinakon)
+
+
+  Thelo mia sinartisi pou tha perni
+  [triple1
+   triple2
+   group1
+   group2
+   triple3
+  ]
+
+  Kai tha ta xorizi se groups
+
+  edo
+  [triple1
+   triple2]
+  group1
+  group2
+  [triple3]
+
+  Tha exo mia sinartisi pou trexi ena basic-group kai to kani pinaka
+  (tin exo idi)
+
+  Tha kani to idio anadromika gia kathe group
+

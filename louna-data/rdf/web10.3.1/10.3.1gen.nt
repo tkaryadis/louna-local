@@ -1,0 +1,4 @@
+_:node1cpdbhk98x1 <http://xmlns.com/foaf/0.1/givenname> "Alice" .
+_:node1cpdbhk98x1 <http://xmlns.com/foaf/0.1/familyname> "Hacker" .
+_:node1cpdbhk98x2 <http://xmlns.com/foaf/0.1/firstname> "Bob" .
+_:node1cpdbhk98x2 <http://xmlns.com/foaf/0.1/surname> "Hacker" .

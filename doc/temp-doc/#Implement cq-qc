@@ -1,0 +1,49 @@
+0)Eidi macros kai sindiasmoi
+
+  1)eisodos = db/construct/both
+  2)exodo = table/construct/both
+
+1)Construct idi
+    c sketo   (constants/binds)
+    c + table (constants/binds/relations)
+
+  macroq eidi
+    macroq sketo
+    macroq + relations
+
+2)Epistrefi table (relations->table)
+  (macroq
+     (qc ....))  ;;qc proeretiko
+
+
+  *ean exo idi relations stin mnimi se mia metabliti tote
+   (macroq {:constructs [(add c1) (add c2]}
+
+3)Epistrefi constructs(table->relations)
+  (c
+    (cq ...))  ;;cq proeretiko
+
+
+ *bind-constucts oxi orismata metablites apo ton pinaka
+
+4)constructs 3 eidi queries
+  1)relation statheres
+    (bazoun 1 line stin :d.r)
+
+    :d.r :d.s :d.o
+
+    *se macroq i oxi
+
+  2)relation-binds
+
+    ((f) {relation [x y]})
+
+    *se macroq i oxi
+
+  3)relations me metablites apo ton pinaka
+
+    :d.r ?x ?y
+    :d.r ?x :d.o
+    :d.r :d.s ?y
+
+    *autes mporo mono ean eimai mesa se macroq

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+     <li class="tree__item">
+    <span><a href="./guide.html">Site reading guide</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="../documentation.html">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./overview.html">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span  ><div  class="icon"></div><a href="../Documentation/queries.html">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="../Documentation/queries.html#relation">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="../Documentation/queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span id="sel"><div  class="icon"></div><a href="">Constructs</a></span>
+    <ul>
+      <li>
+        <span><a href="">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./constructs.html#constructs-queries">Nesting q and c</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+      <li class="tree__item">
+    <span><a href="./reference.html">Syntax reference</a></span>
+  </li>
+</ul>
+</div>
+
+<div id="main">
+<h5 class = "main-title">Constructs</h5>
+<pre>
+
+Construct is the opposite of query. 
+<div class="code"> 
+    table      -c-> relations
+    relations  -q-> table 
+
+</div>
+The construct in louna is the c macro (c ...)
+  
+Construct adds to the DB new information.
+
+<b>Construct types</b>
+
+    Constant
+        They add only 1 pair to the relation
+<div class="codelong">
+        Constant construct(adds only 1 value)
+        (c {:c-out ["print"]}
+           (:ab.files "file1" "path1")
+           (:ab.files "file2" "path2"))
+
+        =>
+        We add to :ab.files ,2 pairs ["file1","path1"] ["file2","path2"]
+
+</div>
+
+    Relation constructs
+        They add a pair getting values from a table,the table can be given as a
+        nested q,or as argument in c-in.We makes relations with values from a table.
+    
+<div class="codelong">
+  (def parentsDB {
+                :ab.hasParent
+                [[:d.jane :d.gene]
+                 [:d.gene :d.pat]
+                 [:d.joan :d.pat]
+                 [:d.mike :d.joan]]
+
+                :ab.gender
+                [[:d.gene :d.female]
+                 [:d.joan :d.female]
+                 [:d.pat :d.male]]
+                })
+
+  (def q1Table (q {:q-in [parentsDB]}
+                  (:ab.hasParent  ?person ?parent)
+                  (:ab.hasParent  ?parent ?gparent)
+                  (:ab.hasParent  ?aunt   ?gparent)
+                  (:ab.gender             :d.female)
+                  (not= ?parent ?aunt)))
+
+
+  (c {:c-in [q1Table] :c-out ["print"]}
+     (:ab.hasAunt ?person ?aunt))
+
+  =>(the result is really a map of relations,but the print just shows the relations here we have 1)
+  :ab.hasAunt
+  [:d.mike :d.gene]
+  [:d.jane :d.joan]
+  
+ Here (:ab.hasAunt ?person ?aunt) takes values from the table q1Table
+ Each line of q1Table makes 1 line of the relation :ab.hasAunt
+
+</div>
+
+    Relation binds
+        Use a function to generate a relation [[id1 value1][id2 value2]...] and 
+        assign it to a relation
+        
+        *this doesn't exist in SPARQL,but it helps to program with louna.
+
+        Example
+        The relation :ab.files  get the values from the function that generates pairs.
+        here it generates   [filename path] pairs
+        (get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files) 
+        
+<div class="codelong">
+  (c {:c-out ["print"]}
+     ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files))
+
+        =>
+  :ab.files
+  ["ex122.nt" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122.nt"]
+  ["ex122-123.lnt" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122-123.lnt"]  
+  [":ab.courseTitle" "/home/white/IdeaProjects/louna/data-test/ex122-123/:ab.courseTitle"]
+  ["ex122-123.stats" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122-123.stats"]
+  ["ex122-123.ns" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122-123.ns"]
+  [":ab.takingCourse" "/home/white/IdeaProjects/louna/data-test/ex122-123/:ab.takingCourse"]
+  ......
+
+</div>
+
+      RDF constructs
+<div class="codelong">
+      ;;read rdf files inside the directory louna-data/rdf/my_rdf,convert them to louna relations
+      ;;and save them in "my_db"
+      (c {:c-out ["my_db"]}
+         (:rdf "my_rdf"))
+
+</div> <span id="constructs-queries"></span>
+ 
+ 
+<b>Construct and queries</b>
+
+    A query has q-in relations (files database or in-memory database) (q {:q-in [db1 ...]})
+
+    A construct can has tables in memory or in file as input   (c {:c-in [atable1 ...])
+
+    If we only produce a table to then make a construct fom it,we can right it like this.
+    With this way we can see more clearly what the table represents.
+<div class="codelong">
+    (c {:c-out ["print"]}
+       (:ab.hasAunt ?person ?aunt)
+       (q {:q-in [parentsDB]}
+          (:ab.hasParent  ?person ?parent)
+          (:ab.hasParent  ?parent ?gparent)
+          (:ab.hasParent  ?aunt   ?gparent)
+          (:ab.gender             :d.female)
+          (not= ?parent ?aunt)))
+</div>
+    c and q can be freely nested.
+
+<div class="codelong">
+    (c
+      (q
+        (c
+          (q ))))
+    or
+  
+    (q
+     (c
+       (q
+         (c ))))
+</div>
+
+    Example
+    c => get files([filename path] pairs) from that directory,save them to a relation :ab.files
+    q => keep only .rq files
+    c => save them to a new relation named :ab.queriesFiles 
+    
+<div class="codelong">
+  (c {:c-out ["print"]}
+   (:ab.queriesFiles ?y ?x)
+   (q (:ab.files ?x ?y)
+      (clojure.string/ends-with? ?x ".rq")
+      (c ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files))))
+
+  =>
+  :ab.queriesFiles
+  ["/home/white/IdeaProjects/louna/data-test/ex069/ex090.rq" "ex090.rq"]
+  ["/home/white/IdeaProjects/louna/data-test/ex138/ex141.rq" "ex141.rq"]
+  ["/home/white/IdeaProjects/louna/data-test/ex069/ex070.rq" "ex070.rq"]
+  ["/home/white/IdeaProjects/louna/data-test/ex074/ex083.rq" "ex083.rq"]
+  ["/home/white/IdeaProjects/louna/data-test/ex145/ex156.rq" "ex156.rq"]
+  ....
+
+</div>
+
+</pre>
+		
+
+
+</div>
+     
+</body>
+</html> 

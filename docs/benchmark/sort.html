@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../benchmark.html">Benchmark info</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./rdf.html">Query RDF</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./join.html">Join triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./filter.html">Filter triples</a></span>
+  </li>
+   <li class="tree__item">
+    <span><a href="./bind.html">Bind triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./sort.html">Sort by</a></span>
+  </li>  
+
+</ul>
+</div>
+
+<span id="rationale"></span>
+<div id="main">
+  <h5 class = "main-title">Benchmark</h5>
+  <pre >
+<b>Info</b>
+    
+    Just join and then sort.
+    Limit to see only the first line.
+
+<div class="code">
+(defn run-bench []
+  (q {:q-in ["genDB"] :q-out ["print"]}
+     (:n.c1  ?c0 ?c1)
+     (:n.c2  ?c0 ?c2)
+     (:n.c3  ?c0 ?c3)
+     (:n.c4  ?c0 ?c4)
+     (:n.c5  ?c0 ?c5)
+     (:n.c6  ?c0 ?c6)
+     (:n.c7  ?c0 ?c7)
+     (:n.c8  ?c0 ?c8)
+     (:n.c9  ?c0 ?c9)
+     (:sort-by (str ?c1 ?c2) ?c3 (str ?c4 ?c1) (desc ?c4) (asc (str ?c5 ?c3)))
+     (:limit 1)))
+
+</div>    
+
+<b>Benchmark results</b>
+
+   Sorting in Louna is slower by 1x-4x.
+   Bigger difference than the other examples
+   Maybe its the indexing of TDB,or something in the sort-by function in louna.   
+
+<div class="code">
+1000 rows
+    louna    0.37 sec
+    jena     0.75   sec
+10000 rows
+    louna    2.4 sec
+    jena     2.1 sec
+100000rows
+    louna    20   sec
+    jena     7.5  sec
+200000rows
+    louna    44 sec
+    jena     12 sec
+400000rows
+    louna    103 sec
+    jena     26  sec
+
+</div>
+
+  </pre>
+
+</div>
+     
+</body>
+</html> 

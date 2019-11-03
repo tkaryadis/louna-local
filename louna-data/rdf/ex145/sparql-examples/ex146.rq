@@ -1,0 +1,28 @@
+# filename: ex146.rq
+
+PREFIX e: <http://learningsparql.com/ns/expenses#>
+
+SELECT ?description ?date ?amount
+WHERE
+{
+  ?meal e:description ?description ;
+        e:date ?date ;
+        e:amount ?amount . 
+}
+
+ORDER BY ?amount
+
+---------------------------------------
+| description | date  | amount |
+=======================================
+| "breakfast" | "2011-10-15" | 4.32|
+| "breakfast" | "2011-10-14" | 6.53|
+| "breakfast" | "2011-10-16" | 6.65|
+| "lunch"     | "2011-10-15" | 9.45|
+| "lunch"     | "2011-10-16" | 10.00 |
+| "lunch"     | "2011-10-14" | 11.13 |
+| "dinner"    | "2011-10-16" | 25.05 |
+| "dinner"    | "2011-10-14" | 28.30 |
+| "dinner"    | "2011-10-15" | 31.45 |
+---------------------------------------
+

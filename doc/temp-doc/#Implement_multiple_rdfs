@@ -1,0 +1,14 @@
+1)(macroq [directory])
+
+  Ekei mesa exo ola ta .nt arxeia ta opoia ta diabazo ola me tin seira
+
+  auto theorite to default directory
+2)FROM NAMED <ex125.ttl>
+
+  prin apo ena BGP i proti triple pou bazo einai
+  (graph "ex074")
+  (?s ....)
+  ....
+
+  Otan pao ston run-bgp ean bro tin proti triple ali timi
+  allazo to default directory gia auto to BGP

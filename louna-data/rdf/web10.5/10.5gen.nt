@@ -1,0 +1,4 @@
+_:node1cppmm0vax1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cppmm0vax1 <http://xmlns.com/foaf/0.1/homepage> <http://work.example.org/alice/> .
+_:node1cppmm0vax2 <http://xmlns.com/foaf/0.1/name> "Bob" .
+_:node1cppmm0vax2 <http://xmlns.com/foaf/0.1/mbox> <mailto:bob@work.example> .

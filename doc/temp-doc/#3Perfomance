@@ -1,0 +1,21 @@
+1)aggregate functions me lazy functions(anti na perno to column exarxis)
+
+2)ta binds pou den exoun filtra,i den ta xriazonte alla binds pou exoun filtra
+  mporo na ta bazo sto telos pou o pinakas einai mikroteros
+
+3)na mporo na kano bind sto project??
+  to bind einai xrisimo otan i metabliti pou kano bind tin xrisimopoio mesa sto BGP alios
+  den xriazete
+
+4)contructs na mporoune na pane mono se basi,oxi se memory
+
+5)joins-basiko
+  thelo ton table se hash-table oxi tin relation
+
+  table se hash-table
+  read relation => line or not
+  line+binds+table filters etc =>
+  new_hash_table  me tin epomeni-es join-vars
+
+  Opos to exo diabazo se kathe join olo to table+oli tin relation
+  Me to pano diabazo se kathe join mono oli tin relation

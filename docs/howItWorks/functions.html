@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li>  
+   <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+<h5 class = "main-title">Functions in queries</h5>
+  <pre>
+
+Louna uses functions inside the queries.
+Here is explained how this works.
+
+There is a source file that makes almost all the work needed.
+bgp.functions-process.clj
+
+Clojure functions can be used in filters or binds,it doesn't make any
+difference,its the same code,just in case of a bind the result is stored
+in a variable.The work the same way.
+
+<div class="code">
+(q {:q-in [menuDB] :q-out ["print"]}
+   (:meal.cost ?meal ?cost)
+   ((* ?cost 0.1)    ?tip)
+   (< (+ ?cost ?tip) 20))
+
+</div>
+We will focus only in the filter function  (< (+ ?cost ?tip) 20)) 
+
+Steps (in the middle there is the function that does the transformation)
+
+    qmacro.q_processs/(defn add-str-group [group])
+<div class="code">
+
+        (< (+ ?cost ?tip) 20)
+  
+        =>        
+  
+       "(< (+ \"?cost\"  \"?tip\" ) 20)"  
+
+</div>        
+    bgp.functions-process/(defn get-vars-filter-function [filter-query])
+<div class="code">
+
+        "(< (+ \"?cost\"  \"?tip\" ) 20)" 
+  
+        =>
+
+        ["(< (+ " "cost" "  " "tip" " ) 20)"]  
+
+</div>
+        This is a vector,in odd positions there are the query vars,and in even
+        positions there are the rest of the function. 
+
+        Now we are ready to use the function.
+        If from a table line we had   [... ?cost ?tip ....]      
+        {cost=50,tip=100}
+        we know that in odd places there are the vars,so we take values from the map
+
+<div class="code">
+               
+        ["(< (+ " "cost" "  " "tip" " ) 20)"]   
+        ["(< (+ " "50" "  " "100" " ) 20)"]    ;;values from the map,of odd indexes 
+        "(< (+ 50 100) 20)"                    ;;concat (apply str vector) in clojure
+        (eval (read-string "(< (+ 50 100) 20)")) 
+        result=true/false => keep or discard the line
+</div>
+  
+        At first in louna this was the way it was working,i knew that this was not 
+        fast because from every value from line,we had to replace the odd indexes,
+        concat and the read-string and eval,but it was a first step and it was working.
+
+    Before explaining more some things about read-string and eval.
+        read-string => reads a string and produces clojure code for example (read-string "{:a [1 2]}")
+                       will be a map containing a vector with member 1,2 and key of map :a
+        eval => evaluates an expression for example  (eval (list + 1 2)) => (+ 1 2) = 3
+                the argument of eval will be evaluated (list + 1 2) produce (+ 1 2) 
+                (like normal function argument before call) and eval will make it 3
+
+        Eval and local/global variables
+            Eval can see global variables for example,this works
+                (def t 10)
+                (eval (read-string "(+ t 10)"))
+            Eval can't see local variables for example this doesn't work
+                (let [t 10]
+                  (eval (read-string "(+ t 10)")))  
+
+    Use only eval for each line
+        What was the steps for every line from first try
+            replace the values from the map
+            concat the string
+            read string
+            eval
+
+        I thought of a way to remove the first 3 steps for each line,and do it only once for each function and not for each line.
+        The idea was to put the values in a global map(so eval could have access) with state(a clojure atom).    
+<div class="code">
+
+        ["(< (+ " "cost" "  " "tip" " ) 20)"] 
+        =>
+        (< (+ (state.state/get-value 2) (state.state/get-value 3)) 20)     {"cost" [2], "tip" [3]}
+</div>
+        We are ready to take a line,and run the filter
+        from line to value map,from value map to filter function and eval
+
+<div class="code">
+
+        if in line {cost 50 tip 100} => 
+        global value-map {2 50
+                         3 100}
+   
+        (eval (< (+ (state.state/get-value 2) (state.state/get-value 3)) 20))
+
+        if next line is {cost 30 tip 50}
+        global value-map {2 30
+                         3 50}
+ 
+        (eval (< (+ (state.state/get-value 2) (state.state/get-value 3)) 20))  
+
+</div>    
+        What we gained?
+        For each line we only do eval
+        Replace the values from the map/concat the string/read string are done only 1 time for each function
+        not for every line. 
+
+        That was the second try and it worked.
+        Unfortunately this is slow also.
+        I din't know it until i made a bigger benchmark 10000 rows and like 10 joins.
+
+        Even if we escaped read-string,and needed only eval,its still slow.
+        The reason has to do with the compiler,the function here everytime will be evaluated
+        but normally the function would be evaluated once(produce compiled code of the function)
+        and then only run it.Here we "re-compile" the function in each call.
+        
+    In louna now,functions are run like this
+<div class="code">
+
+        (< (+ ?cost ?tip) 20) 
+        "(< (+ \"?cost\"  \"?tip\" ) 20)" 
+        ["(< (+ " "cost" "  " "tip" " ) 20)"]    
+        (fn [cost tip] (< (+ cost tip) 20))      
+
+</div>
+        Each filter now becomes a normal clojure function and its evaluated as a function.
+         
+        We take the query-vars (odds positions in vector)
+        We put them in a set #{"cost" "tip"}
+        We make them a vector f-args=["cost" "tip"]
+        f-body = (apply str f-vector)  = "(< (+ cost tip) 20)"
+        Then we make a unmamed function as a string
+        (str "(fn " (into [] (map symbol f-args)) f-body ")")
+
+        This is the string  "(fn [cost tip] (< (+ cost tip) 20))"
+  
+        Then my_filter = (eval (read-string "(fn [cost tip] (< (+ cost tip) 20))"))
+        And we have a clojure function,ready to be called like a normal function
+
+        if line is {cost 30 tip 50}
+        we call (my_filter 30 50)
+
+        We still use eval,but now we use it to evaluate the function and its done only 1
+        time,and not eval in every call.
+        For every line we just call a normal clojure function.(that we evaluated before 1 time)
+ 
+        The function that does that
+<div class="code">
+
+        (defn vector-to-function [f-vector]
+          (let [f-args (into [] (get-vector-vars f-vector))
+                f-body (apply str f-vector)
+                f-eval (eval (read-string (str "(fn " (into [] (map symbol f-args)) f-body ")")))]
+            [f-args f-eval]))
+</div>
+        This works and its fast filter became a normal clojure function,that we just call.
+
+<b>Local arguments</b>
+   For example
+<div class="code">
+
+   (defn f [euro]
+    (q {:q-in [menuDB] :q-out ["print"]}
+       (:meal.cost ?meal ?cost)
+       ((* ?cost 0.1)    ?tip)
+       (< (+ ?cost ?tip) euro)))
+   
+</div>
+   The second solution that failed because was slow for each line works fine for that.
+   Because you only do the 3 steps 1 time for the filter.
+   euro has one value,the value that f has argument.
+
+   q macro will produce this
+<div class="code">
+
+   (run-q {2 {"euro" euro}} 
+          {:q-in [menuDB], :q-out ["print"]}
+          [["__and__" [1 :meal.cost "?meal" "?cost"]
+                      [2 "tip" "(* \"?cost\"  0.1)"]
+                      [3 "(< (+ \"?cost\"  \"?tip\" ) euro)_2"]]
+           ["__project__" [] [:all] -1]] 
+          {})
+
+</div>
+   To see the code that will be generated after compile(expand the macro)
+
+<div class="code">
+
+   (defn f [euro]
+    (run-q {2 {"euro" euro}} 
+          {:q-in [menuDB], :q-out ["print"]}
+          [["__and__" [1 :meal.cost "?meal" "?cost"]
+                      [2 "tip" "(* \"?cost\"  0.1)"]
+                      [3 "(< (+ \"?cost\"  \"?tip\" ) euro)_2"]]
+           ["__project__" [] [:all] -1]] 
+          {}))
+
+</div>     
+    euro is just a variable but we have a problem
+    this {2 {"euro" euro}}  gets the euro value
+    but this "(< (+ \"?cost\"  \"?tip\" ) euro)_2" does not get it because euro
+    is inside a string but it has _2,that says how to get it from the global map
+  
+    {2 {"euro" euro}}  is added to the global map(clojure atom)
+    So we have the value of euro stored
+    
+    bgp.functions-process/(defn add-locals-to-code [code-str])
+    Is the function that does that
+    "Filter before" "(< (+ \"?cost\"  \"?tip\" ) euro)_2"
+    "Filter after" "(< (+ \"?cost\"  \"?tip\" )  (get-in @state.state/undefined [2 \"euro\"] ))"
+
+     (get-in @state.state/undefined [2 \"euro\"]) means,get into the global map first key=2,second="euro"
+     this way we can get the euro value from the global map when we eval the filter
+ 
+    I could do it like the way we did with functions,to reduce complexity,but it worked even with the
+    old way and didn't cause any perfomance problems,because euro has only 1 value.
+
+    With an example its more clear
+    Lets say we called 
+<div class="code">
+
+    (f 10)
+    
+    (defn f [10]
+     (run-q {2 {"euro" 10}} 
+          {:q-in [menuDB], :q-out ["print"]}
+          [["__and__" [1 :meal.cost "?meal" "?cost"]
+                      [2 "tip" "(* \"?cost\"  0.1)"]
+                      [3 "(< (+ \"?cost\"  \"?tip\" ) euro)_2"]]
+           ["__project__" [] [:all] -1]] 
+          {}))
+
+</div>    
+    In the global map the 10 will be stored as value of euro.
+    {2 {"euro" 10}} 
+
+    Here euro is inside the string,but we have _2
+    "(< (+ \"?cost\"  \"?tip\" ) euro)_2"
+    
+    So we know that we need 2 key in the global map (get-in @state.state/undefined [2 "euro"] )
+    The above can be re-writen like 
+    "(< (+ \"?cost\"  \"?tip\" ) (get-in @state.state/undefined [2 "euro"] ))"
+    And now we are done ready to use the filter and make it a normal clojure function like above.
+  
+  <pre> 
+</p>
+
+
+</div>
+     
+</body>
+</html> 

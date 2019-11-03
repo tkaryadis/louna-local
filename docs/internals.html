@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<title>Internals</title>
+
+</head>
+<body>
+
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./howItWorks/source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./howItWorks/plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./howItWorks/bgp.html">BGP</a></span>
+  </li>
+   <li class="tree__item">
+    <span><a href="./howItWorks/nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./howItWorks/joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./howItWorks/functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./howItWorks/auto.html">Auto-grouping</a></span>
+  </li> 
+   <li class="tree__item">
+    <span><a href="./howItWorks/reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+  <span class="main-title"> Packages </span>
+<ul style="list-style: none; font-size : 21px;">
+  <li>bgp</li>
+  <li>bgp-joins</li>
+  <li>bgp-joins-disk</li>
+  <li>groups</li>
+  <li>louna</li>
+  <li>macroc</li>
+  <li>macroq</li>
+  <li>macroql</li>
+  <li>state</li>
+  <li>library</li>
+</ul>
+
+  <pre>
+<b>Package sequence to run a query (q ...)</b>
+
+   louna : q macro is in louna and all the functions that q is needed are in macroq
+   louna : run-q is the function that will take the output of q(normal clojure code)
+   groups : groups_run.clj runs the query
+      the query consists of 3 things
+      bgp produce tables from triples with optional binds and filters()
+      and then operations on that tables (unary or binary) for example sort-by/project/union etc
+      groups.groups_run.clj runs the query and returns the final table back to run-q
+   louna : run-q now has the final table and it stores it or prints it 
+
+<b>Package sequence to run a construct (c ...)</b>
+
+   louna : c macro is in louna and all the functions that c needs are in macroc
+   louna : run-c is the function that will take the output of c(normal clojure code)
+   macroc : run-c uses fils of macroc package,produce the constructs
+   louna : back to louna run-c to save or print the results
+
+<b>Package sequence to generate a SPARQL query (ql ...)</b>
+   macroql : contains the macro ql,that take the restricted louna query and produces the 
+             SPARQL query 
+
+<b>bgp</b>
+    BGP is triples with optional binds and filters.
+    The result of a BGP is a table.
+    This package contains all the code to 
+        Process filter/binds to be applied while joining or reading relations
+        Make a query plan
+        Run filters/binds
+
+<b>bgp-joins</b>
+<b>bgp-joins-disk</b>
+  
+   2 packages the first implement the join method1,the second implements the join method2
+
+   They both
+   Read relations in the sequence of the query plan
+   Make the joins
+   Add the binds 
+   Apply the filters
+     
+   The binds and filters are applied the sooner as possible
+   so the table is as  minimum as possible
+
+
+<b>groups</b>
+    From bgp we get a table,from groups we apply operations on those tables.
+    Binary(example OPTIONAL(:if in louna)) or unary(example sort-by).
+
+    The query defines what operations to apply and inside the group_run.clj
+    there is the function group_run that read the query and call the binary
+   or unary operations.
+
+
+<b>louna</b>
+    Contains only the files that an application will need,to use louna.
+
+    louna.louna.clj  (q and c macros only the 2 macros,
+                      the code that the macros use is on macroq and macroq)
+
+    louna.louna-util.clj (usefull functions,when using louna)
+    (for example merge-relations,merges 2 or many in memory databases in 1)
+
+<b>macroq</b>
+    louna uses macros,because the query is not normal code
+    macro q contains the files that parse the user query(not clojure code) 
+    (done at complile time) and produce normal clojure code(to run on runtime)
+ 
+    Also some transformations are done in the query.
+    For example auto-grouping,some query re-writing,basic process of
+    operators arguments etc.
+
+    In the end we have clojure code ready to run by the function run-q 
+
+<b>macroc</b>
+    Same as macroq but for the constructs.
+    It produces valid clojure code from the user constructs.
+    run-c takes the result of macro c and run it on runtime
+
+    Inside macroc package there are 2 files rdf-in,rdf-out that deal with rdf.
+
+    Takes the .nt rdf and one file with the prefixes that i want to be
+    used(if some URI dont have prefix a random will be generated) and 
+    it converts it to relations (1 relation/file ,name of relation=filename)
+    Relations are stored in text files like this
+        [:n1.i0432 "richard49@hotmail.com"]
+        [:n1.i9771 "cindym@gmail.com"]
+        [:n1.i8301 "c.ellis@usairwaysgroup.com"]
+
+    While converting the data,it saves the cost of every relations(the number of lines)
+    This information is used from the query planner.
+    Also make calculate the cost for every relation (lines of relation)
+  
+    Everything inside louna is prefixed,you dont use URI inside louna.
+
+<b>library</b>
+    library.util.clj  Small functions that many files use.
+    Also print_data file contains various print methods for example
+    print table print query plan etc.
+
+<b>state</b>
+    state makes code more complicated so louna is almost stateless.
+    Most of the state are counters,some db-setting like the location of louna data,
+    and some state about global symbols that will be used from eval(more on that later) 
+ <pre> 
+</p>
+
+
+</div>
+     
+</body>
+</html> 

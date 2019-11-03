@@ -1,0 +1,125 @@
+1)Arxika ftiaxno tin diataxi ton metabliton tou pinaka pou tha parago simfona me tis exartisis
+  px  var1 var2 bind3 var4 ......
+
+2)Psaxno apo pia relation/binding function tha diabaso tis times tis var1
+
+3)Psaxno pia filtra prepei na efarmoso stin var1
+  domain_binding
+  filtra_queries
+
+4)xekinao na diabazo kai filtraro tautoxrona
+
+5)pao stin var2 ktl,mexri na teliosoun oi vars
+
+---------------------------------------------------------------------------------------------------
+
+Metatropi queries se functions pou ite vazoun nea metabliti ite filtraroun eno mpeni mia nea
+
+Thelo gia oti kano sto table(prostheto var/filtraro to table)
+
+proapetoumena(proigoumenes vars pou xrisimopoii i function)    :depvars
+trigger var                                                    :filterVar i addVar/bindVar
++
+sinartisi me basi tin opoia parago nea var/                    :function[depvars->new var]
+sinartisi me basi tin opoia allazo to table                    :function[depvars->new state]
+  (filtro simeni svino grames)
+
+Gia ta pano thelo 1 map me 4 maps
+
+{
+ addVars {addVar1 : relation1 addVar2 : relation2 ... }
+ addBinds {addBind1 : binding1 addBind2 : Bind2 ....}
+ filters {filterVar1 : [filter1 filter2 ....] filterVar2 [....]} ;;auta ta filtra efarmozonte mia fora otan bazo stili kai telos ta petao
+ bindings {filterBindingVar1 : #{value1 value2 } filterBindingVar2 : #{value1 value2 } } ;;auta ta filtra efarmozonte/enimerononte oso brisko auti tin metabliti stis sxesis
+}
+
+Xekinao kai simfona me tin seira prepei na balo tin var5 , i to binding6
+
+Apo to addVar perno tin sinartisi pou bazi autin tin metabliti/binding
+Apo to filter var perno ola ta filta pou prepei na efarmostoun kathos bazo auti tin var
+
+Kai trexo sinartisi add-new-column
+
+filter1 {:depvars [simfona me seira taxinomis] :function(me orismata ta prevars) f }
+
+relation1 {:depvars [simfona me seira taxinomisis] :newvar var :function(orisma=last var(an kai edo me niazi mono last) f }
+
+relations exo 2 tipous (den exi simasia tis sono kanonika)
+xoris depvars (simeni oti otan erthi i ora tis apla bazo tin var)
+me 1 depvar
+
+Kathe fora pou diabazo mia relation dimiourgite (ean den iparxi idi) mia filter function
+pou exi ta var-domains me filter var tin antistixi value (auto to filter trexi panta otan xanadiabaso tin var alou)
+
+
+H kathe f kani kati ston pinaka ara mpori na ton exi os orisma
+
+H f mpori na einai partial kai na tis lipoun mono ta prevars
+
+Xorizo tis queries se katigories  filter/relation/binding
+
+
+Arxika bazo tis times tou root
+efarmozo allages katastasis ean iparxoun (lastvar = root)
+bazo nea metabliti (lastvar=root)
+
+Prostoparon den me niazi i seira pou ta efarmozo
+(diladi ean exo pola filtra me lastvar=root pio tha efarmoso
+ oute i seira gia nees metablites)
+
+Prepei (1 node,1 akmi,olokliro monopati na tirite)
+Episis exo filtra se node/akmi/monopati pou prepei na tirite
+
+1)tirounte ta vars_domains(panta otan diabazo mia metabliti enimerono to domain tis)
+  *ta kratao mexri oi epomenes sxesis na min to periexoun
+2)tirounte oi relations(apo ta domains kratao mono autes pou sindeonte metaxi tous)
+3)tirounte ta joins(kratao tis times pou sindeonte )
+3)tirounte ta filtra
+  ta filtra mpori na einai se 1 node (to elexno otan diabazo metabliti)
+  se 1 akmi (to elenxo otan diabazo relation)
+  i se 1 monopati (to elenxo kata to join)
+
+Ton pinaka ton ktizo ana stili  px v1 v2
+1)brisko epomeni var pou prepei na balo simfona me tin diataxi apo to schema px v3
+2)brisko tin sxesi me add-var tin v3
+3)Elenxo monadiea px  (name ?v3 "takis") (name "takis" ?v3)
+  1)allazoun mono to var-domain
+  2)monadiaia filtra
+
+  v3 tha aniki kapou alou giati den ine single
+  epanalipsis den iparxoun giati tha itan idia triple
+
+4)meta brisko ta zeugaria pou bazoun stin v3
+    px dep-var [v1,v3]
+       dep-var [v2,v3]
+
+    Diabazo tirontas to v1,v2,v3 domain
+    tin sindesi
+    ta monadiaia filtra
+    ta relation filtra
+
+5)join (ensomatono ston sinoliko pinaka)
+  diabazo v1 v2 apo ton table
+  prepei v1,v2 keys sta [v1,v3] [v2,v3] antistixa alios ta petao
+  ean einai keys perno to  pou antistixi stin kathe timi [v1 v2]
+  filtraro ola ta tree-filtra gia to v3 ean tirounte bazo to v3
+
+---------------------------queries se function----------------------
+
+1)filter query -> function
+
+2)relation  ?s o
+  (partial triple-s filename {:depVars [] addVar s  :filters filters})
+
+
+3)relation  s ?o
+  (partial triple-s filename {:depVars [] addVar o  :filters filters})
+
+
+3)relation query ?s ?o  -> relation function
+  (partial triple-os filename {:depVars s :addVar o :filters filters})
+
+Enarxi xekinao ite bazontas 1 mono apo ?s o/o ?s ite 2 tautoxrona apo mia ?s ?o
+
+
+

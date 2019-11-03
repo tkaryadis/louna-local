@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../benchmark.html">Benchmark info</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./rdf.html">Query RDF</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./join.html">Join triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./filter.html">Filter triples</a></span>
+  </li>
+   <li class="tree__item">
+    <span><a href="./bind.html">Bind triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./sort.html">Sort by</a></span>
+  </li>  
+
+</ul>
+</div>
+
+<span id="rationale"></span>
+<div id="main">
+  <h5 class = "main-title">Benchmark</h5>
+  <pre >
+<b>Comparison</b>
+
+    1)Louna
+      Store files to text files(1 file/relation).
+    2)Apache Jena TDB
+      Indexes files and store them to binary data.
+
+<b>Query from files</b>
+
+    Table -> dis-joined to the 9 relations = Louna database
+   
+    Louna can export the database in .nt format.
+
+    Louna query the louna database of the 9 relations.
+    The .nt file is given to TDB to make the binary files.
+
+    And then we benchmark only the query time.
+    Louna query the text-files and Jena TDB the binary files.
+
+<b>Code sample</b>
+
+    Full code test/benchmark.query2.clj
+
+<div class="codelong">
+
+(def rows 10000)  ;;IN ALL BENCHMARKS YOU ONLY CHANGE THIS
+
+;;Generate the table,and from that table make the 9 relations and
+;;store the text files(1 file/relation) to /louna-data/dbs/genDB
+;;10 is the table header(c0 to c9) and 100000 are the rows
+(let [genTable (benchmark.benchmark-info/gen-table 10 rows)
+      - (benchmark.benchmark-info/save-db genTable "genDB")])
+
+(defn run-bench []
+  (q {:q-in ["genDB"] :q-out ["print"]}
+     (:n.c1  ?c0 ?c1)
+     (:n.c2  ?c0 ?c2)
+     (:n.c3  ?c0 ?c3)
+     (:n.c4  ?c0 ?c4)
+     (:n.c5  ?c0 ?c5)
+     (:n.c6  ?c0 ?c6)
+     (:n.c7  ?c0 ?c7)
+     (:n.c8  ?c0 ?c8)
+     (:n.c9  ?c0 ?c9)
+     (:group-by ((count ?c0) ?rows))))
+
+;;Run the query with file database "genDB"
+(println "Louna time :")
+(time (run-bench))
+
+;;Convert the query to SPARQL query. 
+(def sparql-str (str " PREFIX n: <http://louna/ns/> "
+                     (benchmark.sparql-queries/get-sparql-query 1)))
+
+;;Export "genDB" to .nt format so Jena can query it.
+;;.nt will be stored in louna-data/rdf/genDB/genDB.nt
+(db-to-nt "genDB")
+
+(let [- (println "Preparing jenaTDB to run ...")
+      ;;Create the binary data the Jena will use
+      - (benchmark.jena-run/store-rdf (str (state.db-settings/get-rdf-path) "genDB/genDB.nt"))
+      - (println "Jena TDB time :")
+      sorted-vars ["rows"]]
+  ;;Run the Jena query.
+  (time (benchmark.jena-run/run-jena-tdb sparql-str sorted-vars)))
+
+</div>
+<b>Query</b>
+
+    Its the same simple join query to restore the initial table.
+    But now we read louna-data from files.
+    The group-by is used so the results can be printable even for big results.
+
+<div class="code">
+(defn run-bench []
+  (q {:q-in ["genDB"] :q-out ["print"]}
+     (:n.c1  ?c0 ?c1)
+     (:n.c2  ?c0 ?c2)
+     (:n.c3  ?c0 ?c3)
+     (:n.c4  ?c0 ?c4)
+     (:n.c5  ?c0 ?c5)
+     (:n.c6  ?c0 ?c6)
+     (:n.c7  ?c0 ?c7)
+     (:n.c8  ?c0 ?c8)
+     (:n.c9  ?c0 ?c9)
+     (:group-by ((count ?c0) ?rows))))
+
+</div>    
+
+<b>Benchmark results</b>
+
+<div class="code">
+  1x-2x for up to 400.000 rows or 3.600.000 triples
+
+</div>
+
+  </pre>
+
+</div>
+     
+</body>
+</html> 

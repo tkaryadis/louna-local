@@ -1,0 +1,6 @@
+_:node1cor8oo4px1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:node1cor8oo4px1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cor8oo4px1 <http://xmlns.com/foaf/0.1/mbox> <mailto:alice@example.com> .
+_:node1cor8oo4px1 <http://xmlns.com/foaf/0.1/mbox> <mailto:alice@work.example> .
+_:node1cor8oo4px2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:node1cor8oo4px2 <http://xmlns.com/foaf/0.1/name> "Bob" .

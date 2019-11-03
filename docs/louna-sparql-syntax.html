@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+
+<title>Docs</title>
+
+</head>
+<body>
+
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./louna-sparql.html"><em>&lambda;ouna</em> SPARQL</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./louna-sparql-syntax.html"><em>&lambda;ouna</em> SPARQL Guide</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./sparql-gen.html">SPARQL Generation</a></span>
+    <ul>
+      <li>
+        <span><a href="./sparql-gen.html#rationale">Rationale</a></span>
+      </li>
+      <li>
+        <span><a href="./sparql-gen.html#examples">Examples</a></span>
+      </li>
+      <li>
+        <span><a href="./sparql-gen.html#reference">Reference</a></span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+
+<span id="rationale"></span>
+<div id="main">
+<div class = "main-title"><em>&lambda;ouna</em> to SPARQL Translation Guide </div>
+
+<pre>
+Louna is very similar to SPARQL and translation is easy.
+
+<div class="codelong">
+<span class="title2">SPARQL                     Louna</span>
+
+Prefixes            
+  person:name                              :person.name
+
+Filter
+  FILTER(?price = 20)                      (= ?price 20)
+
+Bind
+  BIND((?price-?discount) AS ?dprice)      ((- ?price ?discount) ?dprice)
+
+Unary operators
+
+  SELECT ?x ?y                             [?x ?y]
+
+  ORDER BY  ?x                             (:sort-by ?x)
+
+  SELECT (AVG(?size) AS ?asize)            (:group-by ?x                                                    
+  GROUP BY ?x                                         ((avg ?size) ?aSize)
+  HAVING(AVG(?size) > 10)                             (> ?aSize 10)
+  
+  LIMIT 1                                  (:limit 1)
+
+Binary operators
+  MINUS                                    :not
+  OPTIONAL                                 :if
+  UNION                                    :add
+
+</div>
+
+<b>Translating RDF to Louna data</b>
+    Louna can read rdf data but rdf data can be complex...
+    For example
+        URI's with metadata like mail:to.. 
+        Many data types and custom xml data types.
+        Language prefixes.
+        Blank nodes.
+        Empty namespaces.
+        .....
+
+    Louna can deal with those mentioned above but ignores some infromation.
+
+       Literal limitations
+           It ignores types that she don't understand and keep only the string.Currently Louna knows about
+           xsd:  string,integers,longs,floats,decimal,short,byte
+           For example if you give this to Louna "abc"^^dt:specialDatatype for louna its only "abc"
+           Also dates for Louna are just strings.
+
+       URI limitations
+           URI with metadata
+           Louna can understand that &ltmail:to ...&gt is a metadata URI but it ignores the metadata
+           For example &ltmail:to tkaryadis@gmail.com&gt is for louna "tkaryadis@gmail.com"
+           Also it can't deal with any other type of URI metadata at all.
+           *i found &ltmail:to ...&gt  when a bug apperead.
+
+       Namespace limitations
+           Louna has not empty namespace for example :book1 = :empty.book1 inside louna
+           That is not a problem,you can read rdf data with empty namespace but when you query them
+           write :empty.book1 and not  :.book1 (i will remove this limitation,no reason to exist)
+
+       Language tags
+           Louna ignores them          
+ 
+    <b>Important!</b>
+    Before query rdf data check if conversion was correct.(for example print the constuct)
+    Louna is more easily testable with table data.
+    
+<b>URI differences</b>
+ 
+    As been said in before in documentation.
+    Louna inside stores URI'S as  :prefix.name,if the user has give the prefix-URI pair
+    for example in a .ttl file,it will use the ttl's default prefixes,if not it will auto-generate a prefix
+    for exampl p1,p2 ....
+    We never use URI's in louna queries.We use the notation  :prefix.name
+    To see the matches we see the ns file that louna generates,but we generally dont have to look at it
+    except for prefixes that we havent used in the .ttl file and its louna's auto-generated
+
+<b>SPARQL Examples</b>
+     
+    Louna has being tested with 100+ SPARQL queries that i translated to Louna.
+    Inside louna-data/rdf there are many datasets.
+    The ex.. datasets are from the <a href="http://www.learningsparql.com/">book</a> about SPARQL if you see inside the folder it has SPARQL queries
+    in test/book_qc/q.clj  in every louna query the corresponding SPARQL query number is used as comment.
+    (if some .rq is missing(forgot to added in directory) the book website has them all)
+
+    Also read test/web_qc/q.clj  all those queries are from a <a href="https://www.w3.org/2001/sw/DataAccess/rq23/examples.html">W3C page</a>,and you can see the equivalent queries
+    in the web page.
+
+</pre>
+
+</div>
+     
+</body>
+</html> 

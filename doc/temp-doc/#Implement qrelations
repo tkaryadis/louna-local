@@ -1,0 +1,64 @@
+1)?x ?r ?y
+
+  Ousiasiastika einai
+
+  ?x relation1 ?y
+  OR
+  ?x relation2 ?y
+  ..
+
+
+  ?x (or oles oi relations) ?y
+
+  Alla edo thelo kai oles tis relations san times
+
+  Fantazome diladi oles tis sxesis san 1 megalo arxeio(san 1 megali sxesi)
+  pou to diabazo mia fora olo(kai apla kratao kai r var)
+
+2)4 eidi
+  1)?x ?r ?z
+
+  2)?x ?r "a"
+
+  3)"a" ?r ?z
+
+  4)"a" ?r "b"
+
+3)Arxika tin diabazo kanonika san anonimi,tin bazo ston table
+  kai meta perno tis times kai kano match tin relation oste na balo
+  tin relation
+
+  etsi bazo ston pinaka 1 metabliti max kathe fora opos prin
+
+
+;;---------------TESTING var in relation(DEN TREXOUN EXOUN BUGS)--------------------------------------
+
+;;sparql_query=ex010.rq
+#_(macroq ["ex002"]
+   [ab "http://learningsparql.com/ns/addressbook#"]
+
+   ;[?propertyValue]
+   [(?propertyName ab:cindy ?propertyValue)])
+
+;;testin init 2vars
+#_(macroq ["ex012"]
+   [a "http://learningsparql.com/ns/addressbook#"]
+
+   [?properyName ?propertyValue]
+   [(?propertyName ?person ?propertyValue)])
+
+;;sparql_query=ex019.rq
+#_(macroq ["ex012"]
+   [a "http://learningsparql.com/ns/addressbook#"]
+
+   [?properyName ?propertyValue]
+   [
+    (a:firstName ?person "Cindy")
+    (a:lastName  ?person "Marshall")
+    (?propertyName ?person ?propertyValue)])
+
+#_(macroq ["ex012"]
+   [a "http://learningsparql.com/ns/addressbook#"]
+
+   [?properyName ?propertyValue]
+   [(?propertyName ?person ?propertyValue)])

@@ -1,0 +1,6 @@
+_:node1cpdidmhlx1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cpdidmhlx1 <http://xmlns.com/foaf/0.1/knows> _:node1cpdidmhlx2 .
+_:node1cpdidmhlx1 <http://xmlns.com/foaf/0.1/knows> _:node1cpdidmhlx3 .
+_:node1cpdidmhlx2 <http://xmlns.com/foaf/0.1/name> "Bob" .
+_:node1cpdidmhlx3 <http://xmlns.com/foaf/0.1/name> "Clare" .
+_:node1cpdidmhlx3 <http://xmlns.com/foaf/0.1/nick> "CT" .

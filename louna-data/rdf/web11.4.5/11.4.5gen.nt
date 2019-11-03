@@ -1,0 +1,4 @@
+_:node1cpppl7iax1 <http://xmlns.com/foaf/0.1/name> "Alice"@enddd .
+_:node1cpppl7iax1 <http://xmlns.com/foaf/0.1/mbox> <mailto:alice@work.example> .
+_:node1cpppl7iax2 <http://xmlns.com/foaf/0.1/name> "Bob" .
+_:node1cpppl7iax2 <http://xmlns.com/foaf/0.1/mbox> <mailto:bob@home.example> .

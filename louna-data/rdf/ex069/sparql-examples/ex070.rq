@@ -1,0 +1,23 @@
+# filename: ex070.rq
+
+PREFIX ab: <http://learningsparql.com/ns/addressbook#> 
+
+SELECT ?last ?first ?courseName 
+WHERE
+{
+  ?s ab:firstName ?first ;
+     ab:lastName ?last ;
+     ab:takingCourse ?course . 
+
+  ?course ab:courseTitle ?courseName . 
+}
+
+-------------------------------------------------------------
+| last| first| courseName|
+=============================================================
+| "Ellis"| "Craig"| "Using SPARQL with non-RDF Data" |
+| "Marshall" | "Cindy"| "Using SPARQL with non-RDF Data" |
+| "Marshall" | "Cindy"| "Modeling Data with OWL"|
+| "Mutt"| "Richard" | "Using SPARQL with non-RDF Data" |
+| "Mutt"| "Richard" | "Updating Data with SPARQL"|
+-------------------------------------------------------------

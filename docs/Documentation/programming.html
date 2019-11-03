@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./guide.html">Site reading guide</a></span>
+  </li>
+    <li class="tree__item">
+    <span><a href="../documentation.html">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./overview.html">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span ><div  class="icon"></div><a href="./queries.html">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="./queries.html#relation">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./constructs.html#constructs">Constructs</a></span>
+    <ul>
+       <li>
+        <span><a href="./constructs.html">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./constructs.html#constructs-queries">Nesting c and q</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span id="sel"><div  class="icon"></div><a href="./programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+   <li class="tree__item">
+    <span><a href="./reference.html">Syntax reference</a></span>
+  </li>
+
+</ul>
+</div>
+
+
+<div id="main">
+<h5 class = "main-title">Programming with Louna</h5>
+<pre >
+Louna is a programmable SPARQL DSL.
+So far we show how you can use clojure to program inside queries mostly
+to support quering.
+
+The opposite is possible use queries for programming reasons,and making<span id="do"></span>
+louna a programming tool,for declarative data processing.
+
+<b>:do 
+:do-each</b> 
+   
+    They are unary operators,that just calls any clojure function,any time inside  
+    the query using the intermediate results as arguments.
+
+    Here we use the query for programming reasons.
+
+    You can always take the result of a query and use it the way you want,but with 
+    :do/:do-each you can write code,in a declarative way inside the query,and while the
+    query is running.
+
+    :do is done only 1 time and it works as aggregate function
+    :do-each is done 1 time per value of the column for example
+
+    Example(:do)
+<div class="codelong">
+  (q (:ab.files ?file ?path)
+     ((get-file-extension ?file) ?ext)              
+     (not (contains? #{".nt" ".rq" ".dns"} ?ext)) 
+     (:do (dorun (map io/delete-file ?path)))      
+     (c ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files))) 
+ </div>
+ 
+        c=>we load the pairs([file path]) to :ab.files
+        q=>we query them,we take the file extension with the bind,we only keep some extentions with the filter
+           and with :do we run the clojure function (dorun (map io/delete-file ?path)) ,which delete those files
+           from the filesystem
+
+    Example(:do-each)
+<div class="codelong">
+   (q (:ab.files ?file ?path)
+     (:do (prn "Number of files :" (count ?file)))
+     (:do-each (do (println ?file)))
+     (c ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files)))
+
+  "Number of files :" 103  ;; :do
+  namespaces.dns           ;; do-each  
+  ex203.rq                 ;; same do-each
+  ex188.rq                 ;; >>
+  ex185.rq
+  ex086.rq
+  ex002.nt
+  ex138.nt
+  namespaces.dns
+  ...........
+</div>
+    
+    If you want to do something for-each value of a column you use :do-each
+    If you want to do something with a column you use :do
+  
+    You can use any query vars of the table so far,as arguments to the clojure
+    function.
+
+    If you want to use the whole table as argument you can use a special 
+    query var called  ?qtable
+
+<div class="codelong">
+  (q (:ab.files ?file ?path)
+     (:do (do (prn "Hello the table so far")
+              (prn "Lines count = " (count (get ?qtable "table")))
+              (louna.louna-util/print-table ?qtable)))
+     (c ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files)))
+  
+  =>
+  "Hello the table so far"
+  "Lines count = " 103
+  [file path]
+  "namespaces.dns" "/home/white/IdeaProjects/louna/data-test/ex187/namespaces.dns"
+  "ex203.rq" "/home/white/IdeaProjects/louna/data-test/ex198/ex203.rq"
+  "ex188.rq" "/home/white/IdeaProjects/louna/data-test/ex187/ex188.rq"
+  "ex185.rq" "/home/white/IdeaProjects/louna/data-test/ex012/ex185.rq"
+  "ex086.rq" "/home/white/IdeaProjects/louna/data-test/ex041/ex086.rq"
+  "ex002.nt" "/home/white/IdeaProjects/louna/data-test/ex002/ex002.nt"
+  "ex138.nt" "/home/white/IdeaProjects/louna/data-test/ex138/ex138.nt"
+  "namespaces.dns" "/home/white/IdeaProjects/louna/data-test/spValues1/namespaces.dns"
+  .....
+
+</div>
+
+<span id="function-queries"></span>
+
+
+<b>Function queries</b>
+   
+    Function queries are queries that use inside the query,clojure variables.
+    This way we can have general queries or function queries that their behaviour
+    changes based on the argument of the function.
+    test/documentation.function-queries.clj
+
+<div class="codelong">
+  (defn delete-except-extensions [path extensions]
+   (q (:ab.files ?file ?path)
+      ((get-file-extension ?file) ?ext)
+      (not (contains? extensions ?ext))
+      (:do (do (println "Files that will be deleted :" (count ?file))
+               (dorun (map io/delete-file ?path))))
+      (:do-each (do (println "Deleted : " ?file)))
+      (c ((get-files-paths path) :ab.files))))
+
+  (delete-except-extensions "/home/white/IdeaProjects/louna/data-test" #{".nt" ".rq" ".dns"})
+
+</div>
+
+  Here you make a function-query that the query behaviour is determined by the arguments
+  The path is var,and the extensions is a var,so you can use it in any path and any extensions type.
+
+  It doesnt have to be inside a function
+
+<div class="codelong">
+  (let [path       "/home/white/IdeaProjects/louna/data-test"
+        extensions #{".nt" ".rq" ".dns"}]
+   (q (:ab.files ?file ?path)
+      ((get-file-extension ?file) ?ext)
+      (not (contains? extensions ?ext))
+      (:do (do (println "Files that will be deleted :" (count ?file))
+               (dorun (map io/delete-file ?path))))
+      (:do-each (do (println "Deleted : " ?file)))
+      (c ((get-files-paths path) :ab.files))))
+
+   or
+
+   (def path "...")
+   (def extensions "..)
+   
+   (q ...)
+
+   Also works,but with the function you can modify the behavior in every different call.
+
+</div>
+<span id="function-constructs"></span>
+
+
+<b>Function constructs</b>
+
+   Its like a function query,but here we use variables inside the construct also,to
+   make a general construct,that does different things based on its arguments.
+
+<div class="codelong">
+   (defn add-ancestor-2 [ancestor gender]
+     (c {:q-in [parentsDB] :c-out ["print"]}
+        (ancestor ?child ?gparent)
+        (q (:ab.hasParent ?child    ?parent)
+           (:ab.hasParent ?parent   ?gparent)
+           (:ab.gender    ?gparent  gender))))
+
+   (add-ancestor-2 :ab.hasGrandfather :d.male)  
+
+   (add-ancestor-2 :ab.hasGrandmother :d.female)
+
+</div>
+
+    Here the construct has the variable ancestor,and the q has the variable gender
+    In our data there isnt any grandmother.
+<span id="rules"></span>
+
+<b>Defining Rules</b>
+
+    ? is the same as ASK in SPARQL
+    It returns true if the results are not empty,and falsed otherwise
+
+    Is pat grandparent of jane?
+   
+<div class="codelong">
+   (defn has-grandparent? [child gparent]
+     (? (q {:q-in ["ex187"]}
+        (:ab.hasParent child     ?parent)
+        (:ab.hasParent ?parent   gparent))))
+
+   (println (has-grandparent? :d.jane :d.pat))
+
+</div>
+
+For a more complete small application see test/applications.tf-idf.clj  
+that uses louna to calculate tf-idf.   
+   
+</pre>
+
+</div>
+		
+
+
+</div>
+     
+</body>
+</html> 

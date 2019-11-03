@@ -1,0 +1,9 @@
+1)aggr-bind
+
+  perni ena pinaka,efarmozi aggregate sinartisis stis stiles tou
+  epistrefi ena neo pinaka mono me ta orismata pou exoun binds
+
+  px
+  [meal date cost tip]
+
+  [:agr-bind ((max ?cost) ?max-cost)]

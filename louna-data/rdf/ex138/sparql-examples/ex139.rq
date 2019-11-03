@@ -1,0 +1,19 @@
+# filename: ex139.rq
+
+PREFIX e: <http://learningsparql.com/ns/expenses#> 
+
+SELECT ?description ?amount ((?amount * .2) AS ?tip) 
+       ((?amount + ?tip) AS ?total)
+WHERE
+{
+  ?meal e:description ?description ;
+        e:amount ?amount . 
+}
+
+-----------------------------------------
+| description | amount | tip | total |
+=========================================
+| "dinner"| 28.30 | 5.660 | 33.960 |
+| "lunch"| 11.13 | 2.226 | 13.356 |
+| "breakfast" | 6.53| 1.306 | 7.836 |
+-----------------------------------------

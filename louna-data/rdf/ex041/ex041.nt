@@ -1,0 +1,9 @@
+<http://learningsparql.com/ns/addressbook#i0432> <http://learningsparql.com/ns/addressbook#firstName> "Richard" .
+<http://learningsparql.com/ns/addressbook#i0432> <http://learningsparql.com/ns/addressbook#lastName> "Mutt" .
+<http://learningsparql.com/ns/addressbook#i0432> <http://learningsparql.com/ns/addressbook#homeTel> "(229) 276-5135" .
+<http://learningsparql.com/ns/addressbook#i0432> <http://learningsparql.com/ns/addressbook#email> "richard49@hotmail.com" .
+<http://learningsparql.com/ns/addressbook#i0432> <http://learningsparql.com/ns/addressbook#address> _:node1c9pu159qx1 .
+_:node1c9pu159qx1 <http://learningsparql.com/ns/addressbook#postalCode> "49345" .
+_:node1c9pu159qx1 <http://learningsparql.com/ns/addressbook#city> "Springfield" .
+_:node1c9pu159qx1 <http://learningsparql.com/ns/addressbook#streetAddress> "32 Main St." .
+_:node1c9pu159qx1 <http://learningsparql.com/ns/addressbook#region> "Connecticut" .

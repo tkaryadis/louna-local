@@ -1,0 +1,113 @@
+0)Το project δεν ειναι ακομα ευπαρουσίαστο παρολα αυτα μπορειτε να
+  καταλαβετε πιστευω πως το υλοποιω περιπου
+
+  Στοχος ηταν να προσθεσω επιπλεων λειτουργικοτητα 
+  να διαβαζει κανονικα rdf data,να κανω tests συκγρινωντας
+  με την sparql της jena,και μετα να σας εστελνα να δειτε
+  τι εχω κανει.(πιστευω οτι σε 20 μέρες περιπου θα μπορει
+  να τα κανει αυτα)
+
+  Να μου λεγατε τι θελετε να προσθεσω,τι υλοποιω πολυ 
+  μη αποδοτικα,optimizations η οτιδηποτε αλλο και να το αλλαζα
+  και ξανά.
+    
+  Για οποιοδήποτε πρόβλημα μπορουμε να μιλαμε καθημερινα στο
+  skype(με text ειναι λιγοτερο ανχγωτικο οποτε οποιαδηποτε
+  απορια για το πως εχω υλοποιησει κατι με ρωτατε και σας
+  απανταω)
+
+  *Δεν αντιγραφω ποτέ κωδικα,συγκεκριμένα δεν ξερω και κανεναν
+   που ξερει clojure
+   Στοχος ειναι να γραφω κωδικα καθε μέρα γιαυτο ηθελα την clojure
+   ο βαθμος δεν με ενδιαφερει,ουτε το ποσο χρειαζεται για να αρκει
+   σαν πτυχιακη(εννοειτε οτι πρεπει να περασω τα δυο αυτα ορια),
+   αλλα στοχος ειναι να φτιαξω κατι.
+   Κωδικας στο github απο παρομοια project px clojure.core.logic
+   ειναι γραμμενος απο επαγγελματιες προγραμματιστες και ειναι
+   δυσνοητος ο κωδικας.
+   
+   Δεν νομιζω οτι θα χρησημοποιησω κωδικα απο καποιο άλλο project
+   γιατι θελω να φτιαξω αρχικα μια δικη μου εκδοχη και οσες φορες 
+   δοκιμασα να διαβασω clojure απο επαγγελματιες μου ηταν δυσκολο ακομα,
+   εαν χρησιμοποιεισω κατι θα σας ενημερωσω τι χρησιμοποιησα και απο που.
+
+   Ως τωρα η σύνταξη της DSL μοιάζει με την συνταξη που χρησιμοποιει
+   η cascalog αλλα δεν εχω διαβασει τον κωδικα της cascalog ουτε εχω
+   χρησιμοποιησει κατι απο τον κωδικα(ειναι δυσνοητος και εχει και 
+   java κωδικα μεσα)
+   
+  
+1)Run from source code with Leiningen
+
+  Leiningen
+  1)Aναλαμβάνει της dependancies του project
+  2)Με auto μπορείς να φτιάξεις project από templates 
+  3)Μπορείς να τρέχεις το project σου μέσο lein
+    lein run
+  4)Μπορεί να κάνει το project jar 
+  5)lein repl αρχίζει repl
+  ......  
+
+  Install Leiningen
+   https://leiningen.org/
+
+   Κατεβάζεις ένα script και απλά το τρέχεις,μετά το lein είναι installed
+   πχ δοκιμη στο terminal 
+   $lein
+  
+  Run project
+   cd louna    
+   lein run    ;;lein run => compile and run
+   rm -r target ;;σβήνω το προηγούμενο compile,αλλάζω ότι θέλω στο query.clj
+   lein run     ;;το τρέχω ξανά
+
+   *το rm -r target χρειαζεται μονο εαν παω να το ξανατρέξω χωρις να εχω
+    κανει καμμια αλλαγη στο source code,δεν ξερω γιατι συμβαινει αυτο
+    αλλά εαν θελετε να το τρεξετε πολλες φορες χωρις να αλλαζετε τον κωδικα
+    καντε προτα  rm -r target και μετα lein run
+
+  Auto που τρέχει είναι το louna/src/louna/query.clj
+  Μπορείτε να το ανοίξετε και να αλλάξετε τις queries και ξανά run
+
+  *εάν δεν το τρέχετε σε linux
+   louna/src/louna/core.clj:line 20
+   path "../../data/" ;;balte to path sosta px absolute path oste na bri ta data
+
+3)Run from intellij + cursive
+
+  Install intellij community + cursive plugin
+  https://cursive-ide.com/userguide/index.html
+
+  Βάλτε το φάκελο louna στο φάκελο με τα projects του intellij
+  (σβήστε το target directory καλύτερα)
+
+  Ανοίξτε το project μέσο του intellij
+  https://cursive-ide.com/userguide/leiningen.html
+
+  Στο louna.core.clj αλλάξτε το path σε αυτήν την τιμή
+  γιατί το intellij έχει άλλο current working directory από το lein
+  και δεν θα βρίσκει τα data
+  
+  path "../../data/"
+
+  
+4)Από το bitbucket
+  Εάν βάλετε το intellij,μπορείτε να πάρετε τον κώδικα από το bitbucket
+  και να τον τρέχετε λογικά χωρίς πρόβλημα
+
+  Εάν πρόβλημα
+    1)lein new louna  ;;κενό project
+    2)πάρτε τον κώδικα από το bitbucket src directory
+    3)και το directory data
+    4)src από bitbucket στο κενό project στο src
+      και data μέσα στο directory louna(το εξωτερικό louna)
+    5)βάλτε το νέο project στα projects του intellij directory
+    6)ανοίξτε το project σύμφωνα με το
+      https://cursive-ide.com/userguide/leiningen.html
+       
+      Δηλαδή new from existing resources
+
+    7)Build+Run query.clj
+
+  *θα αφαιρέσω από το bitbucket φακέλους που αφορούν το intellij
+   και όχι το project,εαν υπαρχει προβλημα

@@ -1,0 +1,4 @@
+_:node1cor89j4jx1 <http://xmlns.com/foaf/0.1/name> "Johnny Lee Outlaw" .
+_:node1cor89j4jx1 <http://xmlns.com/foaf/0.1/mbox> <mailto:jlow@example.com> .
+_:node1cor89j4jx2 <http://xmlns.com/foaf/0.1/name> "Peter Goodguy" .
+_:node1cor89j4jx2 <http://xmlns.com/foaf/0.1/mbox> <mailto:peter@example.org> .

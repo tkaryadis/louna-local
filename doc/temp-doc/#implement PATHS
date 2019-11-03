@@ -1,0 +1,79 @@
+Syntax Form	Property Path Expression Name	Matches
+iri	PredicatePath	An IRI. A path of length one.
+^elt	InversePath	Inverse path (object to subject).
+elt1 / elt2	SequencePath	A sequence path of elt1 followed by elt2.
+elt1 | elt2	AlternativePath	A alternative path of elt1 or elt2 (all possibilities are tried).
+elt*	ZeroOrMorePath	A path that connects the subject and object of the path by zero or more matches of elt.
+elt+	OneOrMorePath	A path that connects the subject and object of the path by one or more matches of elt.
+elt?	ZeroOrOnePath	A path that connects the subject and object of the path by zero or one matches of elt.
+!iri or !(iri1| ...|irin)	NegatedPropertySet	Negated property set. An IRI which is not one of irii. !iri is short for !(iri).
+!^iri or !(^iri1| ...|^irin)	NegatedPropertySet	Negated property set where the excluded matches are based on reversed path.
+That is, not one of iri1...irin as reverse paths. !^iri is short for !(^iri).
+!(iri1| ...|irij|^irij+1| ...|^irin)	NegatedPropertySet	A combination of forward and reverse properties in a negated property set.
+(elt)	 	A group path elt, brackets control precedence.
+
+1)inverse PATH
+  allazo tin thesi object kai subject,to allazi i qmacro
+
+2)sequence PATH
+  grafo tin 1 sxesi san poles chained me esoterikes metablites
+  to kani i qmacro
+
+3)alternative PATH
+  antikathisto to elt1 | elt2
+  me 1 sxesi me idiko onoma px   _1alt_  _2alt_
+  to kani i qmacro kai epistrefi i qmacro ena map opou
+  {_1alt_ [rel1 rel2 ...]
+
+
+4)!iri or !(iri1| ...|irin)
+
+  !iri3
+  Diabazo tin iri3 stin mnimi
+  meta trexo = (iri1|iri2|iri4..)
+
+  alla me fitro pote  s-o na aniki stin iri3
+
+  !(iri1| ...|irin)
+
+
+
+
+5)elt+
+
+  :petros knows+ :takis
+
+  o gnostos tou gnostou mou = gnostos mou
+
+  proxorao mexri na ftaso sto takis i i teleutea stili tis gramis na min bazi neous gnostous
+  palioi gnosti einai auti pou idi exo stin grami
+
+
+  Pos to ilopoio
+
+
+  1)brisko gnostous tis protis metablitis
+  2)gnostous tis deuteris mono ean den tou exo idi stin grami
+
+  ara exo tin grami kai san set
+
+  stin grami to mono pou me niazi einai teleutea timi
+
+  grami= [first {gnosti idi} last_gnostos]
+
+  kathe grami pou den mpori na proxorisi petiete(den prostheti agnostous)
+  ean i grami ftasi sto :takis tote einai egiri kai bazo to [first :takis] stis egires
+
+  to kano mexri na adiasoun oles oi grames
+
+
+  Ean i deuteri einai metabliti tote otan den mporo na balo neous gnostous
+
+  Exo kata elaxisto 1 metabliti kai den exo r metablites
+  ara  s/r/so
+
+
+
+
+
+

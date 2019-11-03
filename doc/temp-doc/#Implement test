@@ -1,0 +1,8 @@
+1)test filters
+  arithmous
+
+  (?: [?person]
+      ((person:firstname person:city) ?person (?firstname ?city))
+      (city:country ?city ?country)
+      (country:contiment ?country "EUROPE")
+      (= ?firstname "takis"))

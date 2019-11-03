@@ -1,0 +1,154 @@
+1)Mikros table
+  thelo tin query tou xristi na tin ekfraso algebrika
+  kai i algebra na antistixi se sinartisis tou programatos
+
+Ara query-> algebriki ekfrasi -> ektelesi
+
+Thelo na oriso
+1)seira
+2)tautoxrones praxis
+
+Kritiria pou epireazoun to optimization=OTI MIKRENI TON TABLE
+(o pinakas megaloni se stiles alla mono periorizete pote den megaloni
+ px to ipsos tis protis stilis)
+
+1)var-domains
+  idies metablites exoun idio euros timon
+  exasfalizo oti oi nodes(vars) einai sosti(epitreptes times)
+
+   (:name    id name)
+   (:adrress id address_id)
+
+
+  Arxika ta id prepei na exoun idio euros timon
+  px ean sto proto exo id={1 2 3}
+     kai sto deutero exo id={1 2 5}
+  Xoris na kano to join otan diabaza tin deuteri
+  den simperilaba to 5
+  Eno telika  var_domain(id)={1 2}
+
+  Ara kratao var-domains(sets epitrepton timon) oste otan diabazo
+  sxesis na kratao mono valid times gia nodes
+
+  Ta var-domains pianoun mnimi i xrisi tous einai gia un-joined mexri stigmis
+  sxesi/sxesi  sxesi/pinaka
+
+  Den mporo na ta paro kateuthian apo ton pinaka
+  1)den exo ton pinaka ana columns
+  2)kathe collumn den einai set
+
+  Einai xrisima ean exo poles un-joined sxesis stin mnimi
+  Isos mporo na ta glitoso ean kano join while reading
+  (exo diabasi tin mia kai tin alli tin diabazo mono ean prokite na gini join)
+
+  Kostos tou na min ta xrisimopoiiso = na not-valid times => megales sxesis
+  mono ean kano ta joins poli sintoma isos den xriazonte
+
+
+2)joins
+  joins ginonte otan exo common-var
+  exasfalizo oti oi gefires(sxesis) einai sostes(sindeonte ontos oi nomimoi nodes)
+
+  (:name    id name)
+  (:adrress id address_id)
+  (:aname   address_id name)
+
+  id   adress_id  name
+  id={1,2} apo epano
+  alla mpori mono o id=1 na exi tin gefira (address_id name)
+  ara o 2 tha petaxti logo join(parolo pou einai nomimos node)
+
+  Ara ta joins mikrenoun ton table kai oso pio megali einai i alisida
+  ton join toso mikrenoun oi times pou einai nomimes
+
+3)filtra
+  Iparxoun 3 idon filtra,os pros to pote ta efarmozo
+  1)1-var-filtra
+    px (< ?o 10)
+    efarmozonte otan diabazo sxesis
+    (:rela ?s "stathera") (:rela "stathera" ?o)
+  2)2-var-filtra stin idia relation
+    otan diabazo sxesis
+    (:rela ?s ?o)
+    px (< (+ ?s ?o) 10)
+  3)join filtra
+    2vars pou den anikoun se idia sxesi
+    3vars+
+    den mporo na ta efarmoso otan diabazo mia sxesi
+    mpori na ta efarmoso mono otan kano join
+    px (< (+ ?s ?o) 10) alla den exo (:rela ?s ?o)
+    px (< (+ ?s1 s2 ?o))
+
+  Iparxoun 2 idon filtra os pros to selectivity
+  1)1 epitreptis timis
+    px (= ?o 10)
+  2)eurous epitrepton timon
+    px (< ?o 10)
+
+  Stoxos einai na efarmozo prota ta pio selective filtra kai
+  na ta efarmozo to noritero dinato
+
+4)Megethos sxesis
+  Stoxos einai na mikreno to megisto tous epitrepomenounous
+  nodes (var-domains)
+  kai tis epitrepomenes gefires(joins)
+
+  Arxika prepei na balo ta filtra stis sxesis kai meta na ektimiso
+  to megethos tous
+
+   (:rel ?x "takis")  = (:rel ?x ?y) (= ?y "takis")
+
+  Diabazo prota tis mikroteres sxesis
+
+  Kritirio gia to pia tha einai mikroteri
+  1)file size
+  2)poses metablites simetexoun se autin
+  3)posa filtra simetexoun se autin
+
+
+Sinolika thelo
+mikres sxesis prota(mikres i mikres logo filtron)
+filtra oso to dinaton noritera
+enomena data (joined oxi un-joined pragmata)
+valid times (var-domains)
+
+
+2)Paralilismos
+  ?
+  gia na kano join mporo na diabazo paralila 2+ sxesis oti ginete join to kano
+  oti den ginete perimeni,otan diabaso tin mia sxesi,oti perimeni einai gia petama
+
+  aporipto times mono otan diabaso tin mia olokliri
+  dexome times opiadipote stigmi
+
+  px
+
+  (:name id name)
+  (:lastname id lastname)
+  (:address id address)
+
+  diabazo kai tis 3 tautoxrona oso diabazo koina id kai apo tis 3 ginonte join,mi koina
+  perimenoun na teliosi 1 apo autes(kai meta ta petao)
+
+
+3)Algebra
+
+  Thelo i seira pou akoloutho na min xanete ston kodika,alla na anaparistate apo mia endiamesi
+  anaparastasi oste na fenete ti kano
+
+  Thelo na grapso tin query san mia seira algebrikon praxeon,pou "sxedon" tha antistixoun se antistixo kodika
+  tou programatos
+
+  queries gia ena BGB (theoro connected)
+
+  1)enono filtra 1var,2var relation stis triplets
+  2)se kathe query bazo pia filtra prepei na trexoun otan auti diabazete
+    {"query" triple "s-filters" filtra "o-filters" filtra "so-filters" filtra}
+  3)orizo seira ton joins stis metablites (to thelo gia na kratao ton pinaka max joined)
+    allazo tis queries pou ginane switched
+  5)ta join ta kano epilegontas panta tis mikroteres sxesis xoris cartesian joins
+    (mikroteri sxesi enoite meta ta filtra pou exoun efarmosti se autin)
+
+    *na do episis pos mporo na makreno tin alisida oso ginete
+    *episis joins idiou pair isos ola mazi kai meta join me ton teliko pinaka
+    *episis joins idias metalitis isos ola mazi kai meta join me ton tleiko pinaka

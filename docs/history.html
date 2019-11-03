@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="main-noside">
+
+<pre>
+<span class="title">Change log</span>
+
+<b>17 February -24 February 2018</b>
+   joins (partially implemented)
+   variable binding
+   first demo 
+  
+   Here all relations was on memory,not all join types were implemented.
+   Relation join was executed in the order the user wrote them.
+   Query was using strings "?v" instead of ?v ,it was first demo.
+
+<b>24 February - 24 March 2018</b>
+   rebuild the demo  
+   projections
+   filter  
+   bind 
+
+   This was the first big change,relations was read loaded in memory one
+   by one,order was decided,embedded in code (not yet query plan).
+   Filter and binds were working(filters was very slow back then)
+
+<b>24 March - 31 March 2018</b>
+   debug joins with circles
+   read rdf and store them to louna readable form (1 relation/file)    
+   namespaces support   
+   query rdf   
+   16 example queries in query.clj
+
+   Testing for the first louna edition,with some RDF data,triplestore
+   foundations,of how to translate RDF data.
+
+<b>1 April - 8 April 2018</b>
+   bug fixes     
+   group support/recursive groups       
+   remake macroq macro to support groups       
+   union        
+   example queries with unions
+
+   Groups support,make union and make louna capable to handle groups.
+   Groups at that time were written in a complicated way,because no
+   auto-grouping was used back then,so user made the groups inside the query.
+
+<b>9 April - 16 April 2018</b>     
+   optional     
+   minus    
+   join tables    
+   bind tables    
+   filter tables    
+   examples
+
+   Building more group operators.
+
+<b>17 April - 24 April 2018</b>          
+   sort-by                 
+   aggregation functions   
+   group by       
+   having    
+   make-doc(doc/0,1,2,3)   
+
+   Building more group operators.
+   Start documenting the site to show what louna can do.
+
+<b>24 April - 30 April 2018</b>      
+   remake-packages/file-names        
+   limit    
+   auto-testing     
+   make-doc(doc/4.1,4.2,5,6)        
+   minor bug fixes (namespaces in filter binds)   
+   minor performance fixes (values in atom)   
+
+   Re-organize source code,make auto-testing with that time like 50 
+   queries to run the test's and find errors when i made differences.
+   50 queries auto test=> shows which failed if fail
+
+<b>1 May - 8 May 2018</b>   
+   rebuild BGP package to support:
+     1) query plan    
+     2) cost based optimization of the query plan
+     
+   query->query plan->optimization->execute    
+
+   Query plan was so important,the code was so difficult to understand
+   query plan was embedded in code,making it so complicated.
+   Query plan was made,and the code followed the query plan.
+
+   Also cost based optimization was made.No cartesians,and smaller 
+   relations first in join order.
+
+<b>9 May - 16 May 2018</b>     
+   testing &amp; debugging (BGP package rebuild)      
+   queries with var on relation (?r ...)       
+   property paths (Inverse path, alternative paths, sequence paths)  
+
+   Relation with ?r wasn't made until then,actually without the query plan
+   i tried to implement them and failed.It was hard.But with query plan
+   was was happening was visible and everything was alot easier.
+
+   Also added property paths
+
+
+<b>17 May - 24 May 2018</b>     
+   BGP (autogrouping, cartesian filters, binds etc.)   
+   property paths (path+)            
+   read from multiple rdf files (many rdf files make 1 db)  
+   bug fixes (remake optional, test-queries fix namespace bug, regular expressions bug, eval bug when number)   
+
+   Louna was not simple,user had to write the groups manually,autogrouping was needed
+   (see internals/autogrouping)
+   Also added the ability on triplestore to read many rdf files and make 1 database from all.
+
+<b>25 May - 1 June 2018</b>  
+   add-types (free types in memory, not just strings)        
+   default-namespaces/default databases      
+   path*   
+   performance fix(not read-string->eval,just eval)(done)            
+   add more test queries             
+   construct 
+
+   This was important also,at first editions of louna,all data was string in tables.
+   And strings were made to numbers to apply filter and binds.
+   But louna is a data processing tool,and had to deal with all types.
+   In louna at least in memory DB you can store everything.When you save it to text
+   files it has to be something printable to string.
+
+   Fixed the functions in queries(1st fix,see Internals/functions on queries)
+   Started building constructs
+
+
+<b>1 June - 10 June 2018</b> 
+   construct with queries
+   nested constructs and queries
+   q-in q-out and multiple in sources/out sources         
+
+   Constructs and nested construct/queries.
+   Fixing input and output {:q-in [] ...}
+
+<b>June 10 - 17 June 2018</b>           
+   update docs      
+   make docs website          
+   testing          
+   more examples   
+   project completed (docs website + code)
+
+   Starting the website.
+
+
+<b>June 18 - 26</b>   
+   Benchmarking performance
+   Web-site additions.
+
+   Learn how to use Jena and start benchmarks with Clojure
+   
+<b>June 18 - 4 July </b>   
+   Remake function queries,second fix solutions see Internals/functions on queries.
+   Filters was terrible slow back then.
+   Website updates,general performance and bug fixes.
+
+<b>July 4 - 15 July </b> 
+   Only some days in that 10 days worked with louna,and make SPARQL generation.
+   At least the fundation.
+   At first i didn't know how to do it , but then i found the way,using macros
+   that can have nested macros.
+
+<b>July 15 - September 5</b>
+   Louna was frozen.
+   I studied for semptember exams.
+   I did'nt want to make them both because i would prefer louna.
+
+<b>September 6 - September 15 </b>
+   Rebuild gen-sparql,to suppport variadic macros,to support many functions.
+   Update web-site
+   Bug fixing
+   Adding examples.
+
+<b>September 15 - October 4 </b>
+   Site formatting,add more content.
+   Bug fixes.
+   Cleaning code.
+   Change code structure.
+   RDF from constructs. (:rdf "my-dir")
+
+<b>October 4 - October 13</b>
+   At september i didn't want to change the code alot,so i left it.
+   And i did mostly web-site thigs and cleaning-debugging.
+   But i changed my mind and i started coding again,because iwanted
+   to make the alternative join method.
+
+   Made join method 1
+   Used temp-vars to have only 1 relation type (rso)
+   And then spend time to update the site,debug them,and benchmark them.
+   Materialiaze construct
+
+   Join method 1 is like 20% slower that join Method 2,but its more simple
+   in code.I think its fixable to go faster than Method 2.
+
+<b>October 14 -...</b>
+Testing and website updates.
+  
+</pre>
+</div>
+     
+</body>
+</html> 

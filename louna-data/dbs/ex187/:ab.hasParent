@@ -1,0 +1,4 @@
+[:d.jane :d.gene]
+[:d.gene :d.pat]
+[:d.joan :d.pat]
+[:d.mike :d.joan]

@@ -1,0 +1,4 @@
+_:node1cor9n8gmx1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cor9n8gmx1 <http://xmlns.com/foaf/0.1/homepage> <http://work.example.org/alice/> .
+_:node1cor9n8gmx2 <http://xmlns.com/foaf/0.1/name> "Bob" .
+_:node1cor9n8gmx2 <http://xmlns.com/foaf/0.1/mbox> <mailto:bob@work.example> .

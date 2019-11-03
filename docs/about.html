@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div> -->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="main-noside">
+<pre>
+<span class="title">Some context</span>
+
+Louna was developed <em>&lambda;ouna</em> for my bachelor thesis at <a href="https://www.csd.uoc.gr/">University of Crete</a>.
+
+I want to thank my supervisors <a href="http://users.ics.forth.gr/~papadako/">Panagiotis Papadakos</a> and <a href="https://www.ics.forth.gr/isl/index_main.php?l=e&c=223">Dimitris Plexousakis</a> that allowed me to use Clojure, and were very nice to me.
+
+<span class="title">Louna and other Projects</span>
+
+Since my aim was to develop something new, <em>&lambda;ouna</em> was build from the ground up.
+It is not based on any project and does not use code from anywhere else.
+I wanted to make something my own and then see alternatives and better ways.
+
+I always liked prolog,<em>&lambda;ouna</em>'s syntax is heavily influenced by SPARQL and the inspiration comes from  <a href="https://github.com/nathanmarz/cascalog">cascalog</a>.
+But it doesn't use code from any SPARQL processor or from the cascalog processor. 
+
+The template for the web-site is a bootstrap template.
+
+<span class="title">External libraries</span>
+<em>&lambda;ouna</em> has 2 code dependencies except clojure, 
+
+An <a href="https://github.com/clojure/tools.analyzer.jvm">analyzer</a> for Clojure code [org.clojure/tools.analyzer.jvm "0.7.2"].
+In the future it might be removed though, since currently its only use is to tell you that x is a local name
+in queries of the type (defn f [x] (q (:person.name ?name x)) 
+(found on <a href="https://stackoverflow.com/questions/48533064/how-do-you-find-all-the-free-variables-in-a-clojure-expression"> stackoverflow</a>).
+
+An rdf converter <a href="http://www.l3s.de/~minack/rdf2rdf/">RDF2RDF</a> to convert .rdf and .ttl files to .nt files that louna can read.
+
+<span class="title">Test examples</span>
+Most of the provided examples are from the book <a href="http://www.learningsparql.com/">Learning SPARQL, 2nd Edition</a> by Bob DuCharme.
+The book gave alot of examples in SPARQL and helped alot with testing. Currently <em>&lambda;ouna</em> can do almost everything
+up to chapter 5 (until page 185); the rest has to do with SPARQL update mostly which is currently not supported.
+<em>&lambda;ouna</em> can do things that SPARQL can't do because <em>&lambda;ouna</em> is programmable.
+For example queries with arguments coming from a function, or construct binds to relations, or data in memory etc.)
+
+I used also example queries from a <a href="https://www.w3.org/2001/sw/DataAccess/rq23/examples.html">W3C web page</a>.
+
+I wrote also my examples to support the Documentation with simple examples.
+
+In test folder in louna source code,there are many queries.
+
+The best way to test louna is with tables,let louna read a table(see about tables in Input Output),save it to a DB 
+(c {:c-out ["mydb"]}
+   (?id ?name)
+   (?id ?lastname)
+   ....
+   (q (:table (:person ?id ?name ?lastname)))
+
+You can save to mydb multiple tables and then do queries to them.
+
+</pre>
+</div>
+     
+</body>
+</html> 

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./guide.html">Site reading guide</a></span>
+  </li>
+    <li class="tree__item">
+    <span><a href="../documentation.html">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./overview.html">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span ><div  class="icon"></div><a href="./queries.html">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="./queries.html#relation">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span ><div  class="icon"></div><a href="./constructs.html">Constructs</a></span>
+    <ul>
+      <li>
+        <span><a href="./constructs.html">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./constructs.html#constructs-queries">Nesting q and c</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span id="sel"><div  class="icon"></div><a href="./inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item">
+    <span><a href="./reference.html">Syntax reference</a></span>
+  </li>
+
+</ul>
+</div>
+
+<div id="main">
+<h5 class = "main-title">Input and Output</h5>
+<pre>
+Louna can take input and produce output in different ways.
+
+The input and output options are given into a map {}
+
+Print to stdout is not default
+
+By default :
+If a q has nested c,c result will be q-in to the query,
+and if c has a nested q,q result will be c-in to the construct.
+
+
+<div class="code">
+If q 
+  {:q-in [..] :q-out [..]}
+If c
+  {:c-in [..] :c-out [..]}
+
+Its optional,you can ommit the whole map or any key like.
+If tou use the map,it must have at least 1 key,else not use the map at all.
+
+</div>
+
+For example
+
+<div class="code">
+  (c {:c-out ["print"]}
+     (:ab.hasAunt ?person ?aunt)
+     (q {:q-in [parentsDB]}
+        (:ab.hasParent  ?person ?parent)
+        (:ab.hasParent  ?parent ?gparent)
+        (:ab.hasParent  ?aunt   ?gparent)
+        (:ab.gender             :d.female)
+        (not= ?parent ?aunt)))
+
+  q
+    :q-in takes its data from a in-memory database,parentsDB
+  c
+    :c-in the nested q is default 
+    :c-out print to stdout
+
+</div>
+
+<b>:q-in</b>
+    
+    1 file database(folder of the database(not full path))
+    1 nested construct
+    1 or more memory databases
+
+    For example a full q would be like
+
+<div class="code">
+    (q {:q-in ["folderOfFileDB" memoryDB1 memoryDB2 ...]}
+        ...
+       (c ....))
+
+</div>
+    At least 1 source must be given
+
+<b>:q-out</b>
+
+    "print"   => table to stdout
+    "filename"  => table to file
+
+    For example a full q-out would be
+<div class="code">
+    (q {:q-out ["print" "mytable"]})  (my table must be in tables folder)    
+
+</div>
+<b>:c-in</b>
+
+    1 or more tables in memory
+    1 or more tables on disk
+    1 nested query
+
+    For example a full c-in would be
+<div class="code">
+    (c {:c-in [memTable1 memTable2 ... "/path/mytable1" "/path/mytable2" ...]} 
+       (q ...)
+
+</div>
+  
+<b>:c-out</b>
+    1)print
+    2)save to file db
+
+    For example a full c-out would be
+<div class="code">
+     (c {:c-out ["print" "mydb10"]}
+</div>
+  
+<b>More complete example</b>
+ 
+<div class="codelong">
+  (c {:c-out ["ex012" "print"]}
+     (:ab.areaCode ?person ?areaCode)
+     (q {:q-in ["ex012"] :q-out ["print"]}
+        (:ab.homeTel ?person ?phone)
+        ((subs ?phone 1 4) ?areaCode)))
+
+</div>
+
+  This means
+  :q-in from file database in folder "ex012"  (base_path/ex012)  
+  :q-out in stdout 
+  :c-in dont exists,but q nested is default c-in
+  :c-out save to file db "ex012" and also print in stdout
+
+  *We dont need to give settings in c and q,q will take as setting 
+   the settings of his parent if he doesnt have his own.
+     
+  
+    For example
+<div class="code">
+  (c {:c-out ["print"]}
+     (:ab.hasAunt ?person ?aunt)
+     (q {:q-in [parentsDB]}
+        (:ab.hasParent  ?person ?parent)
+        (:ab.hasParent  ?parent ?gparent)
+        (:ab.hasParent  ?aunt   ?gparent)
+        (:ab.gender             :d.female)
+        (not= ?parent ?aunt)))
+
+</div>
+
+     Here we say q-in will be from a var named parentsDB(in-memory database) and c-out will be print in stdout
+      
+     For example
+<div class="code">
+   (c {:c-out ["print" "db12"]}
+     (:ab.hasAunt ?person ?aunt)
+     (q {:q-in ["db12"]}
+        (:ab.hasParent  ?person ?parent)
+        (:ab.hasParent  ?parent ?gparent)
+        (:ab.hasParent  ?aunt   ?gparent)
+        (:ab.gender             :d.female)
+        (not= ?parent ?aunt)))
+
+</div>
+
+     q read the relations from the directory "db12" which contains the relations in files(1 file/relation)   
+     c print the results in stdout,and also save the new relations in "db12" (create database or add data to an existing database)<span id="louna-data"></span>
+
+
+<b>Louna-data</b>
+
+    The programmer doesn't have to deal everytime with file paths,in order to read or write data.
+    This is done by having a default structure where all louna-data are there.
+
+    The structure is like this
+    
+<div class="code">
+    louna-data
+        dbs
+        tables
+        rdf
+
+</div>
+    By default this directory tree is created inside the folder that contains the clojure project.
+    If the user wants to store data in another way he must change the configuration file
+    db-settings
+    For example   {:base-path "/home/white/mydir"}
+    Louna will take the data from 
+        "/home/white/mydir/dbs"
+        "/home/white/mydir/tables" 
+        "/home/white/mydir/rdf" 
+  
+    DB's are added inside th dbs folder and tables are added inside the tables folder
+    Inside the rdf directory the user stored .nt files in directories he makes.
+
+<div class="code">
+    louna-data
+        dbs
+            db1
+                relation1
+                relation2
+                ...
+                db1.stats
+                db1.ns 
+            db2
+            ...
+        tables
+            table1
+            table2
+            ...
+        rdf
+            my_rdf_files_1
+            my_rdf_files_2
+
+</div><span id="louna-db"></span>
+
+
+<b>Louna database</b>
+ 
+    File database 
+<div class="code">
+    dbname
+        relation1
+        relation2
+        ...
+        db.stats
+        db.ns 
+
+</div>
+
+    Memory database
+        Hash-map of relations
+<div class="code">
+        (def menuDB {:meal.name
+                [[1 "eggs with potatoes"]
+                 [2 "fried rice with eggs"]]
+
+                :meal.type
+                [[1 "breakfast"]
+                 [2 "lunch"]
+                 ..]
+
+                })
+
+</div>
+
+  A database can be created using a construct.  <span id="namespaces"></span>
+  A construct can make relations using the 4 different types of constructs.
+  
+<b>Namespaces</b>
+
+    Louna is able to read rdf data in .nt format.But to query them it first converts them to internal 
+    storage 1 file/relation.
+    Out World -> louna -> Out World
+
+    Inside louna there are no URI's,louna has namespaces in the form    :prefix.attribute
+    the :prefix is the namespace for louna.
+
+    Inside louna there is no umbiguity because we choose the prefixes.We need URI's only to get external data,
+    or to export back louna data to external data. 
+
+    out-world ---> louna
+
+        The user can choose the prefixes that louna will use with 2 ways.
+        1)Read data from a .rdf or .ttl file that prefixes are used.Louna will keep the same prefixes
+        2)Read .nt files but type manually in an extra file called = ns  ,the prefix-URI pairs.
+        
+        When louna reads the data,if it finds URI's that don't have prefixes for them,a auto-generated prefix
+        will be used like  :p1.name.(Every database has a db-name.ns where you can see the pairs  prefix-URI's
+        inside the database folder)   
+        <http://purl.org/dc/elements/1.0/name> to :dc10.name
+    
+<div class="code">
+    Content of a ns file,that can be used while reading an .nt file to choose the prefix.
+      {
+        "dc10" "http://purl.org/dc/elements/1.0/"
+        "dc11" "http://purl.org/dc/elements/1.1/"
+      }
+</div>
+  
+  louna  --->out world
+   
+      Maybe we need to export a database as a .nt file again.
+      We read the db.ns file,and we do the opposite   :prefix.name->URI/name
+
+      Louna don't follow the strict rules of rdf(relation/subject can't be a literal in sparql,in louna it can be a literal)
+      In that case a URI named <http://louna.literal/> can be used.
+
+  Summary<span id="create-db"></span>
+  URI(out world) ->prefixes(louna world,we remember the matching) -> URI(out world)
+
+<b>Creating a file DB</b>
+
+    From relations in memory(construct results)
+
+        :c-out ["db1"]
+
+        *if database existed new data are added,and stats are updated
+         else new database is created.s
+
+    Fron RDF file/files
+
+       1)Create a directory for example my_rdf inside the louna_data/rdf/my_rdf
+       2)Put inside .rdf .ttl .nt files you want
+       3)To save them in a database named "my_db" 
+<div class="codelong">            
+          ;;Save them to a file database with name "my_db" 
+          (c {:c-out ["my_db"]}
+             (:rdf "my_rdf"))
+
+</div>
+      4)Alternative if you dont want to save it to files
+
+<div class="codelong">
+          ;;Just print the converted rdf(rdf->louna relations in memory)  
+          (c {:c-out [print]}
+             (:rdf "my_rdf"))
+         
+          ;;Convert the rdf and load it in memory,and query it(without saving it in file) 
+          (q {:q-out ["print"]}
+              [?book ?title]
+              (:dc.title ?book ?title)
+              (c (:rdf "my_rdf")))
+</div>        
+      5)How this works
+
+        Louna reads .rdf .ttl .nt RDF files.
+        .rdf->ttl->.nt->louna-data
+
+        So the fastest way to load RDF data is to have them on .nt file.
+        Because in .nt file there are no prefixes and only URI's the user can define prefixes in
+        file named=ns  with content {"myprefix1" "myURI1" ...}
+
+        If the data comes from .rdf or ttl,the prefixes on the files are used.
+        For example if .ttl is like this
+
+<div class="code">
+          @prefix foaf:       <http://xmlns.com/foaf/0.1/> .
+          _:a  foaf:name       "Alice" .
+
+</div>
+      Louna will store this as  relation_name=foaf:name   relation_content=[_:a "Alice"]
+
+
+      As long you are inside the database you dont care about the URI's the URI's will be used
+      again only if you want to publish data again as RDF.(the reason we save them is this,to export
+      them maybe later)
+
+<span id="table-example"></span>
+
+
+<b>Creating and saving tables</b>
+
+   To save a table you say it as a :q-out argument {:q-out ["mytable"]}
+   Results will be saved in file louna-data/tables/mytable
+   
+   Louna writes the table likes this
+   Vectors with typed data
+   [1000 "takis" "papadopoulos" "kabala" "greece" "europe"]
+   [1001 "kostas" "georgiou" "athina" "greece" "europe"]
+   [1005 "takis" "alexiou" "moscow" "russia" "asia"]
+
+   Louna can read tables(for example as :c-in in constructs) in 2 forms
+   1)Like above
+   2)space seperated values untyped data
+     1008 giorgos    papadimitriou atlanta  usa         america
+     1001 kostas    georgiou       athina   greece      europe
+     1002 petros    athanasiou     kabala   greece      europe
+
+   To see some queries that read tables and writes to tables see
+   test/documentation.read_write_table.clj
+
+  </pre>
+</div>
+     
+</body>
+</html> 

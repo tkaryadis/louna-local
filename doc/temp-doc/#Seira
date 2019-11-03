@@ -1,0 +1,41 @@
+1)H macro apla paragi kanoniko clojure kodika kai tipota alo den kani
+  H query tha gini ena kanoniko clojure data literal pou tha ektelesti
+  sto run
+
+  px
+
+  (macroq ["sp1"]
+     [dc10 "http://purl.org/dc/elements/1.0/"]
+     [dc11 "http://purl.org/dc/elements/1.1/"]
+
+     [?title ?author]
+     [(dc10:title        ?book  ?title)
+      (dc10:creator             ?author)
+      (or (dc11:title    ?book  ?title)
+          (dc11:creator         ?author))])
+
+  Se
+
+  (qf ["sp1"]
+      ["dc10" "http://purl.org/dc/elements/1.0/"]
+      ["dc11" "http://purl.org/dc/elements/1.1/"]
+
+      ["?title" "?author"]
+      ['("dc10:title"    "?book"  "?title")
+       '("dc10:creator"            "?author")
+       '("or" '("dc11:title"    "?book"  "?title")
+              '("dc11:creator"         "?author"))])
+
+
+2)afero namespaces tis query kai ta antikathisto me internal
+  to kano se oli tin query
+
+
+3)Gia na ektimiso ta panta xriazomeno mono to rdf-dir
+  project query/namespace-map (einai sto telos otan project+print)
+
+4)Xorizo to query group se groups
+  ta trexo me tin seira kai kano tis praxis
+
+  1)Ean exo triple group (basic graph pattern)
+    to trexo me tin sinartisi pou exo idi

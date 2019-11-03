@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="./icons/cl.png">
+  <script src="./js/jquery-3.2.1.min.js"></script>
+  
+  <title>λouna</title>
+
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/index.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+  
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+  <main role="main">
+
+  <div class="jumbotron" id="intro">
+    <div class="container">
+      <img src="./icons/cl.png" style="width:120px;height:120px; float:right; margin-right:300px;" ></img>
+      <h1 class="display-3" id="intro-title" style="float:left;margin-left:370px;">λouna</h1>
+      
+      <div id="intro-text" style="clear:both;">
+      <p><b>Programmable SPARQL-DSL</br></b> 
+         <b>For querying and data processing</b></br>
+         <b>Implemented in Clojure</b> </br>      
+      </p>   
+      
+      </div>
+     <div id="ex-div">
+     <p><a class="btn btn-primary btn-lg" 
+           href="./Documentation/guide.html"
+           role="button"
+           id="ex-button">
+         Read more! »</a>
+     </p>
+     </div>
+   </div>
+ </div>
+ <div class="container">
+   <div class="row">
+     <div class="col-md-4" >
+       <h2 style="text-align : center; padding-right : 30px" >Simple</h2>
+       <p>Compact and intuitive, with no extra keywords, brackets or capital letters</p>
+     </div>
+     <div class="col-md-4">
+       <h2 style="text-align : center; padding-right : 30px ;">Powerful</h2>
+       <p>Clojure functions can be used inside the queries or can call queries.Query columns,tables,and RDF data.</p>
+     </div>
+     <div class="col-md-4">
+      <h2 style="text-align : center; padding-right : 70px ; ">Lispy</h2>
+      <p>Join like reading key-value pairs. Because the queries are s-expressions </p>
+     </div>
+    </div>
+
+    <hr>
+
+ </div> 
+
+ </main>
+
+</body></html>

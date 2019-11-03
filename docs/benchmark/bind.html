@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../benchmark.html">Benchmark info</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./rdf.html">Query RDF</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./join.html">Join triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./filter.html">Filter triples</a></span>
+  </li>
+   <li class="tree__item">
+    <span><a href="./bind.html">Bind triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./sort.html">Sort by</a></span>
+  </li>  
+
+</ul>
+</div>
+
+<span id="rationale"></span>
+<div id="main">
+  <h5 class = "main-title">Benchmark</h5>
+  <pre >
+<b>Info</b>
+    
+   8 binds are added,including binds on binds.
+   Filters are used to all of them.
+
+<div class="code">
+(defn run-bench []
+  (q {:q-in ["genDB"] :q-out ["print"]}
+     (:n.c1  ?c0 ?c1)
+     (:n.c2  ?c0 ?c2)
+     (:n.c3  ?c0 ?c3)
+     (:n.c4  ?c0 ?c4)
+     (:n.c5  ?c0 ?c5)
+     (:n.c6  ?c0 ?c6)
+     (:n.c7  ?c0 ?c7)
+     (:n.c8  ?c0 ?c8)
+     (:n.c9  ?c0 ?c9)
+
+     ((str ?c1 ?c2) ?x1c2)
+     ((str ?c1 ?c2 ?c3) ?x2c3)
+     ((str ?c1 ?c2 ?c3 ?c4) ?x3c4)
+     ((str ?c1 ?c2 ?c3 ?c4 ?c5) ?x4c5)
+
+     ((str ?c3 ?c4 ?x1c2) ?y1c2)
+     ((str ?c3 ?c4 ?c5 ?x2c3) ?y2c3)
+     ((str ?c3 ?c4 ?c5 ?c6 ?x3c4) ?y3c4)
+     ((str ?c3 ?c4 ?c5 ?c6 ?c7 ?x4c5) ?y4c5)
+
+     (clojure.string/ends-with? ?x1c2 "2")
+     (clojure.string/ends-with? ?y1c2 "2")
+
+     (clojure.string/ends-with? ?x2c3 "3")
+     (clojure.string/ends-with? ?y2c3 "3")
+
+     (clojure.string/ends-with? ?x3c4 "4")
+     (clojure.string/ends-with? ?y3c4 "4")
+
+     (clojure.string/ends-with? ?x4c5 "5")
+     (clojure.string/ends-with? ?x4c5 "5")
+
+     (clojure.string/ends-with? ?y1c2 "2")
+     (clojure.string/ends-with? ?y2c3 "3")
+
+     (clojure.string/ends-with? ?y3c4 "4")
+     (clojure.string/ends-with? ?y4c5 "5")
+
+     (or (clojure.string/starts-with? (subs ?y2c3 5) "1")
+         (clojure.string/starts-with? (subs ?y2c3 5) "2")
+         (clojure.string/starts-with? (subs ?y2c3 5) "3")
+         (clojure.string/starts-with? (subs ?y2c3 5) "4")
+         (clojure.string/starts-with? (subs ?y2c3 5) "5"))
+
+
+
+     (:group-by ((count ?c0) ?rows))))
+
+</div>    
+
+<b>Benchmark results</b>
+
+   Binds seems to work very good also.
+   Its 1x-1.5x.
+
+<div class="code">
+1000 rows
+    louna    0.6 sec
+    jena     1.2 sec
+10000 rows
+    louna    3.3 sec
+    jena     3.4 sec
+100000rows
+    louna    19.6 sec
+    jena     15.1 sec
+200000rows
+    louna    45 sec
+    jena     36 sec
+400000rows
+    louna    - sec
+    jena     - sec
+
+
+</div>
+
+  </pre>
+
+</div>
+     
+</body>
+</html> 

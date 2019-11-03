@@ -1,0 +1,22 @@
+# filename: ex111.rq
+
+PREFIX dm: <http://learningsparql.com/ns/demo#>
+PREFIX db: <http://dbpedia.org/resource/>
+
+SELECT ?s ?cost ?location
+WHERE
+{
+  ?s dm:location ?location ;
+     dm:cost ?cost . 
+  FILTER (?cost IN (8, 12, 10)) . 
+}
+
+
+---------------------------------------------------------------------
+| s| cost | location|
+=====================================================================
+<http://learningsparql.com/ns/data#item432> 8 db:Boston
+<http://learningsparql.com/ns/data#item857> 12 db:Montreal
+<http://learningsparql.com/ns/data#item693> 10 Heidelberg
+---------------------------------------------------------------------
+

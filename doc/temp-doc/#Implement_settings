@@ -1,0 +1,18 @@
+Arxika oxi default,oti thelo to leo
+
+1)query
+
+  1):macroq-out    ["print" "filename"]
+  2):macroq-in     ["ex012" c1-id ...]
+
+
+2)construct
+
+  1):c-out     ["print" "ex012"]
+  2):c-in      [t1-id t2-id ..]
+
+
+*panta sto in theorounte ta construct pou exo nested i to table pou exo nested
+
+
+

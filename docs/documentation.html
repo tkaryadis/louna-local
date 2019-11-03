@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+}
+window.onload = t;
+</script>
+
+<title>Docs</title>
+
+</head>
+<body>
+
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./Documentation/guide.html">Site reading guide</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./Documentation/overview.html">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./Documentation/queries.html">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="./Documentation/queries.html#relation">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./Documentation/constructs.html">Constructs</a></span>
+    <ul>
+      <li>
+        <span><a href="./Documentation/constructs.html">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/constructs.html#constructs-queries">Constructs-queries</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./Documentation/programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./Documentation/programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./Documentation/inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./Documentation/inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./Documentation/inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item">
+    <span><a href="./Documentation/reference.html">Syntax reference</a></span>
+  </li>
+
+</ul>
+</div>
+
+<div id="main">
+  <h5 class = "main-title"> What is Louna? </h5>
+  <pre >
+<b>Louna</b>
+  Query language(SPARQL dsl) that can generate SPARQL
+  Query processor
+  Columnstore(only basic operations to locate/read/transform/add data text files)
+      Every relation is a column with relation_name=file name,and file content
+      [id1 value1] [id2 value2]....     
+
+  *Its being used as a Clojure library inside your project.
+  *Tested only in linux(for windows i have to change path separators and test it again)
+
+  *relation=[[id1 value1] [id2 value2]...]  (sometimes also triple is used to refer to relation)
+   if we refer to tables,we say table
+
+<b>Query language</b>
+  
+    Simple and minimalistic
+        Using less keywords,no capital letters,less brackets.
+          
+    SPARQL dsl
+        Its heavily influenced by SPARQL,the syntax is very similar.
+
+    Lispy
+        Queries are s-expressions
+        There are 2 reasons for that,because its natural for the lisp programmer
+        and also because the joins are easier,its like reading key-value pairs
+
+<div class="code">
+     (:person.firstname    ?person    ?firstname)  
+     (:person.city                    ?city)  
+     (:city.country        ?city      ?country)  
+     (:country.continent   ?country   ?continent) 
+
+</div>
+<div class="code">
+       ?person  :person.firstname      ?firstname  
+                :person.city           ?city  
+       ?city    :city.country          ?country  
+       ?country :country.continent     ?continent  
+</div>
+
+    Programmable
+        This is the main reason behind louna.
+        The main goal was for the Clojure programmer to be able to query data in a declarative in Clojure.
+        Data can be in memory or in files,and Clojure can be used inside louna.
+     
+        For example
+<div class="code">  
+ (defn tip [cost ratio] (* cost ratio))
+ 
+ (defn get-meals [mealtype maxcost tipratio]
+   (q {:q-in [menuDB] :q-out ["print"]}
+      [?name]
+      (:meal.type    ?meal  mealtype)
+      (:meal.name           ?name)
+      (:meal.cost           ?cost)
+      ((tip ?cost tipratio) ?tip)
+      ((+ ?cost ?tip)       ?totalcost)
+      (<= ?totalcost maxcost)))
+
+ ;;get the meals with mealtype="dinner" with maxcost 20 if tip ratio=10%
+ (get-meals "dinner" 20 0.1)
+
+ => 
+ [name]
+ "pizza"
+</div>
+        
+        Clojure functions used to call the query,also inside the query as functions.  
+        Any Clojure function can be used inside the query.
+
+        This can be viewed in 2 ways
+        Add programming capabilities into the query language
+        Or
+        Use query language for programming reasons
+        (inside the examples there is one example of how to calculate tf-idf
+         using Louna,  test/applications.tf-idf.clj)
+
+<b>Query processor</b>
+   
+   Its implemented in Clojure.
+                  
+   The joins are hash-joins.
+       There are 2 alternative join methods.
+          1)Table(temporary results) in memory as a hash-table with keys the next join attributes.
+            And relation read line by line.
+            Join is made if the join attributes of the line,is key on the hashtable.
+            (its done with 1 table read,for example read line make join,apply filters binds,same line in next hash-table
+             with keys the next join-vars(based on query plan))
+    
+            The first is good if relations are very big but results are smaller.
+            
+          2)Next relation becomes a hash-table with keys the current join-vars and the table is read line by line and joined.
+            Good if results are very big(for example big header,not so many filters,or many binds) and relations are not so big. 
+            
+            In louna the method is picked manually at least for now.
+            Also the second method is useful when you need to  materialize the temporal results,and thats why is
+            made.But materialization is not used in louna,the join method is ready,but i haven't implemented the
+            other method like sort-by with data in disk.
+            For now those operators work only with table in memory.
+
+   Table reads
+     Tried to minimize table reads,for example with 1 table read,you can apply joins and all filters and binds.
+     Line is joined,filters are applied,then one by one the binds with the filter binds,if the line pass it is 
+     saved.(for example you dont join,then re-read the table to filter,then re-read to bind etc)
+       
+   Query plan and optimization
+     Provides query-plan and very basic cost-based optimization (smaller relations first on joins and no cartesian).
+   
+<b>Columnstore</b>
+
+  Everything is text file
+
+  Not a database
+    there are no indexes
+    no transactions
+    you can read data to query them 
+    you can add data with constructs  
+    
+  Column store
+    1 relation/file (not a triplestore,because relation is the filename)
+    (:meal.type  ?meal  ?mealtype)
+    For example this would be saved as
+    filename=":meal.type"
+    Content=[[meal1 meal1type] [meal2 meal2type]...]
+    They are saved in louna-data/dbs inside the database they belong.
+  
+  Table store
+    Louna can store and query tables also,without first transforming them to relations.
+     
+    (:person ?name ?lastname ?address ?zipcode ...) 
+    (:person ?name     -        -     ?zipcode ...) ;;don't load those in memory,ignore them
+
+    They are saved in louna-data/tables.
+    Its started as a column store only to query only triples like SPARQL does,but it was very slow to 
+    first have to transform everything in columns(for example disjoin with a construct) and then query
+    them,so it extended to tables also.
+    I will make louna only table store,and columns will be special case of tables.
+
+  RDF store
+    Louna rdf files are in louna-data/rdf/my_rdf1
+    But louna first transform RDF to louna-data(relations) before query them.
+    Read below.
+
+  Data transformations
+    The data above(triples/tables) can be queried without doing any transformations.
+    But louna can transform data to relations and then query them.
+
+    Tables
+      Convert tables to relations with a construct.(disjoin columns)
+
+    RDF
+      Construct louna-data from RDF.
+      
+
+<b>Louna to SPARQL</b>
+
+  Translation is needed to 
+    query existing triplestores
+    query big data that louna can't handle for memory or speed limitations
+
+  Advantages
+    you still can write louna in a Clojure way with Clojure functions
+    the functions that you can use are limited and they translate to SPARQL functions
+    (actually its Clojure macros mimicking Clojure functions)
+
+  Disadvantages
+    you can't use any Clojure function,or use the programmable abilities of louna
+    you can't used SPARQL in full extend,at least so far.
+    
+  Example
+    louna produces readable SPARQL,ql is the macro that makes the translation
+  
+<div class="code">
+    (ql [distinct ?x ?z]
+        (:ab.firstName ?person "Craig")
+        (:ab.lastName  ?person "Ellis")
+        (:ab.email     ?person ?craigEmail)
+        (starts-with? ?craigEmail (str "craig" "Email"))
+        (:if (:ab.firstName ?person "Craig"))
+        (:group-by ?x ?y
+                   (<= (sum ?x) 10)
+                   ((sum ?x) ?z))
+        (:sort-by ?x (desc ?y) (asc ?z) (desc (avg (sum ?w))))
+        (:limit 100))
+
+</div>
+    
+<div class="code">
+    SELECT DISTINCT ?x (SUM(?x) AS ?z) 
+    WHERE
+    {
+      ?person ab:firstName "Craig" .
+      ?person ab:lastName "Ellis" .
+      ?person ab:email ?craigEmail .
+      FILTER (STRSTARTS(?craigEmail,CONCAT("craig","Email"))) .
+
+      OPTIONAL
+      {
+        ?person ab:firstName "Craig" .
+      }
+    }
+    GROUP BY ?x ?y 
+    HAVING (SUM(?x) <= 10) 
+    ORDER BY ?x DESC(?y) ASC(?z) DESC(AVG(SUM(?w))) 
+    LIMIT 100
+
+</div>
+
+   The user writes Clojure functions that translate to SPARQL functions,actually they are Clojure macros.
+   And macros containing other macros is it is a nested call like for example the filter above.
+
+  </pre>
+
+</div>
+     
+</body>
+</html> 

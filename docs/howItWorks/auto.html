@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li> 
+   <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+<h5 class = "main-title">Auto-Grouping</h5>
+<pre>
+We said before that the user is not get distracted to seperate triples in groups,
+and the groups are made automatically.
+
+Here is 2 examples of how the auto-grouping works
+
+Main function 
+(defn get-groups [queries bgp?])  ;;louna.bgp_to_groups:134
+
+Auto-grouping is done at compile time.
+
+Lets see an example
+<div class="codelong">
+(q {:q-in ["ex041"] :q-out ["print"]}
+   (:ab.firstName ?person   ?firstName)     ;;BGP1
+   (:ab.lastName            ?lastName)
+   (:ab.address             ?address)
+   (:ab.postalCode ?address ?postalCode)
+   (:ab.city                ?city)
+   ((str ?firstName ?lastName) ?flname)
+   ((str ?flname ?lastName) ?po)
+   (and (= ?person :ab.i0432) (= ?lastName "Mutt"))
+   (= ?flname "RichardMutt")
+   (and (= ?firstName "Richard") (= ?lastName "Mutt"))
+   (and (= ?firstName "Richard") (= ?lastName "Mutt") 
+        (= ?flname "RichardMutt"))
+
+
+   (:ab.firstName ?xperson  ?xfirstName)  ;;BGP2
+   (:ab.lastName            ?xlastName)
+   (:ab.address             ?xaddress)
+   (:ab.postalCode ?xaddress ?xpostalCode)
+   (:ab.city                ?xcity)
+
+
+   (and (= ?xperson :ab.i0432) (= ?firstName "Richard")
+        (= ?xfirstName "Richard"))  
+   ((str ?firstName ?xfirstName) ?lo)
+   (= ?lo "RichardRichard"))
+
+</div>
+
+As we said in Louna a BGP is a set of triples,that can be ordered in a way that
+there is no need to do a cartesian join
+
+Here i added whitespace to see the BGP's,but louna can figure out which ones belong to the same BGP
+for example if you took the 3 first relations and put them in the end,it would still work.
+
+Here there is 
+BGP1 with relation+binds+filters
+BGP2 
+and then some binds and filters
+
+
+qmacro will produce output(i removed some not important arguments)
+
+<div class="codelong">
+(run-q  {:q-in ["ex041"], :q-out ["print"]}
+ [["__and__" [1 :ab.lastName "?xperson" "?xlastName"]
+             [1 :ab.firstName "?xperson" "?xfirstName"]
+             [1 :ab.address "?xperson" "?xaddress"]
+             [1 :ab.city "?xaddress" "?xcity"]
+             [1 :ab.postalCode "?xaddress" "?xpostalCode"]]
+  ["__and__" [1 :ab.postalCode "?address" "?postalCode"]
+             [1 :ab.city "?address" "?city"]
+             [1 :ab.address "?person" "?address"]
+             [1 :ab.firstName "?person" "?firstName"]
+             [1 :ab.lastName "?person" "?lastName"]
+             [2 "flname" "(str \"?firstName\"  \"?lastName\" )"]
+             [2 "po" "(str \"?flname\"  \"?lastName\" )"]
+             [3 "(and (= \"?person\"  :ab.i0432) (= \"?lastName\"  \"Mutt\"))"]
+             [3 "(= \"?flname\"  \"RichardMutt\")"]
+             [3 "(and (= \"?firstName\"  \"Richard\") (= \"?lastName\"  \"Mutt\"))"]
+             [3 "(and (= \"?firstName\"  \"Richard\") (= \"?lastName\"  \"Mutt\")
+                      (= \"?flname\"  \"RichardMutt\"))"]]
+  ["__fb__"  [3 "(and (= \"?xperson\"  :ab.i0432) (= \"?firstName\"  \"Richard\")
+                      (= \"?xfirstName\"  \"Richard\"))"]
+             [2 "lo" "(str \"?firstName\"  \"?xfirstName\" )"]
+             [3 "(= \"?lo\"  \"RichardRichard\")"]]
+  ["__project__" [] [:all]]])
+
+</div>
+Here we see what the real groups,get-groups made the auto-grouping.
+Found which filters belong to BGP1 which to BGP2,which filters/binds dont belong to a BGP they are table filters/binds
+
+
+Here for example
+[3 "(and (= \"?xperson\"  :ab.i0432) (= \"?firstName\"  \"Richard\") (= \"?xfirstName\"  \"Richard\"))"]
+
+Is a filter that filters variables from 2 BGP's,its not a BGP filter.
+
+__fb__ is an internal unary operator that filter a table
+
+What louna will do,when the group-run will run
+
+1)calculate BGP2 (first group)
+2)calculate BGP1 (second group)
+3)join them with cartesian join (no common variables,thats why they are in diffrent BGP's)
+4)run the fb operators => apply the filters/binds to the result
+5)run the project operator
+
+
+One more example
+<div class="codelong">
+(q {:q-in ["ex145"] :q-out ["print"]}
+
+   [?description ?date ?maxAmount]
+   (:e.amount ?meal ?amount)
+   (:group-by ((apply max ?amount) ?maxAmount))
+   (:e.description ?meal ?description)
+   (:e.date ?date))
+
+</div>
+
+qmacro-out
+
+<div class="codelong">
+(run-q {:q-in ["ex145"], :q-out ["print"]}
+       [["__and__" [1 :e.amount "?meal" "?amount"]]       ;;BGP1
+        ["__group-by__" [] [["maxAmount" "(apply max \"?amount\" )"]] []]  ;;unary operator on BGP1
+        ["__and__" [1 :e.description "?meal" "?description"]  ;;BGP2  (BGP2 will be joined with the result of the (group-by) on BGP1)
+                   [1 :e.date "?meal" "?date"]]
+        ["__project__" ["description" "date" "maxAmount"] []]]) ;;UNARY OPERATOR project
+
+</div>
+Again the auto-grouping is done.
+The group-by operator breaks the BGP ,but the user dont mind that,he continues to write triples
+like he is in a sigle BGP.
+
+This auto-grouping is important because its simplifies alot the query writing,louna finds out which the groups,
+adds missing operators etc
+
+The way it does it is by processing the queries.
+To find a BGP for example,we make sets with the queries that belong in the same BGP,to be in the set a query must share 
+at least 1 common var with the vars of the set,if it does its added to the set.
+
+In the end,we have a vector of BGP's,the filters/binds that dont belong to a bgp,gets in a __fb__ operation,because they are not
+BGP filters/binds.
+
+<div class="codelong">
+(defn get-groups [queries]
+  (let [[bgps binds-filters-cartesian] (add-relational-queries-to-bgps queries)
+        bgps (combine-bgps bgps)
+        [bgps filters-cartesian] (add-bind-queries-to-bgps bgps binds-filters-cartesian)
+        [bgps cartesian] (add-filter-queries-to-bgps bgps filters-cartesian)
+        bgps (add-operators-bgps bgps)
+        bgps (if (empty? cartesian) bgps (conj bgps (into [] (concat (list "__fb__") cartesian))))
+        ;- (prn "bgps" bgps)
+        ]
+    bgps))
+
+</div>
+At start we make the BGPs with only the relational queries
+Then we add filters
+Then what is left become cartesian filter/bind and get in a __fb__ operator
+  <pre> 
+</p>
+
+
+</div>
+     
+</body>
+</html> 

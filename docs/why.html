@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<title>Why?</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+
+
+<div id="main-noside">
+<pre >
+<div class = "main-title">Why <em>&lambda;ouna</em>?</div>
+
+There is a gap between procedural programming languages, languages that are used for data processing and query languages.
+
+Functional programming languages (like clojure, haskell, scala etc.) are in the middle, since they embrace a declarative programming style and as
+such are very well suited for data processing.
+For example scala is like a functional extension of an object oriented language(Java) that gives its powerful data processing capabilities,
+currently expoited by various big data processing frameworks like <a href="http://spark.apache.org/">Apache Spark</a>.
+
+Clojure on the other hand, is a lisp designed for the JVM and as a functional programming language is very well suited for data processing applications.
+As a real lisp though, it also provides a powerful macros environment that let you go one step further and extend the language for making a DSL query
+language that allows you to process and query the data.Like scala extended java for data processing,lisp can extend functional programming to query data
+in a natural declarative way.
+(For example mix functional programming with a logic based query language like Louna does)
+
+By using one language for processing and querying data reduces complexity and code can be shared
+(e.g. you call the same functions when you program or when you query the data).
+The result is simple and powerful code with the power of a general programming language like Clojure.
+You have in your hands a programmable declarative query language that can be used like normal programming code.
+
+<span class="title">Popular solutions for querying and data processing in procedural and object oriented language (java, python, etc.)</span>
+
+<ul class="list-group">
+<h3> Approaches</h3>
+<li class="list-group-item">
+Approach 1: <em>The query is completely separated from the programming language.Given as a query string,or you get the query from an external file.</em>
+  <div class="codelong">
+   /* This is the query */
+   String query = "PREFIX omv: <http://omv.ontoware.org/2005/05/ontology#> " +
+		  "SELECT ?ont ?name ?acr " +
+		  "WHERE { ?ont a omv:Ontology; " +
+		  "omv:acronym ?acr; " +
+		  "omv:name ?name . " +
+		  "}";
+		  
+   /* Here we get the results for this specific query */
+   JenaARQTest test = new JenaARQTest(sparqlService,apikey);
+   ResultSet results = test.executeQuery(query);
+   for ( ; results.hasNext() ; ) {
+       QuerySolution soln = results.nextSolution() ;
+       RDFNode ontUri = soln.get("ont") ;
+       Literal name = soln.getLiteral("name") ;
+       Literal acr = soln.getLiteral("acr") ;
+       System.out.println(ontUri + " ---- " + name + " ---- " + acr);
+   }			
+   </div>
+<b>Problems</b>
+ 1. Have to learn 2 very different separate programming languages.
+ 2. Poor data manipulation abilities since query languages are not well suited for data manipulation; neither are the procedural languages  
+ 3. Difficulty in mixing them and interchange the code. How can you call functions inside the query.
+    Even if the SPARQL processor allows the user to use custom functions(like Jena does),still you have to code in
+    SPARQL way and after you declare which functions you will use etc.
+    In Louna you can't just use Clojure functions,you can write any Clojure code inside the queries(for example loops,if,let etc).
+    Also in Louna you can call queries from your language,you can make queries based on arguments,define rules etc.
+</li>
+
+<li class="list-group-item">
+Approach 2: <em>The query is constructed in a programmatic way using an API (e.g. a query builder)</em>
+  <div class="codelong">
+    /* SELECT *  WHERE  { ?s ?p  } */
+
+    SelectBuilder sb = new SelectBuilder().addVar( "*" ).addWhere( "?s", "?p", "?o" );  
+    sb.setVar(Var.alloc( "?o" ),NodeFactory.createURI( "http://xmlns.com/foaf/0.1/Person" ) ) ;
+    Query q = sb.build();   
+
+   </div>  
+   The above example is a very simple. The complexity  can easily get higher like in the example below
+   <div class="codelong">
+    Resource r = ResourceFactory.createResource("http://example/book1");
+    Node graphName = NodeFactory.createURI("http://example/bookStore");
+    Dataset ds = DatasetFactory.create();
+    ds.addNamedModel(graphName.getURI(), m);
+    m.setNsPrefix("dc", DC_11.NS);
+    m.add(r, DC_11.title, "Fundamentals of Compiler Desing");
+    SelectBuilder sb = new SelectBuilder().addWhere(r, DC_11.title, "Fundamentals of Compiler Desing");
+    sb = new SelectBuilder().addPrefix("dc", DC_11.NS).addGraph(graphName, sb);   
+    UpdateBuilder builder = new UpdateBuilder().addPrefix("dc", DC_11.NS).addDelete(sb);
+    UpdateRequest req = builder.buildRequest();
+    sb = new SelectBuilder().addWhere(r, DC_11.title, "Fundamentals of Compiler Design");
+    sb = new SelectBuilder().addPrefix("dc", DC_11.NS).addGraph(graphName, sb);
+    builder = new UpdateBuilder().addPrefix("dc", DC_11.NS).addInsert(sb);
+  </div>  
+</ul>
+
+<b>Problems</b>
+ 1. it's verbose and un-natural to query in a procedural language using for example a query builder. Especially when the query is big. 
+</li>
+</ol>
+<span class="title">SPARQL Discussion</span>
+
+1. Most SPARQL supporting apps adopt the first approach where the programming language is used to program the app and the queries are given as strings. As a result they inherit all the problems of this approach.
+
+2. In addition Sparql is verbose since it uses so many keywords like SELECT ,WHERE ,BIND, etc. that make query less readable.
+
+3. SPARQL could benefit by using s-expressions for the queries (e.g. for making variable binding for joins easier to understand). The predicate given in the middle in SPARQL disructs you and makes it more difficult to memorize the joined variables.  On the other hand in s-expressions, the relation most of the times is obvious if you choose good names for the variables and is easier to remember
+For example consider the following two cases in a rather small use case:
+<div class="codelong">
+    (:person.firstname    ?person    ?firstname)  
+    (:person.city                    ?city)  
+    (:city.country        ?city      ?country)  
+    (:country.continent   ?country   ?continent)  
+</div>
+    vs
+ <div class="codelong">     
+    {
+      ?person  :person.firstname      ?firstname  
+               :person.city           ?city  
+      ?city    :city.country          ?country  
+      ?country :country.continent     ?continent  
+    }
+</div>
+4. SPARQL is bad at nesting things and can become very verbose if you want to nest groups. In <em>&lambda;ouna</em> due its lisp syntax, nesting is natural.  <em>&lambda;ouna</em> is more consise and clear even in small queries. To see a side comparison check <a href="./louna-sparql.html">Comparison</a>. The difference is even bigger in more complex queries (in the last example the  sparql version is 2x in length and much less readable).
+
+<span class="title">The Clojure <em>&lambda;ouna</em> Approach</span>
+1. One language, in our case Clojure, is the glue for data applications that can be used for both querying and processing data
+2. The query language (SPARQL, SQL, Datalog, etc.) can be seen as an extension that can be provided as a dsl extension using clojure macros
+3. As a result code can be interchanged. For example it is possible to use normal clojure code inside queries. There is no need for wrappers, can call the queries with arguments, etc.
+4. Clojure is very well suited for data manipulation. As a result you build data processing applications in the same language that you are using for querying
+5. Since Clojure runs on the JVM and it can use type annotations, java primitives, and native java code to make it very fast    
+6. Also Clojure is designed for concurrency and can provide exceptional performance
+
+Here is an example that showcases that you can use any clojure function inside the query,
+also use a function to call a query with arguments.
+
+ <div class="codelong">     
+ (defn tip [cost ratio] (* cost ratio))
+ 
+ (defn get-meals [mealtype maxcost tipratio]
+   (q {:q-in [menuDB] :q-out ["print"]}
+      [?name]
+      (:meal.type    ?meal  mealtype)
+      (:meal.name           ?name)
+      (:meal.cost           ?cost)
+      ((tip ?cost tipratio) ?tip)
+      ((+ ?cost ?tip)       ?totalcost)
+      (<= ?totalcost maxcost)))
+
+ ;;get the meals with mealtype="dinner" with maxcost 20 and with tipration=10%
+ (get-meals "dinner" 20 0.1)     
+          
+</div>
+Clojure as a general programming language has so many functions and libraries that you can use.
+For example you can use [org.clojure/core.match "0.3.0-alpha5"]) to do what you do with VALUES in SPARQL.
+It is possible to use the Clojure pattern matching functions inside the query as shown below.
+
+<div class="codelong">  
+    (q [?description ?date ?amount]
+       (:e.description ?meal ?description)
+       (:e.date              ?date)
+       (:e.amount            ?amount)
+       (match [?date ?description]
+              [_ "lunch"] true
+              ["2011-10-16" _] true
+              :else false))
+
+</div>           
+
+Actually you can use any Clojure or Java function,or write any Clojure code.
+(Calling Java functions from Clojure is very simple you just add a . for a method call for example (.length "astring"))
+  </pre>
+
+</div>
+     
+</body>
+</html> 

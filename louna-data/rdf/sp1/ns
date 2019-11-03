@@ -1,0 +1,14 @@
+{
+ "ab" "http://learningsparql.com/ns/addressbook#"
+ "dm" "http://learningsparql.com/ns/demo#"
+ "db" "http://dbpedia.org/resource/"
+ "e"  "http://learningsparql.com/ns/expenses#"
+ "d" "http://learningsparql.com/ns/data#"
+ "dc10" "http://purl.org/dc/elements/1.0/"
+ "dc11" "http://purl.org/dc/elements/1.1/"
+ "a"    "http://learningsparql.com/ns/papers#"
+ "c" "http://learningsparql.com/ns/citations#"
+ "rdfs" "http://www.w3.org/2000/01/rdf-schema#"
+ "ns"   "http://example.org/ns#"
+ "book" "http://example.org/book/"
+}

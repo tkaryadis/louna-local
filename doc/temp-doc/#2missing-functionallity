@@ -1,0 +1,24 @@
+1)telioso property paths
+
+2)group-by
+   na balo kai group opos sto sort , functions
+
+   group-by (str ?x) ...
+
+3)table filters den fenonte sto query plan
+
+4)thelo o telikos table na exi ta esoterika onomata
+  sto print na exi omos ta prefix tis query,kai ean exi auto-generated tote na mpeni olo to URI
+
+5)missing namespace oxi error
+  bazo ena tixeo onoma pou den iparxi kai sinexizo
+  mpori na einai se or px i timi auti
+
+6)local vars mono w characters
+
+7)save constructs se idi iparxon database
+  ean ine adia problima
+  ean exo idi relations me ta idia onomata problima
+
+
+8)katharizo ta locals apo tin global domi?

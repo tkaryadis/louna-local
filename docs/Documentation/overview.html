@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+}
+window.onload = t;
+</script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./guide.html">Site reading guide</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="../documentation.html">What is Louna?</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="">Louna overview</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span id="sel" ><div  class="icon"></div><a href="./queries.html">Queries</a></span>
+    <ul>
+      <li>
+        <span><a href="">Relation</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#database">Database</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#BGP-Query">BGP Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#tables">Table Query</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups">Groups</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-unary">Unary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-binary">Binary Operations</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-autogrouping">Auto Grouping</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#groups-nested">Groups-nested</a></span>
+      </li>
+      <li>
+        <span><a href="./queries.html#triples">Triples and Property Paths</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./constructs.html#constructs">Constructs</a></span>
+    <ul>
+      <li>
+        <span><a href="./constructs.html">Constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./constructs.html#constructs-queries">Nesting q and c</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./programming.html">Programming</a></span>
+    <ul>
+      <li>
+        <span><a href="./programming.html#do">Do operators</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-queries">Function queries</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#function-constructs">Function constructs</a></span>
+      </li>
+      <li>
+        <span><a href="./programming.html#rules">Rules</a></span>
+      </li>
+    </ul>
+  </li>
+  <li class="tree__item hasChildren">
+    <span><div  class="icon"></div><a href="./inOut.html">Input Output</a></span>
+    <ul>
+      <li>
+        <span><a href="./inOut.html#louna-data">Louna-data</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#louna-db">Louna-database</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#namespaces">Namespaces</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#create-db">Create file-DB</a></span>
+      </li>
+      <li>
+        <span><a href="./inOut.html#table-example">Create,read tables</a></span>
+      </li>
+    </ul>
+  </li>
+<li class="tree__item">
+    <span><a href="./reference.html">Syntax reference</a></span>
+  </li>
+
+</ul>
+</div>
+
+<span id="relation"></span>
+<div id="main">
+<h5 class = "main-title">Louna overview</h5>
+
+<pre>Below there is an overview of most of the things louna can do.
+
+<b>Louna queries and constructs relations</b>
+
+    Query
+        Relations---->Table  (q ...)
+        Query relations or tables to form tables
+   
+    Construct
+        Tables---->Relations
+        Construct relations from tables
+
+<b>Data louna can query</b>
+
+    Relations
+        on memory or from files
+
+    Tables 
+        on memory or from files
+
+<b>Data louna can query after converting them to relations(after constructing relations)</b>
+
+    RDF
+        Louna can transform RDF data to relations(load them in a memoryDB or store to files).
+        The user puts the rdf files in a directory(for example my_rdf) inside louna-data/rdf/my_rdf
+        This is done inside a construct so rdf are loaded in memory(or stores in files).
+
+        And then 
+<div class="codelong">            
+          ;;Just print the converted rdf(rdf->louna relations in memory)  
+          (c {:c-out [print]}
+             (:rdf "my_rdf"))
+           
+          ;;Save them to a file database with name "my_db" 
+          (c {:c-out ["my_db"]}
+             (:rdf "my_rdf"))
+          
+          ;;Convert the rdf and load it in memory,and query it(without saving it in file) 
+          (q {:q-out ["print"]}
+              [?book ?title]
+              (:dc.title ?book ?title)
+              (c (:rdf "my_rdf")))
+
+</div>        
+        Louna can read .nt files only,but it uses a library that automatically
+        converts .rdf .ttl files to .nt so those files can be used.
+
+    Tables
+        You use a construct to transform a table to relations(disjoin the table),and then you query the relations.
+        This has an extra cost of transforming the data,but you can save the table as relations permanently.
+        For this type of transformations look documentation.read-write-table.clj
+   
+<b>Relation/Database</b>
+
+The code from examples are in  if you want to try them or change them.
+Code used: test/Documentation.menu.clj
+
+Relation = [[id1 value1] [id2 value2]]
+Database = many relations (as files in a directory,or like below as members of an in-memory hash-map)
+
+<div class="code"> 
+(def menuDB {:meal.name [[1 "eggs with potatoes"] ....[6 "pizza"]]
+             :meal.type [[1 "breakfast"] ...[6 "dinner"]]
+             :meal.cost [[1 6.5] [2 11] ... [6 12]]})
+
+</div>
+
+Quering-BGP
+  A basic query(BGP=triples+optinal binds/filters)
+<div class="code"> 
+  (q {:q-in [menuDB] :q-out ["print"]}  ;;query menuDB,output in stdout
+
+     [?name ?totalcost]                 ;;table result will have 2 vars in that order
+
+     (:meal.type ?meal "dinner")
+     (:meal.name ?meal ?name)
+     (:meal.cost ?meal ?cost)
+     ((* ?cost 0.1)    ?tip)           ;;bind on query var
+     ((+ ?cost ?tip)   ?totalcost)     ;;bind on bind
+     (<= ?totalcost 20))               ;;filter
+
+</div>
+
+Quering-tables(:table unary operator)
+
+    1)File table 
+<div class="code">
+      (q {:q-out ["print"]}
+         ....
+         (:table (:person ?pid ?firstname ?lastname ?city ?country ?continent)
+                 (= ?pid 1005)
+                 ((+ ?pid 2) ?pid2)
+                 ..more binds or filters...)
+         (:sort-by ?pid)
+         ......)
+</div> 
+    2)Use memory table (again first argument must be the table_var bind/filter order does'nt matter)
+<div class="code">
+      (:table table_var
+              binds
+              filters)
+</div>
+      *table_var can be any table in memory for example (def atable (q ....))
+
+    See documentation.tables.clj
+
+Table-operations(unary)
+  (:table,:sort-by,:group-by,:do,:do-each,:project,:limit)  
+
+  The BGP is calculated from the 3 triples,and then the table will be sorted by the unary operator
+<div class="code">
+  (q {:q-in [menuDB] :q-out ["print"]}
+     (:meal.type ?meal "dinner")
+     (:meal.name ?meal ?name)
+     (:meal.cost ?meal ?cost)
+     (:sort-by ?cost))
+</div>
+
+Table-operations(binary)
+  (:and,:if,:add,:not)
+
+  Here we will use :not
+  :not(MINUS in sparql) is a binary operator,it takes 2 BGP's as arguments(2 tables) to make 1 new table.
+  This query says give me all persons,except those that have a workTel number.
+
+<div class="code">
+  (q {:q-in [personDB] :q-out ["print"]}
+      (:person.firstName   ?person ?first)
+      (:person.lastName            ?last)
+      (:not (ab:workTel    ?person ?workNum))
+</div>
+
+  When you see a table operator like :not or :sort-by,you think that the first operant
+  will be the TABLE coming from above,and not the last triple before the operator.
+  Here the table coming from above is the table produced by the BGP1
+
+Nested table operations
+(they can be nested freely)
+  
+<div class="code">
+  (q {:q-in ["ex100"] :q-out ["print"]}
+
+     [?first ?last ?instrument]
+
+     (:ab.firstName ?person ?first)
+     (:ab.lastName ?last)
+     (:ab.instrument ?instrument)        ;;BGP1
+     ((:ab.instrument ?person "sax")     ;;BGP2
+      (:add (:ab.instrument ?person "trumpet"))))   ;;BGP3
+</div>
+ 
+     (BGP1 :and (BGP2 :add BGP3))
+
+   :and is implied it means join  
+
+   Again you think of the operator example :add appied to the table comming from above which is BGP2
+
+ 
+Types of Triples
+
+  Triples can be in all form ? can be in all three positions
+  (?r ?s ?o)
+
+Property paths
+
+  Louna supports property paths(not all of them currently).
+  Reverse path,alternative path,sequence path,path*,path+.
+
+
+<b>Constructs</b>
+
+  We saw that with q we can take a table out of triples(out of relations that are joined)
+  The reverse is possible also,to make new triples(relations) from a table.
+
+  q => relations/table  to table 
+  c => table/tables to relations
+
+  Types of constructs
+
+      Relation constructs
+
+<div class="codelong">
+  (c (:ab.hasAunt ?person ?aunt)
+     (q {:q-in [parentsDB]}
+        (:ab.hasParent  ?person ?parent)
+        (:ab.hasParent  ?parent ?gparent)
+        (:ab.hasParent  ?aunt   ?gparent)
+        (:ab.gender             :d.female)
+        (not= ?parent ?aunt)))
+
+  Query to find the ?aunt of a person,and make a new relation (:ab.hasAunt ?person ?aunt) 
+  from the results
+
+</div>  
+
+      Constant constructs
+<div class="codelong">
+          (c (:ab.hasAunt "takis" "antonia")) 
+          Makes one triple
+
+</div>
+
+      Bind constructs
+<div class="codelong">
+         (get-files-paths read a directory and outputs [[filename1 path1] [filename2 path2]...])    
+
+         (c {:c-out ["print"]}
+         ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files))
+
+         =>
+         :ab.files
+         ["ex122.nt" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122.nt"]
+         ["ex122-123.lnt" "/home/white/IdeaProjects/louna/data-test/ex122-123/ex122-123.lnt"]  
+         [":ab.courseTitle" "/home/white/IdeaProjects/louna/data-test/ex122-123/:ab.courseTitle"]
+
+         The bind the relation :ab.files to the output of the function.
+
+</div>
+
+      RDF constructs
+<div class="codelong">
+      (c {:c-out ["my_db"]}
+         (:rdf "my_rdf"))
+
+</div>
+
+<b>Constructs and Queries</b>
+
+  c,q can be freely nested.
+<div class="code">
+  (c
+    (q
+      (c
+        (q ))))
+
+  or
+  
+  (q
+    (c
+      (q
+        (c ))))
+
+</div>
+
+<b>Programming with louna </b>
+
+    :do/:do-each 
+
+        Run clojure code from inside the query,as side-affect,use query for programming reasons.
+
+        In the example below we get the files of a directory,and we delete all files
+        except those that have extentions .nt or .rq or .dns.
+
+        :do is aggregate function,:do-each will run for each value in the column
+
+<div class="codelong">
+       (q (:ab.files ?file ?path)
+          ((get-file-extension ?file) ?ext)   
+          (not (contains? #{".nt" ".rq" ".dns"} ?ext))       
+          (:do (dorun (map io/delete-file ?path)))           ;;delete the files
+          (c ((get-files-paths "/home/white/IdeaProjects/louna/data-test") :ab.files))) 
+
+</div>
+
+    Function queries and Function constructs
+        You can a function to call a query or construct or a nested query/construct,
+        inside the query or to the construct you can use variable,so the query can be general.        
+
+        For example what extensions to keep will be an argument,also the path will be an argument.
+        (path argument is used inside the construct,and extension variable is used inside the query)
+
+<div class="codelong">
+        (defn delete-except-extensions [path extensions]
+        (q (:ab.files ?file ?path)
+           ((get-file-extension ?file) ?ext)
+           (not (contains? extensions ?ext))
+           (:do (do (println "Files that will be deleted :" (count ?file))
+                 (dorun (map io/delete-file ?path))))
+           (:do-each (do (println "Deleted : " ?file)))
+           (c ((get-files-paths path) :ab.files))))
+
+        (delete-except-extensions "/home/white/IdeaProjects/louna/data-test" #{".nt" ".rq" ".dns"})
+
+</div>
+
+   Defining Rules
+       ? is the same as ASK in SPARQL
+       It returns true if the results are not empty,and falsed otherwise
+
+       Is pat grandparent of jane?
+   
+<div class="codelong">
+   (defn has-grandparent? [child gparent]
+     (? (q {:q-in ["ex187"]}
+        (:ab.hasParent child     ?parent)
+        (:ab.hasParent ?parent   gparent))))
+
+   (println (has-grandparent? :d.jane :d.pat))
+
+</div>
+
+   For more about programming with louna.
+   See test/applications.tf-idf.clj  is a small application that use louna to calculate tf-idf.   
+   
+
+<b>In Out</b>
+
+   You put them in 
+   {:q-in [..] :q-out [..]}
+   or
+   {:c-in [..] :c-out [..]}
+
+   Example
+<div class="code">
+  (c {:c-out ["ex012" "print"]}
+     (:ab.areaCode ?person ?areaCode)
+     (q {:q-in ["ex012"] :q-out ["print"]}
+        (:ab.homeTel ?person ?phone)
+        ((subs ?phone 1 4) ?areaCode)))
+
+  :q-in from file database in folder "ex012"  (bds_path/ex012)  
+  :q-out in stdout 
+  :c-in dont exists,but q nested is default c-in
+  :c-out save to file db "ex012" and also print in stdout
+
+</div>
+
+  </pre>
+
+</div>
+		
+</div>
+     
+</body>
+</html> 

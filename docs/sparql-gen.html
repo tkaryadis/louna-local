@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<script>
+function t()
+{
+  $('.tree .icon').click( function() {
+    $(this).parent().toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+  });
+  $("#sel").toggleClass('expanded').
+    closest('li').find('ul:first').
+    toggleClass('show-effect');
+}
+window.onload = t;
+</script>
+
+<title>Docs</title>
+
+</head>
+<body>
+
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./louna-sparql.html"><em>&lambda;ouna</em> SPARQL</a></span>
+  </li>
+    <li class="tree__item">
+    <span><a href="./louna-sparql-syntax.html"><em>&lambda;ouna</em> SPARQL Guide</a></span>
+  </li>
+  <li class="tree__item hasChildren">
+    <span id="sel"><div  class="icon"></div><a href="./sparql-gen.html">SPARQL Generation</a></span>
+    <ul>
+      <li>
+        <span><a href="./sparql-gen.html#rationale">Rationale</a></span>
+      </li>
+      <li>
+        <span><a href="./sparql-gen.html#examples">Examples</a></span>
+      </li>
+      <li>
+        <span><a href="./sparql-gen.html#reference">Reference</a></span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+
+<span id="rationale"></span>
+<div id="main">
+<div class = "main-title">SPARQL Generation from <em>&lambda;ouna</em>  </div>
+
+<pre>
+<span id="pre">
+<em>&lambda;ouna</em> can be automatically translated to <b>readale</b> SPARQL.
+<em>&lambda;ouna</em> needs appropriate translation to query existing triplestores using SPARQL. 
+In order to query triplestores <em>&lambda;ouna</em> generates SPARQL using macro ql that results in a query that is then submitted to the triplestores (as seen in the example below). 
+Another reason to translate to SPARQL is <em>&lambda;ouna's</em> speed and memory usage limitations.
+
+
+<div class="code">
+(ql [?person ?craigEmail]
+    (:ab.firstName ?person "Craig")
+    (:ab.lastName  ?person "Ellis")
+    (:ab.email     ?person ?craigEmail))
+
+</div>
+<div class="code">
+SELECT ?person ?craigEmail 
+WHERE
+{
+  ?person ab:firstName "Craig" .
+  ?person ab:lastName "Ellis" .
+  ?person ab:email ?craigEmail .
+}
+
+</div>
+
+
+The translation lets the user feels like he is writting a normal <em>&lambda;ouna</em> query. There is a restriction though: the functions that can be used are restricted to those that are supported by SPARQL. For example the clojure core function example <code>(starts-with? ?craigEmail (str "craig" "Email")) -> (STRSTARTS(?craigEmail,CONCAT("craig","Email")))</code>. In cases that the clojure core doesn't have a function, a <em>&lambda;ouna</em> function is used with the same name as the SPARQL function. For example <code>strbefore(?x,?y) -> STRBEFORE(?x,?y)</code>. The <em>&lambda;ouna</em> is restricted but most operators/functions of sparql are implemented (and more will be added in the future). The user can write triplets, binds, filters, groups (and (implied), optional, union, not), group-by, sort-by limit etc. Nesting functions is working (functions which have as arguments function calls). Also variadic args functions are supported. For example <code>(and ?x1 ?x2 ?x3) -> (?x1 && ?x2 && x3)</code>. Variadic args functions can be used with any number of arguments. If the clojure function takes variadic args, you can use it, even if the corresponding SPARQL function is not. The clojure functions (actually clojure macros) that can be used inside a query that will generate SPARQL code are located in the  file <code>macroql.sparql-f.clj</code>.
+
+<span id="examples"></span>
+<span class="title">Examples</span>
+<span class="title2">Triples with filter and binds (one bind has if)</span>
+<div class="codelong">
+(ql [?person ?craigEmail]
+    (:ab.firstName ?person "Craig")
+    (:ab.lastName  ?person "Ellis")
+    (:ab.email     ?person ?craigEmail)
+    (starts-with? ?craigEmail "craigEmail")
+    ((= (str "po" (str "po" "craigEmail")) "pope") ?b)
+    ((iff (<= (month ?deathDate) (month ?birthDate))
+          1
+          0) ?validDate))
+</div>
+<div class="codelong">
+SELECT ?person ?craigEmail 
+WHERE
+{
+  ?person ab:firstName "Craig" .
+  ?person ab:lastName "Ellis" .
+  ?person ab:email ?craigEmail .
+  FILTER (STRSTARTS(?craigEmail,"craigEmail")) .
+  BIND ((CONCAT("po",CONCAT("po","craigEmail")) = "pope") AS ?b) .
+  BIND (IF((MONTH(?deathDate) <= MONTH (?birthDate)),1,0) AS ?validDate) .
+}
+</div>
+<span class="title2">Nested groups</span>
+<div class="codelong">
+(ql [?person ?craigEmail]
+    (:ab.firstName ?person "Craig")
+    (:ab.lastName  ?person "Ellis")
+    (:ab.email     ?person ?craigEmail)
+    (:if (:ab.firstName ?person "Craig")
+         (:ab.lastName  ?person "Ellis")
+         (:ab.email     ?person ?craigEmail)
+         (:not (:ab.firstName ?person "Craig")
+               (:ab.lastName  ?person "Ellis")
+               (:ab.email     ?person ?craigEmail)
+               (:if (:ab.firstName ?person "Craig")
+                    (:ab.lastName  ?person "Ellis")
+                    (:ab.email     ?person ?craigEmail))))
+    (:ab.firstName ?person "Craig")
+    (:ab.lastName  ?person "Ellis")
+    (:ab.email     ?person ?craigEmail))
+</div>
+<div class="codelong">
+SELECT ?person ?craigEmail 
+WHERE
+{
+  ?person ab:firstName "Craig" .
+  ?person ab:lastName "Ellis" .
+  ?person ab:email ?craigEmail .
+
+  OPTIONAL
+  {
+    ?person ab:firstName "Craig" .
+    ?person ab:lastName "Ellis" .
+    ?person ab:email ?craigEmail .
+
+    MINUS
+    {
+      ?person ab:firstName "Craig" .
+      ?person ab:lastName "Ellis" .
+      ?person ab:email ?craigEmail .
+
+      OPTIONAL
+      {
+        ?person ab:firstName "Craig" .
+        ?person ab:lastName "Ellis" .
+        ?person ab:email ?craigEmail .
+      }
+    }
+  }
+  ?person ab:firstName "Craig" .
+  ?person ab:lastName "Ellis" .
+  ?person ab:email ?craigEmail .
+}
+</div>
+<span class="title2">Group-by/Order-by/Limit</span>
+
+<div class="codelong">
+(ql [distinct ?x ?z]
+    (:ab.firstName ?person "Craig")
+    (:ab.lastName  ?person "Ellis")
+    (:ab.email     ?person ?craigEmail)
+    (starts-with? ?craigEmail (str "craig" "Email"))
+    (:if (:ab.firstName ?person "Craig"))
+    (:group-by ?x ?y
+               (<= (sum ?x) 10)
+               ((sum ?x) ?z))
+    (:sort-by ?x (desc ?y) (asc ?z) (desc (avg (sum ?w))))
+    (:limit 100))
+</div>
+<div class="codelong">
+SELECT DISTINCT ?x (SUM(?x) AS ?z) 
+WHERE
+{
+  ?person ab:firstName "Craig" .
+  ?person ab:lastName "Ellis" .
+  ?person ab:email ?craigEmail .
+  FILTER (STRSTARTS(?craigEmail,CONCAT("craig","Email"))) .
+ 
+  OPTIONAL
+  {
+    ?person ab:firstName "Craig" .
+  }
+}
+GROUP BY ?x ?y 
+HAVING (SUM(?x) <= 10) 
+ORDER BY ?x DESC(?y) ASC(?z) DESC(AVG(SUM(?w))) 
+LIMIT 100
+</div>
+<span class="title2">Variadic args</span>
+
+<div class="codelong">
+(ql {:q-in ["ex012"] :q-out ["print"]}
+      [?k]
+      (:ab.firstName ?person "Craig")
+      ((str "abcdefg" (* 2 (/ (+ 3 4 6 5) 10)) "cd") ?z)
+      (or ?x1 ?x2 ?x3 ?x4 ?x5)
+      ((subs ?z 2 4) ?k)
+      (includes? ?z ?x))
+
+</div>
+<div class="codelong">
+SELECT ?k 
+WHERE
+{
+  ?person ab:firstName "Craig" .
+  BIND (CONCAT("abcdefg",(2*((3+4+6+5)/10)),"cd") AS ?z) .
+  FILTER ((?x1 || ?x2 || ?x3 || ?x4 || ?x5)) .
+  BIND (SUBSTR(?z,2,(4-2))) AS ?k) .
+  FILTER (CONTAINS(?z,?x)) .
+}
+</div>
+<span id="reference"></span>
+
+
+<span class="title">Reference</span>
+Here we list the operators/functions tha are availiable in <em>&lambda;ouna</em> and the corresponding SPARQL function. Functions belong in two categories: a) clojure core functions (that you use them like clojure functions and b) <em>&lambda;ouna</em> clojure functions that have SPARQL names but in lower-case (marked as <em>&lambda;ouna</em> functions). All are implemented as macros with same names.
+
+<div class="codelong">
+<span class="title2">SPARQL              Clojure</span>
+
+Operators            
+
+  Logical
+    !                               not
+    &&                              and    
+    ||                              or
+
+
+  Math 
+    +                               +
+    -                               -
+    *                               *
+    /                               /
+
+  Comparison
+    =                               =
+    !=                              not=
+    >                               >
+    <                               <
+    <=                              <=
+    >=                              >=
+
+String functions
+
+   STRLEN                           strlen(<em>&lambda;ouna</em> function)
+   SUBSTR                           subs
+   UCASE                            upper-case
+   LCASE                            lower-case
+   STRSTARTS                        starts-with?
+   STRENDS                          ends-with?
+   CONTAINS                         includes
+   CONCAT                           str
+   STRBEFORE                        strbefore(<em>&lambda;ouna</em> function)
+   STRAFTER                         strafter(<em>&lambda;ouna</em> function)
+   REPLACE                          replace(<em>&lambda;ouna</em> function)
+
+  To be implemented
+   REGEX
+   
+
+Aggregates(arguments will be a collection,for example a group from group-by )
+  COUNT                             count
+  MIN                               min(<em>&lambda;ouna</em> function)
+  MAX                               max(<em>&lambda;ouna</em> function)      
+  AVG                               avg(<em>&lambda;ouna</em> function)
+  SUM                               sum(<em>&lambda;ouna</em> function)
+
+Functions on Numerics
+  ABS                               abs
+  RAND                              rand
+  ROUND                             round
+  CEIL                              ceil
+  FLOOR                             floor
+
+
+Control-flow
+  IF                                iff 
+
+Time/Date              
+  TIMEZONE                          timezone(<em>&lambda;ouna</em> function)
+  NOW                               now(<em>&lambda;ouna</em> function)
+  HOUR                              hour(<em>&lambda;ouna</em> function)
+  DAY                               day(<em>&lambda;ouna</em> function)
+  MONTH                             month(<em>&lambda;ouna</em> function)
+  YEAR                              year(<em>&lambda;ouna</em> function)
+
+Types: to make typed literals you can use add-type
+
+  "2016-01-01"^^xsd:dateTime   add-type("2016-01-01","xsd:dateTime")
+
+Type tests
+  isIRI                            prefixed?
+  isBlank                          blank?
+  isLiteral                        (not (prefixed? ..))
+
+
+</div>
+  </span>
+  </pre>
+
+</div>
+     
+</body>
+</html> 

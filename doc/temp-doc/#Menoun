@@ -1,0 +1,41 @@
+1)kiklo stis sxesis pos tha ftiaxo to map
+  otan m2 iparxi idi sto map den tin bazo
+  anti m1 m2 sto map bazo m1 nil
+
+2)filter sto cartesian einai misoteliomeno
+
+3)make table ana line den ginete giati den exo ta var-domains etsi
+
+4)na kano ti filter-function-str function kanoniki me eval sosta se namespace
+  tora kano str-> filter-str    kai run
+  thelo   str->metabliti -> function(timi apo metabliti)
+
+  prepei sto namespace pou tha gini to eval,na exo to context sosta
+  oxi sto simio pou grafo ton kodika
+
+5)joins
+  1)[v1 v2] [v1 v2] //diaforetikes sxesis se idies metablites
+  2)[v1 v3] [v2 v3] //kiklous v3 2+ parent
+
+6)Relation me idia var s+o
+  (knows ?person ?person)
+
+  Einai san revaltion-1var
+  apla trexi me ali sinartisi
+
+7)na elenxo prosektika ta joins kai ta domain-vars oste na exo to teliko
+  domain-var panta
+
+8)na petao var-domain pou den to xriazome pleon
+
+9)kathe sxesi, gia na apodidi tha prepei na spaei se poles sxesis
+  px name
+  px cityName,personName analoga meto idos tou antikeimenou (rdf:type)
+
+  Oi sxesis diladi tha einai ierarxies me basi to idos tou antikeimenou
+  kai alla kritiria,oste na exo telika mikres sxesis na psaxno kathe fora
+
+  Ean den exo epipleon plirofories tote psaxno se oles tis sxesis name
+  px to name einai ena directory pou exi cityName personName ktl
+  ean exo arketes plirofories mpeno mesa kai psaxno 1 mono mikro arxio
+  alios psaxno ola ta arxeia mesa sto directory name

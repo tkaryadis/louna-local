@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="./icons/cl.png">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/documentation.css" rel="stylesheet">
+<script src="./js/jquery-3.2.1.min.js"></script>
+
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="./index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="./benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="./benchmark.html">Benchmark info</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./benchmark/rdf.html">Query RDF</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./benchmark/join.html">Join triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./benchmark/filter.html">Filter triples</a></span>
+  </li>
+   <li class="tree__item">
+    <span><a href="./benchmark/bind.html">Bind triples</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./benchmark/sort.html">Sort by</a></span>
+  </li>  
+
+</ul>
+</div>
+
+<span id="rationale"></span>
+<div id="main">
+  <h5 class = "main-title">Benchmark</h5>
+  <pre >
+<b>Comparison</b>
+
+    1)Louna
+      Stores in text files,no indexing.
+    2)Apache Jena 
+      Loads RDF data in memory and query them.
+    3)Apache Jena triplestore(TDB)
+      Jena TDB is triplestore that indexes the data and stores them 
+      at binary files.For 100MB louna data,Jena TDB stores 900MB.
+
+    *Jena in both cases uses the ARQ query processor.
+
+<b>How i used Jena</b>
+
+    Jena has a java API so i used them from clojure.
+    I added in project.clj the java code.
+        [org.apache.jena/jena-core "3.0.0"]
+        [org.apache.jena/jena-arq "3.0.0"]
+        [org.apache.jena/jena-tdb "3.0.0"]
+    
+    Clojure can call java like normal clojure functions,and when i found out how to
+    use Jena in Java,translation to clojure was easy.(see test/benchmark.jena-run.clj)
+
+    The queries are only written in Louna but louna can auto-generate SPARQL so macro
+    ql is used to generate the SPARQL queries.(see test/benchmark.sparql-queries.clj)
+
+    If you want to see the SPARQL query in readable form (println (ql ....)).
+ 
+    Both Louna and jena prints the results so we can check that they are the same.   
+
+<b>Creating the database</b>
+
+    We auto-generate a table in this form
+    Table
+    
+<div class="code">
+      c0            c1                      c9       
+    :n.value0  "value1"          ....    "value9"  
+    :n.value10 "value11" ..............  "value19" 
+     ......
+
+</div>
+    
+    We dis-join the table using a construct and we take the 
+    9 relations,with names :n.c1,:n.c2 ...  n is just a random prefix.
+    (C0=table key,C1...C9=attributes)
+
+    That 9 relations is the benchmark database.
+    If a table has 400.000 rows,we have ~4.000.000 triples.
+    (3.600.000 triples x9)
+
+<div class="code">
+    Relation1  =>    :n.c1 =[c0 c1]
+    Relation2  =>    :n.c2 =[c0 c2]
+    ...
+    Relation9 =>     :n.c9 =[c0,c9]
+
+</div>
+
+    For example 
+<div class="code">
+    n.c1 will have the pairs
+    
+     c0            c1    
+    :n.value0  "value1"  
+    :n.value10 "value11"
+    .........
+
+</div>
+
+<b>System information </b>
+    Core i3 2130m(dual core)
+    4GB RAM(~1.5GB free)
+    not SSD
+
+<b>Benchmark overall results</b>
+
+    On this benchmark.
+    Louna in data range 0-400.000 rows(0 to 3.600.000 triples) is 1x-4x slower depending the query.
+    Final results and intermediate results are stored in memory.
+
+    I tried to make an equal benchmark,the data range is for the results
+    to be able to be in memory.
+    Louna is not competing with Jena,the benchmark shows that in this
+    simple query and this data range,Louna is good enough to be usable.
+    Louna can be used.I have tested it with 6 million items max.If more 
+    i get memory error in my laptop.(4GB ram + IDE open)
+    
+
+  </pre>
+
+</div>
+     
+</body>
+</html> 

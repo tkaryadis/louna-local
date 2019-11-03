@@ -1,0 +1,6 @@
+PREFIX : <http://learningsparql.com/ns/papers#>
+PREFIX c: <http://learningsparql.com/ns/citations#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?s
+WHERE { ?s c:cites+/dc:title "Paper A" . }

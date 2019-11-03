@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li> 
+  <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li> 
+</ul>
+</div>
+
+<div id="main">
+<pre>
+<h5 class = "main-title">Internals diagram</h5>
+(very abstract,the function calls and brief description of the functions,used to answer a query)
+
+<div class=codePP>
+(q {:q-in [menuDB] :q-out ["print"]}  ;;query the in memory database menuDB and print results in stdout
+
+   [?name ?totalcost]            ;;select only ?name and ?totalcost query vars
+   (:meal.type ?meal "dinner")   ;;1 BGP with 3 query triples,2 binds,and one filter
+   (:meal.name ?meal ?name)
+   (:meal.cost ?meal ?cost)
+   ((* ?cost 0.1)    ?tip)
+   ((+ ?cost ?tip)   ?totalcost)
+   (<= ?totalcost 20))
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class="rec">
+<b>q macro                                               Make not clojure code,to valid clojure code </b>
+ 
+(defmacro q [& queries])   louna.louna.clj:84
+We need the macro to take the not Clojure code(macros don't evaluate their arguments),and produce clojure code.
+q macro uses functions from <b>package macroq</b>,to produce the valid clojure code.
+(Makes ?q to "?q"=valid clojure string with a recursive function to parse all query,and various query processing
+ things like categories to triples to 1,2,3 (triple,bind,filter)adds missing operators like
+ :and,:project etc)
+
+One other important thing it does is <b>auto-grouping</b>.With autogrouping we groups the BGP,we added the missing
+operators.(look below the output)(example is very simple autogrouping does many things read autogrouping in internals)
+
+The macro runs at compile time.The output of the macro is clojure code.
+The output is a call to a clojure function,but with arguments valid clojure code.
+The output of the macro will run at runtime.
+
+
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class=codePP>
+    Output of the macro q = code that will run on runtime
+    It is like the programmer wrote the code below
+
+    (run-q {}                                              ;;no Clojure vars used inside the query
+           {:q-in [menuDB], :q-out ["print"]}              ;;added :and operator,operant1=empty table(no table coming from above)
+           [["__and__" [1 :meal.cost "?meal" "?cost"]      ;;operant2=that BGP
+                       [1 :meal.type "?meal" "dinner"]     ;;1 because its triple
+                       [1 :meal.name "?meal" "?name"]
+                       [2 "tip" "(* \"?cost\"  0.1)"]      ;;2 because its bind,bind var on front,bind code as string
+                       [2 "totalcost" "(+ \"?cost\"  \"?tip\" )"]
+                       [3 "(<= \"?totalcost\"  20)"]]      ;;3 because its filter,filter code as string
+            ["__project__" ["name" "totalcost"] [] -1]]    ;;keep the 2 vars,-1=no limit,[] no distinct or select all
+           {}                                              ;;no nested constructs
+           )
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class="rec">
+<b>run-q                                     Determine q-in,q-out,collect information about the query,and run it.</b>
+(defn run-q [undefined settings group constructs])  louna.louna.clj:54
+run-q is calling everything needed to answer the query
+    1. determine the q-in = menuDB
+    2. determine the q-out = stdout
+    3. collect all the query information on a map
+    4. start aswering the query
+       table-info (groups.group-run/run-group q-info <b>group</b>)
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class=codePP>
+run-group will run the query and return the table results to q-run
+*qinfo is a map with information about the query,for example db directory etc.
+
+(groups.group-run/run-group q-info [["__and__" [1 :meal.cost "?meal" "?cost"]      
+                                               [1 :meal.type "?meal" "dinner"]     
+                                               [1 :meal.name "?meal" "?name"]
+                                               [2 "tip" "(* \"?cost\"  0.1)"]      
+                                               [2 "totalcost" "(+ \"?cost\"  \"?tip\" )"]
+                                               [3 "(<= \"?totalcost\"  20)"]]      
+                                    ["__project__" ["name" "totalcost"] [] -1]])
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class="rec">
+<b>run-group                                 Run the group,apply operators and,project and calculate the BGP</b>
+(defn run-group [q-info group])  groups.group-run/run-group:23
+    1.its a recursive function that applies the unary and binary operators (here we have 1 binary :and,and 1 unary :project)
+    2.for binary operators it calls the functions in groups.table-binary-op.clj
+    3.for unary operators it calls the functions in groups.table-unary-op.clj
+    4.for BGPS it calls function (bgp.bgp-process/process-bgp q-info queries)
+
+    Here we have
+    empty table
+    (:and  BGP)
+    (:project ..)
+
+    So we have to do this
+    (project (join empty_table (run-bgp BGP)))
+
+    1. BGP
+    2. binary :and=join
+    3. unary :project
+  
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class=codePP>
+   (bgp.bgp-process/process-bgp q-info [1 :meal.cost "?meal" "?cost"]      
+                                       [1 :meal.type "?meal" "dinner"]     
+                                       [1 :meal.name "?meal" "?name"]
+                                       [2 "tip" "(* \"?cost\"  0.1)"]      
+                                       [2 "totalcost" "(+ \"?cost\"  \"?tip\" )"]
+                                       [3 "(<= \"?totalcost\"  20)"])
+
+</div>   
+<img class="arrow" src="../icons/arrow.png"/>
+<div class="rec">
+<b>process-bgp                         BGP will be processed group queries in 3 categories,and bgp-run will be called</b>
+   (bgp.bgp-process/process-bgp q-info queries))  bgp.bgp-process:54
+   This function doen't do alot,it does more if property paths are used
+   but here it only seperates the queries of the BGP in 3 categories 
+       relational-queries 
+       bind-queries 
+       filter-queries 
+  
+   When done it calls the run-bgp   
+   Here  
+     Relation-queries
+      
+        [(:meal.cost "?meal" "?cost")
+         (:meal.type "?meal" "dinner")
+         (:meal.name "?meal" "?name")]
+  
+     Bind-queries
+         
+        [["tip" "(* \"?cost\"  0.1)"]
+         ["totalcost" "(+ \"?cost\"  \"?tip\" )"]]
+  
+     Filter-queries
+        ["(<= \"?totalcost\"  20)"]
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class="codePP">
+    (bgp.bgp-run/run-bgp   q-info
+                           [[:meal.cost "?meal" "?cost"]      ;;relations
+                            [:meal.type "?meal" "dinner"]     
+                            [:meal.name "?meal" "?name"]]
+                           
+                           [["tip" "(* \"?cost\"  0.1)"]   ;;binds      
+                            ["totalcost" "(+ \"?cost\"  \"?tip\" )"]]
+                           
+                           ["(<= \"?totalcost\"  20)"])  ;;filters
+
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class="rec">
+<b>run-bgp                                        Basic function returns the table produced from the BGP</b>
+(defn run-bgp [q-info relation-queries bind-queries filter-queries])  bgp.bgp-run:12
+
+   Basic function,does alot of things,calls all the functions from packages
+       bgp
+       bgp-joins
+       bgp-joins-disk 
+   
+   The example here is small,its not like the one in the query-plan example.
+   So this example dont really need every function in the run-bgp.
+
+   Alot of processing is done,but every query has like 1-30 triples so its very fast.
+
+   It calls all the functions to process the binds,and the filters,see what dependancy vars they
+   have,when they must be called,based on that information decide for the table result header.
+   Call functions to make the query plan,which is the join order and the order where filters and
+   binds are applied.
+
+   I will write only the functions with brief description of what they do(see internals/BGP for more)
+  
+<div class="codelong">
+   table-info {"relation-queries" relation-queries
+                    "bind-queries"     bind-queries
+                    "filter-queries"   filter-queries}
+
+   Collect information about the query vars in the queries and the relations
+   <b>table-info (bgp.relations-process/add-vars-info table-info)</b> 
+
+   Filters are seperated in 2 types filters that applied on join time,and filters that applied while
+   reading a relation("vars-filter-functions"/"table-filter-queries")
+   <b>table-info (bgp.filters-process/seperate-filters table-info)</b>
+
+   Process binds,for every bind we get a map like this,for example the map for bind that adds 
+   totalcost is
+   {"bind-var" "totalcost",
+      "index" 1,
+      "dep-vars" #{"tip" "cost"},
+      "relation-dep-vars" #{"cost"},
+      "f-map" {"f-args" ["tip" "cost"], 
+                 "f-eval" #object[documentation.internals$eval5743$fn..."],
+                 "query" "(+ ?cost  ?tip )"},
+      "filters" ({"f-args" ["totalcost"],
+                  "f-eval" #object[documentation.internals$eval5747$fn"],
+                  "query" "(<= ?totalcost  20)"})}
+   The filters on binds are embeded on the binds,also the filter became a normal clojure function
+   that will be called on time =  #object[documentation.internals$eval5747$fn"] 
+   (see Internal/functions on queries)
+   <b>table-info (bgp.binds-process/add-binds table-info)</b>
+
+
+   Every relation will be processed and become a map for example
+   relation (:meal.name "?meal" "?name") will be the map
+   {"query" (:meal.name "?meal" "?name"),   ;;the query as give by the user
+    "rel-type" "so",                        ;;query vars are the subject and the object
+    "relation" :meal.name,                  ;;relation-name
+    "pair" ["meal" "name"],                 ;;ordered the query vars
+    "filters" {},                           ;;empty filtes query vars dont have a filter in the query
+    "vars" #{"meal" "name"},                ;;vars of the query in set
+    "property" nil,                         ;;its not a property path 
+    "cost" 6}                               ;;it has 6 lines ,used in query plan later
+   In join methods 1 that temp vars are used,all relations are rso type
+   (means query vars in all 3 positions)
+   <b>table-info (bgp.relations-process/relations-queries-to-relations table-info)</b>
+   <b>table-info (bgp.relations-process/add-cost-to-relations q-info table-info)</b>
+
+
+   This is the "optimizer" now we have all the information,we embeded the filters in the binds,
+   and the filters in relations (at least those that was not join-filters)
+   We are ready to define the join order and make the query plan.
+   the query plan will show what louna did with those 4 functions,in this simple example
+   <b>table-info (bgp.joins-process/order-queries table-info)</b>
+   we add the binds to the table header
+   <b>table-info (bgp.binds-process/add-bind-vars-to-sorted-vars table-info)</b> 
+   based on the header we know when a bind will be added
+   <b>table-info (bgp.binds-process/add-trigger-var-to-binds table-info)</b> 
+   we embeded the binds to relations    
+   <b>table-info (bgp.binds-process/add-binds-to-relations table-info)</b>       
+
+   <b>Query plan
+        relation: (:meal.cost ?meal ?cost) join-vars: [] add-vars: [meal cost]
+          bind: ( (* ?cost  0.1) ?tip )
+          bind: ( (+ ?cost  ?tip ) ?totalcost )
+                (<= ?totalcost  20)
+          relation(filter): (:meal.type ?meal dinner) filter-vars [meal]
+        relation: (:meal.name ?meal ?name) join-vars: [meal] add-vars: [name]</b>
+   
+   relation: (:meal.cost ?meal ?cost)  
+      will add 2 vars,2 binds will be added,and the second bind has a filter.
+   relation(filter): (:meal.type ?meal dinner) filter-vars [meal] 
+     will not add any variable,it will only filter to keep ?meal that is "dinner"
+   relation: (:meal.name ?meal ?name) join-vars: [meal] add-vars: [name] 
+     one last join to add variable name and we have the final table in our example
+
+   Louna defined the header,added the bind vars to the header,embed the filters to binds and relations,and embeded
+   the binds to relations,and embed filter-relations to join-relations
+
+   Now we have to add the trigger vars to the join-filters(for example if a filter was filtering name and cost
+   it can only do it while joining,because name and cost are added in different joins)
+   <b>table-info (bgp.filters-process/add-trigger-var-to-table-filters table-info)</b>
+ 
+   <b>Make the joins,we have 2 methods for joining</b> 
+      table-info (if (= (state.db-settings/get-join-method) "disk")
+                       (let [table-info (bgp-joins-disk.joins-run/init-table q-info table-info)
+                             table-info  (bgp-joins-disk.joins-run/make-joins q-info table-info)] ;;bgp-joins-disk
+                         table-info)
+                       (let [table-info  (bgp-joins.joins-run/make-joins q-info table-info)] ;;bgp-joins
+                         table-info))
+
+   <b>And we finally have our table from the BGP </b>
+
+   table-info={"sorted-vars" ["meal" "cost" "tip" "totalcost" "name"]
+                "table" {4 [6 12 1.2000000000000002 13.2 "pizza"]}
+   
+   We go back to group run,and return the table from the BGP.
+   
+</div>
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class=rec>
+<b>run-group                                           Run group we returned with table from the BGP </b>
+    1.(project [?name ?totalcost] (join empty_table (run-bgp BGP)))
+      after run-bgp call is replaced with
+
+    2.(project [?name ?totalcost] (join empty_table {"sorted-vars" ["meal" "cost" "tip" "totalcost" "name"]
+                                               "table" {4 [6 12 1.2000000000000002 13.2 "pizza"]}))  
+      after (groups.table-binary-op/join table new-table) is replaced with 
+      (table=empty table,new-table is the BGP table)
+
+    3.(project [?name ?totalcost] {"sorted-vars" ["meal" "cost" "tip" "totalcost" "name"]
+                                   "table" {4 [6 12 1.2000000000000002 13.2 "pizza"]})  
+      after (groups.table-unary-op/project-table table [?name ?totalcost] project-options limit true)
+      is replaced by
+ 
+    4.{"sorted-vars" ["name" "totalcost"]
+       "table" {1 ["pizza" 13.2]}
+
+   *run-group is a recursive function,see Internals/Groups for more about it
+
+</b>
+</div>
+<img class="arrow" src="../icons/arrow.png"/>
+<div class=rec>
+<b>run-q                                              Run query we returned with table from the run-group </b>
+   We examine the :q-out here print in stdout.
+
+   print? (contains? (into #{} q-out) "print")
+   - (if print? (library.print-data/print-table-stdout table-info))
+
+   And we just print the table
+
+   Query results are printed!
+   [name totalcost]
+   "pizza" 13.2
+
+*The BGP here is simple,and the internals are explained very briefly,but still you can have an diagram of how louna answers the queries.
+
+</div>
+
+
+</pre> 
+</div>
+     
+</body>
+</html> 

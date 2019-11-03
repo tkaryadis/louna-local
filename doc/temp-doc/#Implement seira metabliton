@@ -1,0 +1,140 @@
+1)O logos pou thelo seira metabliton mia mia
+  einai gia na efarmozo ta filtra oso to dinaton noritera
+  gia na efarmoso ena filtro prepi na exo tis metablites you se 1 pinaka
+ 
+  px  v1 v2 v5
+      v3 v9 v10
+      v4 v11 v20
+
+  Akoma kai ean exo tis metablites tou filtrou,den mporo na to efarmoso
+  ean einai se xenes omades
+
+  Eno otan diatiro 1 pinaka sinolika ean exo tis metablites pou theli
+  to efarmozo
+
+2)Thelo
+
+  v1 v2 v3 v4 v5 v6
+
+  swap kano opou thelo alla
+  Otan bazo v3 i v3 na exartate me kapia apo tis proigoumenes gia na mporo na tin balo
+  diladi na iparxi sxesi  [v1 v3]/[v3 v1] i [v2 v3]/[v3 v2]
+
+  Nomimi einai kathe seira pou iparxi esto mia exartisi me kapia proigoumeni metabliti
+
+  Mporo na dialego tixea mia sira metabliton mexri na petixo mia egiri
+
+  Mporo na ftiaxo mia sinartisi pou elenxi egirotita
+
+3)Den iparxi seira metabliton ston grafo,den iparxei oute gia 2 metablites seira
+  metabliton
+
+  px  (r1 ?v1 ?v2) (r2 ?v2 ?v1)
+
+
+4)Ftiaxnontas mia egiri seira metabliton
+
+  ["lastname" "firstname"] ["lastname" "city"] ["city" "country"] ["country" "continent"]
+
+  Enono ta pairs diatirontas tin diataxi,otan diataxi,den me endiaferi #{}
+
+  Enono idio subject
+  Enono idio object(switch meta) ;;ean omos?  [[....] [....]]
+
+
+  px
+
+  ["lastname" "firstname"] ["lastname" "city"] ["city" "country"] ["country" "continent"]
+
+  [lastname #{firstname city}] [city" country] [country continent]
+
+  [lastname #{firstname [city country]}] [country continent]
+
+  [lastname #{firstname [city [country continent]]}]
+
+
+  px
+
+  [ggp c] [gp c] [p c]
+
+  [{ggp gp} c] [p c]
+
+  [{ggp gp p} c]
+
+  To girnao se
+
+  [c p gp ggp]
+
+  Yparxi periptosi na min mporo na ta giriso
+
+  px [[...] [...]]
+
+
+
+;---------------------------------------------------------------------------------------------------------------
+
+1)Arxika thelo na diaxoriso tis metablites se joined(exo kini metabliti,amesa i emesa)
+
+2)Tis bazo se dentro => xero pies enononte me kapio monopati
+
+3)Meta thelo na oriso seira ton metabliton
+
+4)To dentro den mpori na modelopoiisi kiklikes sxesis
+  ean exo mia sxesi pou to object tis aniki idi sto dentro apla den anaparistate sto dentro
+
+  Alla auti pou den anaparistate ine giati to object auto den exi tosa pola pedia oste na
+  na ixe mpi proto auto sto dentro
+
+  H seira pou epilegete einai me basi tin dentriki anaparastasi,mpori na min einai i idaniki
+  Arxika xekinai me ton node pou exi ta pio pola amesa pedia,kai arxizi na ensomatoni osa mpori
+
+  px
+
+    personID
+           name
+           lastname
+           city
+           country
+
+    city
+       name
+       population
+
+
+    student
+       personID
+       university
+
+
+    Tha xekinisi apo to personID giati exi ta pio pola pedia ara kalo einai na mpi sto rout
+    oti mpori na to aporofisi os pedi tou
+
+     personID
+          name
+          lastname
+          city
+            name
+            population
+          country
+
+
+     Meta afou den mpori na ensomatosi tipota alo,tha ensomatothi apo to student
+
+
+     student
+        PersonID
+           name
+           lastname
+           city
+             name
+             population
+           country
+        university
+
+
+     Meta diasxizo kata level kai perno tin seira ton metabliton
+
+     student personID university name lastname city country name population
+
+
+

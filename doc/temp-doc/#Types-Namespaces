@@ -1,0 +1,31 @@
+1)Types kai seira
+  .nt -> .lnt ->text_arxeia -> mnimi -> text_arxeio
+
+  .lnt kai meta ola exoun tipous tous kanonikous clojure tipous
+  to URI einai keyword   :prefix.name (:_.name  blank)
+
+2)Namespaces
+
+  1)xristis bazi stin db
+    nt arxeia
+    1 arxeio   default.ns
+
+3)Trexo query =>
+  1)oxi arxeia => ta parago
+  2)arxeia alla neo default.ns => ta xanaparago
+
+  arxia pou paragonte  = relations
+                         final-ns
+                         stats
+                         lnt(ediameso ean thelo to petao sto telos)
+
+
+4)Trexo query => fortono namespaces tis stin mnimi
+
+  Nea namespaces
+  1)sto construct mporo na balo nea namespaces ean idi iparxi esoterika tote allazo me to esoteriko prefix
+    alios prostheto namespace(sta namespace pou einai stin mnimi)
+    ean allaxan sto telos tis query enimerono kai ton disko
+  2)sto query oti bazo idi iparxi,isos esoterika me alo prefix
+
+  ean thelo na allaxo ena idi iparxon => allazo to init.ns kai basi xanaftiaxnete automata

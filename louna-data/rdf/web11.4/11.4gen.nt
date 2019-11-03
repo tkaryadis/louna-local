@@ -1,0 +1,3 @@
+_:node1cppldpg6x1 <http://xmlns.com/foaf/0.1/givenName> "Alice" .
+_:node1cppldpg6x2 <http://xmlns.com/foaf/0.1/givenName> "Bob" .
+_:node1cppldpg6x2 <http://purl.org/dc/elements/1.1/date> "2005-04-04T04:04:04Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .

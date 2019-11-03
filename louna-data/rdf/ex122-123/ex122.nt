@@ -1,0 +1,6 @@
+<http://learningsparql.com/ns/data#i5433> <http://learningsparql.com/ns/addressbook#firstName> "Katherine" .
+<http://learningsparql.com/ns/data#i5433> <http://learningsparql.com/ns/addressbook#lastName> "Duncan" .
+<http://learningsparql.com/ns/data#i5433> <http://learningsparql.com/ns/addressbook#email> "katherine.duncan@elpaso.com" .
+<http://learningsparql.com/ns/data#i2194> <http://learningsparql.com/ns/addressbook#firstName> "Bradley" .
+<http://learningsparql.com/ns/data#i2194> <http://learningsparql.com/ns/addressbook#lastName> "Perry" .
+<http://learningsparql.com/ns/data#i2194> <http://learningsparql.com/ns/addressbook#email> "bradley.perry@corning.com" .

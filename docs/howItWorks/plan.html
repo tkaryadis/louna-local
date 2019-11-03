@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../icons/cl.png">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/documentation.css" rel="stylesheet">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<title>Docs</title>
+
+</head>
+<body>
+<!--Navigation bar
+<div id="nav-placeholder"></div>-->
+ <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="../index.html"><em>&lambda;ouna</em></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../why.html">Why?</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../documentation.html">Docs</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../louna-sparql.html">SPARQL vs <em>&lambda;ouna</em></a>
+        </li>
+          <li class="nav-item active">
+          <a class="nav-link" href="../benchmark.html">Benchmark</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../doc/index.html">API</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://github.com/tkaryadis/louna-local">Code</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../use.html">Usage</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../about.html">About</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../history.html">Changelog</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("../navInside.html");
+});
+</script>
+
+<!--end of Navigation bar-->
+<div id="treediv">
+<ul class="sidenav tree">
+  <li class="tree__item">
+    <span><a href="../internals.html">Packages</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./source.html">Source files</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./plan.html">Query Plan</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./bgp.html">BGP</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./nested.html">Groups</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./joins.html">Joins</a></span>
+  </li>
+  <li class="tree__item">
+    <span><a href="./functions.html">Functions in queries</a></span>
+  </li>  
+  <li class="tree__item">
+    <span><a href="./auto.html">Auto-grouping</a></span>
+  </li>  
+   <li class="tree__item">
+    <span><a href="./reference.html">Internals diagram</a></span>
+  </li>  
+</ul>
+</div>
+
+<div id="main">
+<h5 class = "main-title">Query plan</h5>
+  <pre>
+To understand how louna is answering queries you have to understand 2 things
+    BGP
+        How triples with optional filters(=BGP) and binds are joined to make a table
+        What will happen to make the BGP is shown from the query plan
+        How it will happen its shown from the BGP documentation on internals
+
+    GROUPS
+        Tables produced from BGP's or with other ways,are processed while we apply
+        to them unary or binary operators for example :group-by(unary) :if(binary)
+
+So here in the query plan its shown what will louna will do to make the BGP.
+And the best way to explain it is by an example that has many types of filters
+triples and binds.
+
+All the code used in internal documentation is in test.documentation.internals.clj
+Here we will use the big example at test.documentation.internals.clj:45
+
+
+To print the query plan,you un-comment the line bgp.bgp-run:115
+- (library.print-data/print-query-plan (get table-info "relations") true))
+
+Before the example some things about the relations/binds/filters types.
+
+Type of relations
+1)relation that init the table(the first in the query plan)
+2)relations that add-vars to the table(cause join)
+3)relations that filter the table(dont add variable)
+  (:employers.name  ?id ?name)
+  (:greeks.name     ?id ?name)
+  If we have a company with foreign and greek employers we could 
+  filter the non-greeks with this 2 triples.
+  The second triple doesn't add any variable on the table its only
+  a filter.And this file is used to run triples that are filters
+
+Type of binds
+1)bind on relation var
+2)bind on bind
+
+Type of filters
+1)relation filter
+  applied when reading a relation like from a file.
+2)table filter
+  applied when we are making the joins
+  filters on binds are in this category because adding
+  a new var on table enables the new bind to run
+
+<b>The query</b>
+<div class="codelong">
+(q {:q-in ["ex041"] :q-out ["print"]}
+
+     (:ab.firstName  ?person  ?firstName)
+     (:ab.lastName            ?lastName)
+     (:ab.address             ?address)
+     (:ab.postalCode ?address ?postalCode)
+     (:ab.postalCode ?address ?postalCode)                ;;filter relation,dont add variables
+     (:ab.city                ?city)
+     (:ab.streetAddress       ?streetAddress)
+     (:ab.region              ?region)
+
+     ;;filters
+     (= ?person :ab.i0432)                                 ;;1-var-filter
+     (= ?city "Springfield")                               ;;1-var-filter
+     (and (= ?person :ab.i0432) (= ?lastName "Mutt"))      ;;relation-filter
+     (and (= ?firstName "Richard") (= ?lastName "Mutt"))   ;;table filter se relation-vars
+
+     ;;binds+filters
+     ((str ?city) ?cityB)                                  ;;bind on the first
+     (= ?cityB "Springfield")                              ;;filter to bind of the first
+     ((str ?firstName ?lastName) ?firstlast)               ;;bind
+     (= ?firstlast "RichardMutt")                          ;;filter on bind
+
+     ;;bind on binds+filter
+     ((str ?firstlast ?city) ?firstlastcity)               ;;bind on bind
+     (= ?firstlastcity "RichardMuttSpringfield")           ;;filter on bind to bind
+
+     ;;table filter to relation vars+binds
+     (and (= ?firstName "Richard") (= ?lastName "Mutt") (= ?firstlast "RichardMutt"))
+
+     ;;table filter to relation vars + binds on binds
+     (and (= ?firstName "Richard") (= ?lastName "Mutt") (= ?firstlastcity "RichardMuttSpringfield")))
+
+</div>
+
+<b>Has query plan</b>
+
+<div class="codelong">
+relation: (:ab.city ?address ?city) join-vars: [] add-vars: [city address]
+  (= ?city  "Springfield")
+    bind: ( (str ?city ) ?cityB )
+     (= ?cityB  "Springfield")
+relation: (:ab.streetAddress ?address ?streetAddress) join-vars: [address] add-vars: [streetAddress]
+relation: (:ab.region ?address ?region) join-vars: [address] add-vars: [region]
+relation: (:ab.address ?person ?address) join-vars: [address] add-vars: [person]
+  (= ?person  :ab.i0432)
+relation: (:ab.firstName ?person ?firstName) join-vars: [person] add-vars: [firstName]
+  (= ?person  :ab.i0432)
+relation: (:ab.lastName ?person ?lastName) join-vars: [person] add-vars: [lastName]
+  (= ?person  :ab.i0432)
+  (and (= ?person  :ab.i0432) (= ?lastName  "Mutt"))
+    bind: ( (str ?firstName  ?lastName ) ?firstlast )
+     (= ?firstlast  "RichardMutt")
+    bind: ( (str ?firstlast  ?city ) ?firstlastcity )
+     (= ?firstlastcity  "RichardMuttSpringfield")
+relation: (:ab.postalCode ?address ?postalCode) join-vars: [address] add-vars: [postalCode]
+    relation(filter): (:ab.postalCode ?address ?postalCode) filter-vars [postalCode address]
+
+</div>
+
+The query plan uses
+1)the optimizer to define the order of the joins
+  the optimizer picks the smallest first but only if it does not cause a cartesian join.
+2)the information gathered from before about al relations/binds/filters to know where and
+  when to apply them
+
+If you look the query plan you see the order of joins,when vars are added to the table at
+every step what filters or binds are applied.
+
+For example
+<div class="codelong">
+    relation: (:ab.city ?address ?city) join-vars: [] add-vars: [city address]
+        (= ?city  "Springfield")
+        bind: ( (str ?city ) ?cityB )
+            (= ?cityB  "Springfield")
+</div>
+    This is the first query that inits the table.
+    Its is calculated like this,we read the relation line by line,and to each line :
+<div class="codelong">
+    line from file   [?address ?city]
+    filter line      (= ?city  "Springfield")
+    if passed 
+        add bind to line [?address ?city ?cityB]
+        filter line      (= ?cityB  "Springfield")
+</div>
+For example
+<div class="codelong">
+    relation: (:ab.lastName ?person ?lastName) join-vars: [person] add-vars: [lastName]
+        (= ?person  :ab.i0432)
+        (and (= ?person  :ab.i0432) (= ?lastName  "Mutt"))
+        bind: ( (str ?firstName  ?lastName ) ?firstlast )
+              (= ?firstlast  "RichardMutt")
+        bind: ( (str ?firstlast  ?city ) ?firstlastcity )
+              (= ?firstlastcity  "RichardMuttSpringfield")
+</div>
+<div class="codelong">
+    line from file  [?person ?lastname]
+    filter (= ?person  :ab.i0432) ,  (and (= ?person  :ab.i0432) (= ?lastName  "Mutt"))
+    if passed
+        bind ( (str ?firstName  ?lastName ) ?firstlast )
+        filter (= ?firstlast  "RichardMutt")
+        if passed
+            bind ( (str ?firstlast  ?city ) ?firstlastcity )
+            filter (= ?firstlastcity  "RichardMuttSpringfield")
+            if passed
+               line on joined table
+</div>
+    To see how the filter are applied while reading the relation
+    bgp.relations-run-join:10  function = triple-join-so-r
+    Here we are reading a so relation(subject and object are variables)
+    and we apply the filters,3 types of filters
+    filter on subject,filter on object,filter on both.
+    In this example we have filter on subject and filter on both.
+
+    The 2nd place that we apply filters is when we make the join (table filters)
+    For example the filter (and (= ?firstName "Richard") (= ?lastName "Mutt"))   table filter 
+    to relation-vars is applied when we are making the join
+    To see that in code 
+    bgp.relations-run-join:38,65  2 functions = add-line-1var  add-line-2vars
+    you will see passed?
+    <div class="codelong">
+    (let [line-to-add (conj line njoin-var-relation-value)
+          passed? (bgp.filters-run/run-table-filter-vectors add-var
+                                                            table-filter-functions
+                                                            sorted-vars-add-var
+                                                            line-to-add)
+          line-to-add (if passed? (add-binds-to-line sorted-vars-add-var
+                                                     binds
+                                                     table-filter-functions
+                                                     line-to-add) [])]
+      (if-not (empty? line-to-add)
+        (assoc table (state.state/get-new-line-ID) line-to-add)
+        table))
+    </div>
+    This says for that line,expand it with the new var here lastname.
+    Run the table filters,if line passed(not-empty line),run add-binds-to-line
+    Below the add-binds to line is explained.
+
+    The 3rd place that we apply filters is when we add binds to the line.
+    To see how the binds are added to the line,and the filters are applied
+    bgp.joins-run:9   function=add-binds-to-line 
+    if you look there is a loop (recur (rest binds) bind-line bind-sorted-vars)
+    that add the binds one by one on the line,and then it applies the filters
+    if passed line is added on the table if it falls the loop stops,and the line
+    is not added(empty line=>didn't pass the filters=>not added to the table)
+
+    *more information about joins in BGP in internals
+
+Example
+<div class="codelong">
+    relation: (:ab.postalCode ?address ?postalCode) join-vars: [address] add-vars: [postalCode]
+        relation(filter): (:ab.postalCode ?address ?postalCode) filter-vars [postalCode address]
+</div>
+    The relation (:ab.postalCode ?address ?postalCode) dont add new-variable so its just a filter to the table.
+    Thats why its child of  a join.Its like a normal filter,but the values are from a relation.
+    Here its the same relation randomly,the reason its a filter relation,is because it doesnt add new-variables
+    to the table.
+
+Table filters
+    The table filters(join filters are not shown in the query plan)
+    But they are applied as soon as possible(when we have all the variables they need)
+    They are in a map if you un-comment the line - (prn (get table-info "table-filter-functions"))
+    you can see the map for those 2 table filters
+
+    We have 3 table filters
+<div class="codelong">
+    ;;table filter se relation-vars
+    (and (= ?firstName "Richard") (= ?lastName "Mutt"))   
+    ;;table filter se relation vars+binds
+    (and (= ?firstName "Richard") (= ?lastName "Mutt") (= ?firstlast "RichardMutt"))
+    ;;table filter se relation vars + binds on binds
+    (and (= ?firstName "Richard") (= ?lastName "Mutt") (= ?firstlastcity "RichardMuttSpringfield")))
+</div>
+<div class="codelong">
+The table filters are in a map
+
+{"lastName" 
+  {"dep-vars" #{"lastName" "firstName"},
+   "functions" [{"f-args" ["lastName" "firstName"],
+                "f-eval" #object[documentation.internals$eval5772$fn...."],
+                 "query" "(and (= ?firstName  \"Richard\") (= ?lastName  \"Mutt\"))"}]},
+ "firstlast" 
+  {"dep-vars" #{"lastName" "firstName" "firstlast"},
+   "functions" [{"f-args" ["lastName" "firstName" "firstlast"],
+                 "f-eval" #object[documentation.internals$eval5777$fn..."],
+                 "query" "(and (= ?firstName  \"Richard\") (= ?lastName  \"Mutt\") 
+                          (= ?firstlast  \"RichardMutt\"))"}]},
+
+ "firstlastcity" {"dep-vars" #{"lastName" "firstName" "firstlastcity"},
+                  "functions" [{"f-args" ["lastName" "firstName" "firstlastcity"],
+                  "f-eval" #object[documentation.internals$eval5783$fn..."],
+                  "query" "(and (= ?firstName  \"Richard\") (= ?lastName  \"Mutt\") 
+                                (= ?firstlastcity  \"RichardMuttSpringfield\"))"}]}}
+</div>
+    The important is the 3 keys,that is the trigger vars of the table filter.
+    This means that when we add lastName in the table we can apply the filter 
+    (and (= ?firstName "Richard") (= ?lastName "Mutt"))  
+    the second means that when we add "firstlast" we can apply the filter 
+    (and (= ?firstName "Richard") (= ?lastName "Mutt") (= ?firstlast "RichardMutt"))
+    and the third means that when we add "firstlastcity" we can apply the filter
+   (and (= ?firstName "Richard") (= ?lastName "Mutt") (= ?firstlastcity "RichardMuttSpringfield")))
+
+   dep-vars are the variables the filter need to run
+   f-eval is the clojure function that is ready to run to apply the filter
+  <pre> 
+</p>
+
+
+</div>
+     
+</body>
+</html> 

@@ -1,0 +1,32 @@
+# filename: ex094.rq
+#ebgala to distinct den exi ilopoiithi akoma
+
+PREFIX ab: <http://learningsparql.com/ns/addressbook#>
+
+SELECT ?first ?last
+WHERE
+{
+  ?s ab:takingCourse ?class ;
+     ab:firstName ?first ;
+     ab:lastName ?last . 
+}
+
+;;xoris distinct
+--------------------------
+| first| last|
+==========================
+| "Craig"| "Ellis"|
+| "Cindy"| "Marshall" |
+| "Cindy"| "Marshall" |
+| "Richard" | "Mutt"|
+| "Richard" | "Mutt"|
+--------------------------
+
+;;me distinct
+--------------------------
+| first| last|
+==========================
+| "Craig"| "Ellis"|
+| "Cindy"| "Marshall" |
+| "Richard" | "Mutt"|
+--------------------------

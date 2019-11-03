@@ -1,0 +1,4 @@
+_:node1cpppt82ux1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cpppt82ux1 <http://biometrics.example/ns#shoeSize> "9.5"^^<http://www.w3.org/2001/XMLSchema#float> .
+_:node1cpppt82ux2 <http://xmlns.com/foaf/0.1/name> "Bob" .
+_:node1cpppt82ux2 <http://biometrics.example/ns#shoeSize> "42"^^<http://www.w3.org/2001/XMLSchema#integer> .

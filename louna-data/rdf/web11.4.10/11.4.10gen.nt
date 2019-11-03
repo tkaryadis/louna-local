@@ -1,0 +1,4 @@
+_:node1cppq43dax1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cppq43dax1 <http://xmlns.com/foaf/0.1/mbox> <mailto:alice@work.example> .
+_:node1cppq43dax2 <http://xmlns.com/foaf/0.1/name> "Ms A." .
+_:node1cppq43dax2 <http://xmlns.com/foaf/0.1/mbox> <mailto:alice@work.example> .

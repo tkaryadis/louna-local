@@ -1,0 +1,18 @@
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#firstName> "Richard" .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#lastName> "Mutt" .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#email> "richard49@hotmail.com" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#firstName> "Cindy" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#lastName> "Marshall" .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#email> "cindym@gmail.com" .
+<http://learningsparql.com/ns/data#i8301> <http://learningsparql.com/ns/addressbook#firstName> "Craig" .
+<http://learningsparql.com/ns/data#i8301> <http://learningsparql.com/ns/addressbook#lastName> "Ellis" .
+<http://learningsparql.com/ns/data#i8301> <http://learningsparql.com/ns/addressbook#email> "c.ellis@usairwaysgroup.com" .
+<http://learningsparql.com/ns/data#course34> <http://learningsparql.com/ns/addressbook#courseTitle> "Modeling Data with OWL" .
+<http://learningsparql.com/ns/data#course71> <http://learningsparql.com/ns/addressbook#courseTitle> "Enhancing Websites with RDFa" .
+<http://learningsparql.com/ns/data#course59> <http://learningsparql.com/ns/addressbook#courseTitle> "Using SPARQL with non-RDF Data" .
+<http://learningsparql.com/ns/data#course85> <http://learningsparql.com/ns/addressbook#courseTitle> "Updating Data with SPARQL" .
+<http://learningsparql.com/ns/data#i8301> <http://learningsparql.com/ns/addressbook#takingCourse> <http://learningsparql.com/ns/data#course59> .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#takingCourse> <http://learningsparql.com/ns/data#course34> .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#takingCourse> <http://learningsparql.com/ns/data#course85> .
+<http://learningsparql.com/ns/data#i0432> <http://learningsparql.com/ns/addressbook#takingCourse> <http://learningsparql.com/ns/data#course59> .
+<http://learningsparql.com/ns/data#i9771> <http://learningsparql.com/ns/addressbook#takingCourse> <http://learningsparql.com/ns/data#course59> .

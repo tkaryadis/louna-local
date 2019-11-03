@@ -1,0 +1,4 @@
+_:node1cpd2gc1ox1 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cpd2gc1ox1 <http://xmlns.com/foaf/0.1/mbox> <mailto:alice@org> .
+_:node1cpd2gc1ox2 <http://xmlns.com/foaf/0.1/name> "Alice" .
+_:node1cpd2gc1ox2 <http://xmlns.com/foaf/0.1/mbox> <mailto:smith@work> .
