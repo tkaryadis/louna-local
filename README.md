@@ -30,3 +30,15 @@ Example of louna query
    (:city.country        ?city      ?country)  
    (:country.continent   ?country   ?continent))
 ```
+
+Can auto-generate
+
+```
+SELECT *
+WHERE    
+{
+  ?person  person:city          ?city .
+  ?city    city:country         ?country .  
+  ?country country:continent    ?continent .  
+}
+```
