@@ -2,7 +2,7 @@
 Clojars [[louna/louna-local "0.1.0-SNAPSHOT"]](https://clojars.org/louna/louna-local)  
 Documentation [https://tkaryadis.github.io/louna-local](https://tkaryadis.github.io/louna-local)  
 
-Project is for educational purposes,it contains  
+**Project is for educational purposes only,it contains**  
 1. Query language similar to SPARQL but with Lispy syntax  
 2. SPARQL generation  
    Louna queries can generate SPARQL  
