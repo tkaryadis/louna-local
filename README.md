@@ -5,7 +5,7 @@ Documentation [https://tkaryadis.github.io/louna-local](https://tkaryadis.github
 **Experimental project** 
 1. Performs SPARQL like queries from data give in text files.
 2. Queries use s-expressions syntax
-3. Includes a query processor to answer those queries
+3. Includes a query processor to answer those queries  
    A large part of SPARQL language is supported.  
    joins/groupby/sortby/etc
 
