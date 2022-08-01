@@ -2,7 +2,7 @@
 Clojars [[louna/louna-local "0.1.0-SNAPSHOT"]](https://clojars.org/louna/louna-local)  
 Documentation [https://tkaryadis.github.io/louna-local](https://tkaryadis.github.io/louna-local)  
 
-**Experimental project** 
+**Experimental project for educational purposes only** 
 1. Performs SPARQL like queries from data give in text files.
 2. Queries use s-expressions syntax
 3. Includes a query processor to answer those queries  
